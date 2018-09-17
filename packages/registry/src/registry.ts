@@ -1,8 +1,6 @@
 import * as Utils from "@zapjs/eos-utils";
 import {RegistryOptions} from "./types/types";
 
-const zap_account = require('@zapjs/eos-utils').zap_account;
-
 export class Registry {
     _account: Utils.Account;
     _node: Utils.Node;
