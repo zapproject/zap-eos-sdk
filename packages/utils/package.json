@@ -18,8 +18,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^10.9.4",
     "eosjs": "^16.0.7",
     "sleep": "^5.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^10.10.0"
   }
 }

@@ -13,7 +13,7 @@ export class Account {
         this.isAccount = true;
     }
 
-    fromPrivateKey(private_key: string) {
+    usePrivateKey(private_key: string) {
         if (!eos_ecc.isValidPrivate(private_key)) {
             throw new Error("Private key is invalid.");
         }

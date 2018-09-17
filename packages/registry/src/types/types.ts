@@ -1,6 +1,6 @@
-import {Account, Node} from "@zapjs/eos-utils";
+import * as Utils from "@zapjs/eos-utils";
 
 export type RegistryOptions = {
-    account: Account,
-    node: Node
+    account: Utils.Account,
+    node: Utils.Node
 }

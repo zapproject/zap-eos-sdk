@@ -75,5 +75,3 @@ export class Deployer {
         return result;
     }
 }
-
-module.exports = Deployer;

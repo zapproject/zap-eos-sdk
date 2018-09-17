@@ -1,4 +1,5 @@
 import {nodeConfig, nodeOptions} from "./types/types";
+import {Account} from "./index";
 
 const Sleep = require('sleep');
 const Eos = require('eosjs');
@@ -33,6 +34,7 @@ export class Node {
     running: boolean;
     instance: any;
     nodeos_path: string;
+    _zap_account: Account = new Account('zap.main');
 
     constructor({verbose, key_provider, nodeos_path, http_endpoint, chain_id}: nodeOptions) {
         this.eos_test_config = {
@@ -120,6 +122,8 @@ export class Node {
         return Eos(this.eos_test_config);
     }
 
-}
+    getZapAccount() {
+        return this._zap_account;
+    }
 
-module.exports = Node;
+}
