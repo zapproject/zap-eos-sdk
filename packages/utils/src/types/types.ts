@@ -1,7 +1,9 @@
 export type nodeOptions = {
     verbose: boolean,
     key_provider: Array<string>,
-    nodeos_path: string
+    nodeos_path: string,
+    http_endpoint: string,
+    chain_id: string
 }
 
 export type nodeConfig = {
@@ -14,7 +16,7 @@ export type nodeConfig = {
     sign: boolean
 };
 
-export type deployerConfig = {
+export type deployerOptions = {
     eos: any,
     contract_name: string
 }

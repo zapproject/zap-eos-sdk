@@ -9,7 +9,7 @@ const STARTUP_REQUESTS_DELAY = 100;
 const STARTUP_BLOCK = 3;
 
 function waitEvent(event:any, type: string) {
-    return new Promise(function(resolve:any, reject:any) {
+    return new Promise(function(resolve:Function, reject:Function) {
         function listener(data:any) {
             event.removeListener(type, listener);
             resolve(data);
@@ -34,11 +34,11 @@ export class Node {
     instance: any;
     nodeos_path: string;
 
-    constructor({verbose, key_provider, nodeos_path}: nodeOptions) {
+    constructor({verbose, key_provider, nodeos_path, http_endpoint, chain_id}: nodeOptions) {
         this.eos_test_config = {
-            chainId: null, // 32 byte (64 char) hex string
+            chainId: chain_id, // 32 byte (64 char) hex string
             keyProvider: key_provider, // WIF string or array of keys..
-            httpEndpoint: 'http://127.0.0.1:8888',
+            httpEndpoint: http_endpoint,
             expireInSeconds: 60,
             broadcast: true,
             verbose: verbose, // API activity

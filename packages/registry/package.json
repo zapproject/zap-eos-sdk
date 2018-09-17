@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Interface for registry functions in eos blockchain",
   "main": "./out/index.js",
+  "types": "./out/types.d.ts",
+  "typings": "./out",
   "repository": "https://github.com/smartum-ks/eos-sdk.git",
   "scripts": {
     "build": "tsc --module commonjs",
@@ -17,5 +19,9 @@
   "license": "ISC",
   "dependencies": {
     "eosjs": "^16.0.8"
+  },
+  "devDependencies": {
+    "@types/node": "^10.10.0",
+    "@zapjs/eos-utils": "^1.0.0"
   }
 }

@@ -1,8 +1,6 @@
-import {deployerConfig} from "./types/types";
+import {deployerOptions} from "./types/types";
 import {Account} from "./account";
 import {Transaction} from "./transaction";
-
-const fs = require('fs');
 
 export class Deployer {
     _eos: any;
@@ -13,7 +11,7 @@ export class Deployer {
     _after_deploy_tr?: Transaction;
     _before_deploy_tr?: Transaction;
 
-    constructor({eos, contract_name}: deployerConfig) {
+    constructor({eos, contract_name}: deployerOptions) {
         this._eos = eos;
         this._contract_name = contract_name;
     }
@@ -28,15 +26,12 @@ export class Deployer {
         return this;
     }
 
-    read(dir: string) {
-        if (!dir) {
-            throw new Error('Compiled contracts directory not specified');
-        }
+    abi(abi: string) {
+        this._abi = abi;
+    }
 
-        this._wasm = fs.readFileSync(dir + '/' + this._contract_name + '.wasm');
-        this._abi = fs.readFileSync(dir + '/' + this._contract_name + '.abi');
-
-        return this;
+    wasm(wasm: string) {
+        this._wasm = wasm;
     }
 
     afterDeploy(transaction: Transaction) {
