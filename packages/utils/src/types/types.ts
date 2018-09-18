@@ -1,7 +1,6 @@
 export type nodeOptions = {
     verbose: boolean,
     key_provider: Array<string>,
-    nodeos_path: string,
     http_endpoint: string,
     chain_id: string
 }
