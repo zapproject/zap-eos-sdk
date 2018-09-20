@@ -21,7 +21,7 @@ function checkTimeout(startTime: Date, timeout: number) {
 export class Node {
     eos_test_config: nodeConfig;
     verbose: boolean;
-    _zap_account: Account = new Account('zap.main');
+    private _zap_account: Account = new Account('zap.main');
 
     constructor({verbose, key_provider, http_endpoint, chain_id}: nodeOptions) {
         this.eos_test_config = {
