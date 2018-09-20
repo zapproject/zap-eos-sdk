@@ -72,11 +72,17 @@ export class Registry {
         );
     }
 
-    listenNewProvider() {
-        //TODO: not implemented
+    listenNewProvider(callback?: Function) {
+        let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
+        listener.listen(callback, this._node.getZapAccount().name + '::newprovider');
+
+        return listener;
     }
 
-    listenNewEndpoint() {
-        //TODO: not implemented
+    listenNewEndpoint(callback?: Function) {
+        let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
+        listener.listen(callback, this._node.getZapAccount().name + '::addendpoint');
+
+        return listener;
     }
 }

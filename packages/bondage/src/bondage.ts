@@ -82,11 +82,17 @@ export class Bondage {
         );
     }
 
-    listenBond() {
-        //TODO: not implemented
+    listenBond(callback?: Function) {
+        let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
+        listener.listen(callback, this._node.getZapAccount().name + '::bond');
+
+        return listener;
     }
 
-    listenUnbond() {
-        //TODO: not implemented
+    listenUnbond(callback?: Function) {
+        let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
+        listener.listen(callback, this._node.getZapAccount().name + '::unbond');
+
+        return listener;
     }
 }

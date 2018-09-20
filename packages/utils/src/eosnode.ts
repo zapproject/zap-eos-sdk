@@ -19,12 +19,12 @@ function checkTimeout(startTime: Date, timeout: number) {
 
 
 export class Node {
-    eos_test_config: nodeConfig;
+    eos_config: nodeConfig;
     verbose: boolean;
     private _zap_account: Account = new Account('zap.main');
 
     constructor({verbose, key_provider, http_endpoint, chain_id}: nodeOptions) {
-        this.eos_test_config = {
+        this.eos_config = {
             chainId: chain_id, // 32 byte (64 char) hex string
             keyProvider: key_provider, // WIF string or array of keys..
             httpEndpoint: http_endpoint,
@@ -40,7 +40,7 @@ export class Node {
     async _waitNodeStartup(timeout: number) {
         // wait for block production
         let startTime = new Date();
-        let eos = Eos(this.eos_test_config);
+        let eos = Eos(this.eos_config);
         while (true) {
             try {
                 let res = await eos.getInfo({});
@@ -65,7 +65,7 @@ export class Node {
 
     async connect() {
         await this._waitNodeStartup(STARTUP_TIMEOUT);
-        return Eos(this.eos_test_config);
+        return Eos(this.eos_config);
     }
 
     getZapAccount() {
