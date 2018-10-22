@@ -27,14 +27,15 @@ export class Registry {
             .execute(eos);
     }
 
-    async addEndpoint(endpoint_specifier: string, constants: Array<number>, parts: Array<number>, dividers: Array<number>, broker: string) {
+    async addEndpoint(endpoint_specifier: string, functions: Array<number>, broker: string) {
         let eos = await this.connect();
+
 
         return await new Utils.Transaction()
             .sender(this._account)
             .receiver(this._zap_account_name)
             .action('addendpoint')
-            .data({provider: this._account.name, specifier: endpoint_specifier, constants: constants, parts: parts, dividers: dividers, broker: broker})
+            .data({provider: this._account.name, specifier: endpoint_specifier, functions: functions, broker: broker})
             .execute(eos);
     }
 
