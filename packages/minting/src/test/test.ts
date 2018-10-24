@@ -40,10 +40,12 @@ describe('Test', () => {
      });
     it('#transferTokens()', async() => {
         const eos = await node.connect();
-        await minting.transferTokens(node.getAccounts().account_user, ['receiver'], '7 TST', 'hi');
-        let tokensAmount = await eos.getCurrencyBalance(node.getAccounts().zap.name, 'receiver', 'TST');
-        await expect(tokensAmount[0].toString()).to.be.equal('7 TST');
+        await minting.transferTokens(node.getAccounts().account_user, ['receiver', 'main'], '7 TST', 'hi');
+        let tokensAmountA = await eos.getCurrencyBalance(node.getAccounts().zap.name, 'receiver', 'TST');
+        await expect(tokensAmountA[0].toString()).to.be.equal('7 TST');
+        let tokensAmountB = await eos.getCurrencyBalance(node.getAccounts().zap.name, 'main', 'TST');
+        await expect(tokensAmountB[0].toString()).to.be.equal('7 TST');
         let restTokensAmount = await eos.getCurrencyBalance(node.getAccounts().zap.name, 'user', 'TST');
-        await expect(restTokensAmount[0].toString()).to.be.equal('9993 TST');
+        await expect(restTokensAmount[0].toString()).to.be.equal('9986 TST');
     });
 });
