@@ -129,8 +129,8 @@ export class TestNode extends Node {
 
     async deploy(eos: any) {
         const results: any = [];
-        const abi = fs.readFileSync(path.resolve(__dirname, '..', '..', 'contract/eosio.token.abi'));
-        const wasm = fs.readFileSync(path.resolve(__dirname, '..', '..', 'contract/eosio.token.wasm'));
+        const abi = fs.readFileSync(path.resolve(__dirname, '..', '..','..', 'contract/eosio.token.abi'));
+        const wasm = fs.readFileSync(path.resolve(__dirname, '..', '..','..', 'contract/eosio.token.wasm'));
         const deployer = new Deployer({eos: eos, contract_name: 'eosio.token'});
         let createTokenTransaction = new Transaction()
             .sender(this.zap)
