@@ -11,6 +11,7 @@ import * as Utils from "@zapjs/eos-utils";
 
 
 
+
 async function configureEnvironment(func: Function) {
     await func();
 }
@@ -25,10 +26,16 @@ describe('Test', () => {
                 await node.restart();
                 await node.init();
                 registry = await new Regsitry({
-                account: node.getProvider(),
-                node
-            });
-        } catch (e) { console.log(e); }
+                  account: node.getProvider(),
+                  node
+                });
+
+                async function getInfo(info: any) {
+                  console.log(info)
+                }
+                const observer = new Utils.Listener();
+                observer.on("zap.main::addendpoint", getInfo);
+            } catch (e) { console.log(e); }
         done();
         });
     });

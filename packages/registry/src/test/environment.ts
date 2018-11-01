@@ -50,6 +50,7 @@ export class TestNode extends Node {
             throw new Error('Test EOS node is already running.');
         }
         // use spawn function because nodeos has infinity output
+
         this.instance = spawn(this.nodeos_path, ['-e -p eosio', '--delete-all-blocks', '--plugin eosio::producer_plugin', '--plugin eosio::history_plugin', '--plugin eosio::chain_api_plugin', '--plugin eosio::history_api_plugin', '--plugin eosio::http_plugin'], {shell: true});
         // wait until node is running
 

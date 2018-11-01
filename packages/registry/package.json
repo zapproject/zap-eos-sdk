@@ -20,7 +20,8 @@
   "dependencies": {
     "eosjs": "^16.0.8",
     "chai-as-promised": "7.1.1",
-    "chai-bignumber": "2.0.2"
+    "chai-bignumber": "2.0.2",
+    "mongodb": "3.1.8"
   },
   "devDependencies": {
     "mocha": "5.2.0",
