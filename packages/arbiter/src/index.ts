@@ -1,5 +1,5 @@
-import {Dispatch as EosDispatch} from "./dispatch";
+import {Arbiter as EosArbiter} from "./arbiter";
 
-export const Dispatch = EosDispatch;
+export const Arbiter = EosArbiter;
 
-export type Dispatch = EosDispatch;
+export type Arbiter = EosArbiter;

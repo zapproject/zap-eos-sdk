@@ -1,7 +1,8 @@
 const path = require('path');
 const fs = require('fs');
-import { Account, Node, Deployer, Transaction, SimpleEventListener as EventListener } from '@zapjs/eos-utils';
-import { spawn, execSync } from 'child_process';
+import {Account, Node, Deployer, Transaction, SimpleEventListener as EventListener} from '@zapjs/eos-utils';
+import {spawn, execSync} from 'child_process';
+
 const PROJECT_PATH = path.join(__dirname + '/..');
 
 import * as stream from "stream";
@@ -15,9 +16,8 @@ const ACC_TEST_PRIV_KEY = '5KfFufnUThaEeqsSeMPt27Poan5g8LUaEorsC1hHm1FgNJfr3sX';
 const ACC_OWNER_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';
 
 
-
 function waitEvent(event: stream.Readable, type: string) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         function listener(data: any) {
             event.removeListener(type, listener);
             resolve(data);
@@ -26,6 +26,7 @@ function waitEvent(event: stream.Readable, type: string) {
         event.on(type, listener);
     });
 }
+
 function findElement(array: Array<any>, field: string, value: string) {
     for (let i in array) {
         if (array.hasOwnProperty(i)) {
@@ -37,6 +38,7 @@ function findElement(array: Array<any>, field: string, value: string) {
 
     return -1;
 }
+
 export class TestNode extends Node {
     recompile: boolean;
     running: boolean;
@@ -48,7 +50,12 @@ export class TestNode extends Node {
     account_receiver: Account;
 
     constructor(verbose: boolean, recompile: boolean, endpoint: string) {
-        super({verbose: verbose, key_provider: [ACC_TEST_PRIV_KEY, ACC_OWNER_PRIV_KEY], http_endpoint: 'http://127.0.0.1:8888', chain_id: ''});
+        super({
+            verbose: verbose,
+            key_provider: [ACC_TEST_PRIV_KEY, ACC_OWNER_PRIV_KEY],
+            http_endpoint: 'http://127.0.0.1:8888',
+            chain_id: ''
+        });
         this.recompile = recompile;
         this.running = false;
         this.instance = null;
@@ -63,6 +70,7 @@ export class TestNode extends Node {
         this.account_receiver.usePrivateKey(ACC_TEST_PRIV_KEY);
 
     }
+
     getAccounts() {
         return {
             account_user: this.account_user,
@@ -82,9 +90,9 @@ export class TestNode extends Node {
 
         while (this.running === false) {
             await waitEvent(this.instance.stderr, 'data');
-                if (this.running === false) {
-                    this.running = true;
-                }
+            if (this.running === false) {
+                this.running = true;
+            }
         }
 
         if (this.verbose) console.log('Eos node is running.')
@@ -93,16 +101,16 @@ export class TestNode extends Node {
     kill() {
         if (this.instance) {
             this.instance.kill();
-                this.instance = null;
-                this.running = false;
-                if (this.verbose) console.log('Eos node killed.');
+            this.instance = null;
+            this.running = false;
+            if (this.verbose) console.log('Eos node killed.');
         }
     }
 
-     async restart() {
-         this.kill();
-         await this.run();
-     }
+    async restart() {
+        this.kill();
+        await this.run();
+    }
 
 
     async init() {
@@ -114,7 +122,7 @@ export class TestNode extends Node {
         const eos = await this.connect();
         await this.registerAccounts(eos);
         await this.deploy(eos);
-        await this.grantPermissions(eos) ;
+        await this.grantPermissions(eos);
     }
 
 
@@ -129,8 +137,8 @@ export class TestNode extends Node {
 
     async deploy(eos: any) {
         const results: any = [];
-        const abi = fs.readFileSync(path.resolve(__dirname, '..', '..','..', 'contract/eosio.token.abi'));
-        const wasm = fs.readFileSync(path.resolve(__dirname, '..', '..','..', 'contract/eosio.token.wasm'));
+        const abi = fs.readFileSync(path.resolve(__dirname, '..', '..', '..', 'contract/eosio.token.abi'));
+        const wasm = fs.readFileSync(path.resolve(__dirname, '..', '..', '..', 'contract/eosio.token.wasm'));
         const deployer = new Deployer({eos: eos, contract_name: 'eosio.token'});
         let createTokenTransaction = new Transaction()
             .sender(this.zap)
@@ -144,23 +152,24 @@ export class TestNode extends Node {
         results.push(await deployer.deploy());
         return results;
     }
+
     async grantPermissions(eos: any) {
-      let newPermission = {
-          permission: {
-              actor: this.account_main.name,
-              permission: 'eosio.code'
-          },
-          weight: 1
-      };
+        let newPermission = {
+            permission: {
+                actor: this.account_main.name,
+                permission: 'eosio.code'
+            },
+            weight: 1
+        };
 
-      let user = await eos.getAccount(this.account_user.name);
-      let main = await eos.getAccount(this.account_main.name);
+        let user = await eos.getAccount(this.account_user.name);
+        let main = await eos.getAccount(this.account_main.name);
 
-      let newUserAuth = user.permissions[findElement(user.permissions, 'perm_name', 'active')];
-      newUserAuth.required_auth.accounts.push(newPermission);
+        let newUserAuth = user.permissions[findElement(user.permissions, 'perm_name', 'active')];
+        newUserAuth.required_auth.accounts.push(newPermission);
 
-      let newMainAuth = main.permissions[findElement(main.permissions, 'perm_name', 'active')];
-      newMainAuth.required_auth.accounts.push(newPermission);
+        let newMainAuth = main.permissions[findElement(main.permissions, 'perm_name', 'active')];
+        newMainAuth.required_auth.accounts.push(newPermission);
 
 
         await eos.transaction((tr: any) => {
@@ -171,7 +180,7 @@ export class TestNode extends Node {
                     auth: newUserAuth.required_auth
                 }, {authorization: `${user.account_name}@owner`});
 
-              tr.updateauth({
+                tr.updateauth({
                     account: main.account_name,
                     permission: 'active',
                     parent: 'owner',
