@@ -1,28 +1,25 @@
 {
-  "name": "@zapjs/eos-arbiter",
+  "name": "@zapjs/eos-binaries",
   "version": "1.0.0",
-  "description": "Interface for arbiter functions in eos blockchain",
+  "description": "Binaries for eos sdk",
+  "repository": "https://github.com/smartum-ks/eos-sdk.git",
   "main": "./out/index.js",
   "types": "./out/types.d.ts",
   "typings": "./out",
-  "repository": "https://github.com/smartum-ks/eos-sdk.git",
   "scripts": {
     "build": "tsc --module commonjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "eos",
-    "zap",
-    "arbiter"
+    "sdk",
+    "zap"
   ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "eosjs": "^16.0.8"
   },
   "devDependencies": {
-    "@types/node": "^10.10.0",
-    "@zapjs/eos-utils": "^1.0.0",
-    "@zapjs/eos-binaries": "^1.0.0"
+    "@types/node": "^10.10.0"
   }
 }

@@ -4,6 +4,7 @@ import { Account, Node, Deployer, Transaction, SimpleEventListener as EventListe
 import { spawn, execSync } from 'child_process';
 const PROJECT_PATH = path.join(__dirname + '/..');
 import * as stream from "stream";
+import { Binaries } from "@zapjs/eos-binaries";
 
 
 //TODO: receive dynamically
@@ -99,12 +100,10 @@ export class TestNode extends Node {
 
     async deploy(eos: any) {
         const results: any = [];
-        const abi = fs.readFileSync(path.resolve(__dirname, '..', '..', 'contract/main.abi'));
-        const wasm = fs.readFileSync(path.resolve(__dirname, '..', '..', 'contract/main.wasm'));
         const deployer = new Deployer({eos: eos, contract_name: 'main'});
         deployer.from(this.zap);
-        deployer.abi(abi);
-        deployer.wasm(wasm);
+        deployer.abi(Binaries.mainAbi);
+        deployer.wasm(Binaries.mainWasm);
         results.push(await deployer.deploy());
         return results;
     }

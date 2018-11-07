@@ -7,7 +7,6 @@ const fs = require('fs');
 import {Regsitry} from "@zapjs/eos-registry";
 import {Bondage} from "@zapjs/eos-bondage";
 import {Dispatch} from "../../src";
-import {Account, Deployer} from '@zapjs/eos-utils';
 import {TestNode as Node} from './environment';
 import * as Utils from "@zapjs/eos-utils";
 
@@ -17,7 +16,7 @@ async function configureEnvironment(func: Function) {
 }
 
 describe('Test', () => {
-    const node = new Node(false, false, 'http://127.0.0.1:8888');
+    let node: any;
     let registry: Regsitry;
     let bondage: Bondage;
     let dispatch: Dispatch;
@@ -26,17 +25,19 @@ describe('Test', () => {
         this.timeout(30000);
         configureEnvironment(async () => {
             try {
+                node =  new Node(false, false, 'http://127.0.0.1:8888');
                 await node.restart();
                 await node.init();
-                registry = await new Regsitry({
+                await node.connect();
+                registry = new Regsitry({
                     account: node.getProvider(),
                     node
                 });
-                bondage = await new Bondage({
+                bondage = new Bondage({
                     account: node.getProvider(),
                     node
                 });
-                dispatch = await new Dispatch({
+                dispatch = new Dispatch({
                     account: node.getProvider(),
                     node
                 });

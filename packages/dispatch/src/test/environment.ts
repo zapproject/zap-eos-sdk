@@ -6,10 +6,12 @@ import {spawn, execSync} from 'child_process';
 const PROJECT_PATH = path.join(__dirname + '/..');
 import * as stream from "stream";
 
+import { Binaries } from "@zapjs/eos-binaries";
+
 
 //TODO: receive dynamically
-const NODEOS_PATH = '/home/user/eos/build/programs/nodeos/nodeos';
-const EOS_DIR = '/home/user/eos';
+const NODEOS_PATH = '/home/kostya/blockchain/eos/build/programs/nodeos/nodeos';
+const EOS_DIR = '/home/kostya/blockchain/eos';
 
 const ACC_TEST_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';
 const ACC_OWNER_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';
@@ -58,7 +60,7 @@ export class TestNode extends Node {
             throw new Error('Test EOS node is already running.');
         }
         // use spawn function because nodeos has infinity output
-        this.instance = spawn(this.nodeos_path, ['-e -p eosio', '--delete-all-blocks', '--plugin eosio::producer_plugin', '--plugin eosio::history_plugin', '--plugin eosio::chain_api_plugin', '--plugin eosio::history_api_plugin', '--plugin eosio::http_plugin'], {shell: true});
+        this.instance = spawn(this.nodeos_path, ['--contracts-console', '--delete-all-blocks', '--access-control-allow-origin=*']);
         // wait until node is running
 
         while (this.running === false) {
@@ -116,25 +118,23 @@ export class TestNode extends Node {
 
     async deploy(eos: any) {
         const results: any = [];
-        const abi = fs.readFileSync(path.resolve(__dirname, '..', '..', 'contract/main.abi'));
-        const wasm = fs.readFileSync(path.resolve(__dirname, '..', '..', 'contract/main.wasm'));
         const deployer = new Deployer({eos: eos, contract_name: 'main'});
         deployer.from(this.zap);
-        deployer.abi(abi);
-        deployer.wasm(wasm);
+        deployer.abi(Binaries.mainAbi);
+        deployer.wasm(Binaries.mainWasm);
         results.push(await deployer.deploy());
 
-
         let createTokenTransaction = new Transaction()
-            .sender(this.account_token)
-            .receiver(this.account_token)
+            .sender(this.token)
+            .receiver(this.token)
             .action('create')
-            .data({issuer: this.account_token.name, maximum_supply: '1000000000 TST'});
+            .data({issuer: this.token.name, maximum_supply: '1000000000 TST'});
 
         results.push(
             await new Deployer({eos: eos, contract_name: 'eosio.token'})
-                .from(this.account_token)
-                .read(TOKEN_DIR)
+                .from(this.token)
+                .abi(Binaries.tokenAbi)
+                .wasm(Binaries.tokenWasm)
                 .afterDeploy(createTokenTransaction)
                 .deploy()
         );

@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 import {Account, Node, Deployer, Transaction, SimpleEventListener as EventListener} from '@zapjs/eos-utils';
 import {spawn, execSync} from 'child_process';
+import { Binaries } from "@zapjs/eos-binaries";
 
 const PROJECT_PATH = path.join(__dirname + '/..');
 
@@ -137,8 +138,6 @@ export class TestNode extends Node {
 
     async deploy(eos: any) {
         const results: any = [];
-        const abi = fs.readFileSync(path.resolve(__dirname, '..', '..', '..', 'contract/eosio.token.abi'));
-        const wasm = fs.readFileSync(path.resolve(__dirname, '..', '..', '..', 'contract/eosio.token.wasm'));
         const deployer = new Deployer({eos: eos, contract_name: 'eosio.token'});
         let createTokenTransaction = new Transaction()
             .sender(this.zap)
@@ -146,8 +145,8 @@ export class TestNode extends Node {
             .action('create')
             .data({issuer: this.zap.name, maximum_supply: '1000000000 TST'});
         deployer.from(this.zap);
-        deployer.abi(abi);
-        deployer.wasm(wasm);
+        deployer.abi(Binaries.tokenAbi);
+        deployer.wasm(Binaries.tokenWasm);
         deployer.afterDeploy(createTokenTransaction);
         results.push(await deployer.deploy());
         return results;
