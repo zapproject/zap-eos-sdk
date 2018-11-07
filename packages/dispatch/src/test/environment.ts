@@ -13,7 +13,7 @@ import { Binaries } from "@zapjs/eos-binaries";
 const NODEOS_PATH = '/home/kostya/blockchain/eos/build/programs/nodeos/nodeos';
 const EOS_DIR = '/home/kostya/blockchain/eos';
 
-const ACC_TEST_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';
+const ACC_TEST_PRIV_KEY = '5KfFufnUThaEeqsSeMPt27Poan5g8LUaEorsC1hHm1FgNJfr3sX';
 const ACC_OWNER_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';
 
 
@@ -104,6 +104,8 @@ export class TestNode extends Node {
         const results = [];
         results.push(await this.provider.register(eos));
         results.push(await this.zap.register(eos));
+        results.push(await this.token.register(eos));
+        results.push(await this.user.register(eos));
         return results;
     }
 

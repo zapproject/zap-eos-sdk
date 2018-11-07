@@ -53,4 +53,8 @@ describe('Test', () => {
         const res = await registry.queryProviderList(0, -1, 10);
         await expect(res.rows[0].title).to.be.equal('tests');
     });
+
+    after(() => {
+        node.kill();
+    })
 });
