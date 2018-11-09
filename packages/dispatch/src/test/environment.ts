@@ -28,6 +28,18 @@ function waitEvent(event: stream.Readable, type: string) {
     });
 }
 
+function findElement(array: Array<any>, field: string, value: any) {
+    for (let i in array) {
+        if (array.hasOwnProperty(i)) {
+            if (array[i][field] === value) {
+                return i;
+            }
+        }
+    }
+
+    return -1;
+}
+
 export class TestNode extends Node {
     recompile: boolean;
     running: boolean;
@@ -97,6 +109,8 @@ export class TestNode extends Node {
         const eos = await this.connect();
         await this.registerAccounts(eos);
         await this.deploy(eos);
+        await this.issueTokens(eos);
+        await this.grantPermissions(eos);
     }
 
 
@@ -144,7 +158,47 @@ export class TestNode extends Node {
         return results;
     }
 
-    getProvider() {
+    async grantPermissions(eos: any) {
+        let newPermission = {
+            permission: {
+                actor: this.zap.name,
+                permission: 'eosio.code'
+            },
+            weight: 1
+        };
+
+        let user = await eos.getAccount(this.user.name);
+        let main = await eos.getAccount(this.zap.name);
+
+        let newUserAuth = user.permissions[findElement(user.permissions, 'perm_name', 'active')];
+        newUserAuth.required_auth.accounts.push(newPermission);
+
+        let newMainAuth = main.permissions[findElement(main.permissions, 'perm_name', 'active')];
+        newMainAuth.required_auth.accounts.push(newPermission);
+
+        await eos.transaction((tr: any) => {
+                tr.updateauth({
+                    account: user.account_name,
+                    permission: 'active',
+                    parent: 'owner',
+                    auth: newUserAuth.required_auth
+                }, {authorization: `${user.account_name}@owner`});
+
+                tr.updateauth({
+                    account: main.account_name,
+                    permission: 'active',
+                    parent: 'owner',
+                    auth: newMainAuth.required_auth
+                }, {authorization: `${main.account_name}@owner`});
+            }
+        );
+    }
+
+    getProviderAccount() {
         return this.provider;
+    }
+
+    getUserAccount() {
+        return this.user;
     }
 }
