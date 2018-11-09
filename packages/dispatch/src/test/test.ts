@@ -35,6 +35,7 @@ describe('Test', () => {
     let registry: Regsitry;
     let bondage: Bondage;
     let dispatch: Dispatch;
+    let providerDispatch: Dispatch;
 
     before(function (done) {
         this.timeout(30000);
@@ -57,6 +58,11 @@ describe('Test', () => {
                     node
                 });
 
+                providerDispatch = new Dispatch({
+                    account: node.getProviderAccount(),
+                    node
+                });
+
             } catch (e) {
                 console.log(e);
             }
@@ -65,12 +71,12 @@ describe('Test', () => {
     });
 
     it('#query()', async () => {
-        let eos = await node.connect();
         await registry.initiateProvider('tests', 10);
         await registry.addEndpoint('endp', [3, 0, 0, 2, 10000], '');
         await bondage.bond(node.getProviderAccount().name, 'endp', 1);
         await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false);
 
+        let eos = await node.connect();
         let qdata = await getRowsByPrimaryKey(eos, node, node.getZapAccount().name, 'qdata', 'id');
         let holder = await getRowsByPrimaryKey(eos, node, node.getUserAccount().name, 'holder', 'provider');
 
@@ -78,6 +84,39 @@ describe('Test', () => {
         await expect(holder.rows[0].escrow).to.be.equal(1);
         await expect(holder.rows[0].dots).to.be.equal(0);
     });
+
+    it('#query() - fail if not enough dots', async () => {
+        try {
+            await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false);
+        } catch (e) {
+            await expect(e).to.be.not.empty;
+        }
+    });
+
+    it('#cancelquery()', async () => {
+        await dispatch.cancelQuery(0);
+
+        let eos = await node.connect();
+        let holder = await getRowsByPrimaryKey(eos, node, node.getUserAccount().name, 'holder', 'provider');
+
+        await expect(holder.rows[0].escrow).to.be.equal(0);
+        await expect(holder.rows[0].dots).to.be.equal(1);
+    });
+
+    it('#respond()', async () => {
+        await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false);
+
+        let eos = await node.connect();
+        let qdata = await getRowsByPrimaryKey(eos, node, node.getZapAccount().name, 'qdata', 'id');
+        let holder = await getRowsByPrimaryKey(eos, node, node.getUserAccount().name, 'holder', 'provider');
+
+        await expect(qdata.rows[0].data).to.be.equal('test_query');
+        await expect(holder.rows[0].escrow).to.be.equal(1);
+        await expect(holder.rows[0].dots).to.be.equal(0);
+
+        await providerDispatch.respond(qdata.rows[0].id, '{p1: 1, p2: 2}');
+    });
+
 
     after(() => {
         node.kill();
