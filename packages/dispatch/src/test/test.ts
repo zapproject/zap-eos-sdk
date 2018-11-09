@@ -2,13 +2,10 @@ const expect = require('chai')
     .use(require('chai-as-promised'))
     .use(require('chai-bignumber'))
     .expect;
-const path = require('path');
-const fs = require('fs');
 import {Regsitry} from "@zapjs/eos-registry";
 import {Bondage} from "@zapjs/eos-bondage";
 import {Dispatch} from "../../src";
 import {TestNode as Node} from './environment';
-import * as Utils from "@zapjs/eos-utils";
 
 
 async function configureEnvironment(func: Function) {
