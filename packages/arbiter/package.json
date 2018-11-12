@@ -8,7 +8,7 @@
   "repository": "https://github.com/smartum-ks/eos-sdk.git",
   "scripts": {
     "build": "tsc --module commonjs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha $PKG -r ts-node/register src/test/test.ts --timeout 10000"
   },
   "keywords": [
     "eos",

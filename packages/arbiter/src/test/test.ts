@@ -68,9 +68,30 @@ describe('Test', () => {
     });
 
     it('#subscribe()', async () => {
-
+        await registry.initiateProvider('tests', 10);
+        await registry.addEndpoint('endp', [3, 0, 0, 2, 10000], '');
+        await bondage.bond(node.getProviderAccount().name, 'endp', 6);
+        await arbiterSub.subscribe(node.getProviderAccount().name, 'endp', 3, '{p: 1}');
     });
 
+    it('#querySubscriptions()', async () => {
+        let res = await arbiterSub.querySubscriptions(node.getProviderAccount().name, 0, 10, 10);
+        await expect(res.rows[0].price).to.be.equal(3);
+        await expect(res.rows[0].subscriber).to.be.equal(node.getUserAccount().name);
+    });
+
+    it('#unsubscribeSubscriber()', async () => {
+        await arbiterSub.unsubscribeSubscriber(node.getProviderAccount().name, 'endp');
+        let res = await arbiterSub.querySubscriptions(node.getProviderAccount().name, 0, 10, 10);
+        await expect(res.rows.length).to.be.equal(0);
+    });
+
+    it('#unsubscribeProvider()', async () => {
+        await arbiterSub.subscribe(node.getProviderAccount().name, 'endp', 2, '{p: 2}');
+        await arbiterProvider.unsubscribeProvider(node.getUserAccount().name, 'endp');
+        let res = await arbiterSub.querySubscriptions(node.getProviderAccount().name, 0, 10, 10);
+        await expect(res.rows.length).to.be.equal(0);
+    });
 
     after(() => {
         node.kill();
