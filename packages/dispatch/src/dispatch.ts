@@ -24,7 +24,7 @@ export class Dispatch {
             .receiver(this._zap_account)
             .action('query')
             .data({
-                subscriber: this._account,
+                subscriber: this._account.name,
                 provider: provider,
                 endpoint: endpoint,
                 query: query,
@@ -42,7 +42,7 @@ export class Dispatch {
             .receiver(this._zap_account)
             .action('respond')
             .data({
-                responder: this._account,
+                responder: this._account.name,
                 id: id,
                 params: params
             })
@@ -57,7 +57,7 @@ export class Dispatch {
             .receiver(this._zap_account)
             .action('cancelquery')
             .data({
-                subscriber: this._account,
+                subscriber: this._account.name,
                 query_id: id,
             })
             .execute(eos);

@@ -28,10 +28,14 @@ export class Deployer {
 
     abi(abi: string) {
         this._abi = abi;
+
+        return this;
     }
 
     wasm(wasm: string) {
         this._wasm = wasm;
+
+        return this;
     }
 
     afterDeploy(transaction: Transaction) {
