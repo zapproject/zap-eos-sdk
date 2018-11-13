@@ -16,18 +16,19 @@ export class Arbiter {
         return await this._node.connect();
     }
 
-    async subscribe(provider: string, endpoint: string, dots: number) {
+    async subscribe(provider: string, endpoint: string, dots: number, params: string) {
         let eos = await this.connect();
 
         return new Utils.Transaction()
             .sender(this._account)
             .receiver(this._zap_account)
-            .action('query')
+            .action('subscribe')
             .data({
-                subscriber: this._account,
+                subscriber: this._account.name,
                 provider: provider,
                 endpoint: endpoint,
-                dots: dots
+                dots: dots,
+                params: params
             })
             .execute(eos);
     }
@@ -38,9 +39,9 @@ export class Arbiter {
         return new Utils.Transaction()
             .sender(this._account)
             .receiver(this._zap_account)
-            .action('respond')
+            .action('unsubscribe')
             .data({
-                subscriber: this._account,
+                subscriber: this._account.name,
                 provider: provider,
                 endpoint: endpoint,
                 from_sub: 1
@@ -54,10 +55,10 @@ export class Arbiter {
         return new Utils.Transaction()
             .sender(this._account)
             .receiver(this._zap_account)
-            .action('respond')
+            .action('unsubscribe')
             .data({
                 subscriber: subscriber,
-                provider: this._account,
+                provider: this._account.name,
                 endpoint: endpoint,
                 from_sub: 0
             })
@@ -65,7 +66,7 @@ export class Arbiter {
     }
 
 
-    async querySubscription(provider: string, from: number, to: number, limit: number) {
+    async querySubscriptions(provider: string, from: number, to: number, limit: number) {
         let eos = await this.connect();
 
         return await eos.getTableRows(
@@ -82,14 +83,14 @@ export class Arbiter {
         );
     }
 
-    listenSubscriber(callback?: Function) {
+    listenSubscriptionStart(callback?: Function) {
         let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
         listener.listen(callback, this._node.getZapAccount().name + '::subscribe');
 
         return listener;
     }
 
-    listenunsubscriber(callback?: Function) {
+    listenSubscriptionEnd(callback?: Function) {
         let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
         listener.listen(callback, this._node.getZapAccount().name + '::unsubscribe');
 
