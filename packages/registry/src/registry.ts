@@ -74,15 +74,15 @@ export class Registry {
     }
 
     listenNewProvider(callback?: Function) {
-        let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
-        listener.listen(callback, this._node.getZapAccount().name + '::newprovider');
+        let listener = new Utils.DemuxEventListener();
+        listener.on(this._node.getZapAccount().name + '::newprovider', callback);
 
         return listener;
     }
 
     listenNewEndpoint(callback?: Function) {
-        let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
-        listener.listen(callback, this._node.getZapAccount().name + '::addendpoint');
+        let listener = new Utils.DemuxEventListener();
+        listener.on(this._node.getZapAccount().name + '::addendpoint', callback);
 
         return listener;
     }

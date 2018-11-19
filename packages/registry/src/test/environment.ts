@@ -8,7 +8,7 @@ import { Binaries } from "@zapjs/eos-binaries";
 
 
 //TODO: receive dynamically
-const NODEOS_PATH = '/home/user/eos/build/programs/nodeos/nodeos';
+const NODEOS_PATH = '/usr/local/bin/nodeos';
 const EOS_DIR = '/home/user/eos';
 
 const ACC_TEST_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';
