@@ -6,36 +6,40 @@ const fork = require('child_process').fork;
 const program = path.resolve(__dirname,'..', '..', '..', 'packages/cacher/out/index.js');
 const parameters = ['zap.main'];
 const options = {stdio:  ['pipe', 1, 2, 'ipc']};
-const child = fork(program, parameters, options);
+let child = fork(program, parameters, options);
+
+
 
 
 
 export class EventObserver {
   takenId: any;
-  process: boolean;
+  process: any;
   observer: any;
   incoming: any;
   constructor () {
     this.takenId = [];
-    this.process = false;
+    this.process = [];
     this.observer = [];
     this.incoming = [];
 
   }
 
-  on (action: string, fn: Function) {
+  on (action: string, fn?: Function) {
     if(!this.observer[action]) this.observer[action] = [];
     this.observer[action].push(fn);
     child.on('message', (message: any) =>  this.broadcast({...message}));
   }
 
 
+
   async broadcast (info: {name: string, id: string, account: string}, recurse?: any) {
+    if(!this.observer[`${info.account}::${info.name}`]) return;
     this.incoming[info.name] = info;
     if (this.takenId[info.name] && ObjectId(this.incoming[info.name].id) < ObjectId(this.takenId[info.name])) return;
-    if (this.process) return;
+    if (this.process[`${info.account}::${info.name}`] && !recurse) return;
 
-    this.process = true;
+    this.process[`${info.account}::${info.name}`]  = true;
 
     const dbName = 'test';
     // const db = await md.getDB('test');
@@ -50,6 +54,9 @@ export class EventObserver {
     this.observer[`${info.account}::${info.name}`].forEach((action: any) => action(res));
     this.takenId[info.name] = res[res.length - 1]._id;
     if (ObjectId(this.incoming[info.name].id) > ObjectId(this.takenId[info.name])) this.broadcast({id: this.takenId[info.name], name: info.name, account: info.account}, true);
-    this.process = false;
+    this.process[`${info.account}::${info.name}`] = false;
+  }
+  kill() {
+      if (child) child.kill();
   }
 }

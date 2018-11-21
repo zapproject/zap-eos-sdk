@@ -51,7 +51,7 @@ export class TestNode extends Node {
             throw new Error('Test EOS node is already running.');
         }
         // use spawn function because nodeos has infinity output
-        this.instance = spawn(this.nodeos_path, ['-e -p eosio', '--delete-all-blocks', '--plugin eosio::producer_plugin', '--plugin eosio::history_plugin', '--plugin eosio::chain_api_plugin', '--plugin eosio::history_api_plugin', '--plugin eosio::http_plugin'], {shell: true});
+        this.instance = spawn(this.nodeos_path, ['-e -p eosio', '--delete-all-blocks', '--plugin eosio::producer_plugin', '--plugin eosio::history_plugin', '--plugin eosio::chain_api_plugin', '--plugin eosio::history_api_plugin', '--plugin eosio::http_plugin'], {shell: true, detached: true});
         // wait until node is running
 
         while (this.running === false) {
@@ -67,6 +67,8 @@ export class TestNode extends Node {
     kill() {
         if (this.instance) {
             this.instance.kill();
+            //process.kill(-this.instance.pid, "SIGTERM");
+            //process.kill(-this.instance.pid, "SIGINT");
                 this.instance = null;
                 this.running = false;
                 if (this.verbose) console.log('Eos node killed.');

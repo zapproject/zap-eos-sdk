@@ -84,15 +84,15 @@ export class Bondage {
     }
 
     listenBond(callback?: Function) {
-        let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
-        listener.listen(callback, this._node.getZapAccount().name + '::bond');
+        let listener = new Utils.DemuxEventListener();
+        listener.on(this._node.getZapAccount().name + '::bond', callback);
 
         return listener;
     }
 
     listenUnbond(callback?: Function) {
-        let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
-        listener.listen(callback, this._node.getZapAccount().name + '::unbond');
+        let listener = new Utils.DemuxEventListener();
+        listener.on(this._node.getZapAccount().name + '::unbond', callback);
 
         return listener;
     }

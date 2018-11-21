@@ -54,6 +54,10 @@ export const updaters = [
     updater: updateTransferData,
   },
   {
+    actionType: `${account}::cancelquery`,
+    updater: updateTransferData,
+  },
+  {
     actionType: `${account}::respond`,
     updater: updateTransferData,
   },

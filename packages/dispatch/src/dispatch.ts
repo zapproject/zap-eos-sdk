@@ -81,22 +81,22 @@ export class Dispatch {
     }
 
     listenQuries(callback?: Function) {
-        let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
-        listener.listen(callback, this._node.getZapAccount().name + '::query');
+        let listener = new Utils.DemuxEventListener();
+        listener.on(this._node.getZapAccount().name + '::query', callback);
 
         return listener;
     }
 
     listenResponses(callback?: Function) {
-        let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
-        listener.listen(callback, this._node.getZapAccount().name + '::respond');
+        let listener = new Utils.DemuxEventListener();
+        listener.on(this._node.getZapAccount().name + '::respond', callback);
 
         return listener;
     }
 
     listenCancels(callback?: Function) {
-        let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
-        listener.listen(callback, this._node.getZapAccount().name + '::cancelquery');
+        let listener = new Utils.DemuxEventListener();
+        listener.on(this._node.getZapAccount().name + '::cancelquery', callback);
 
         return listener;
     }

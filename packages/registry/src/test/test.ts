@@ -18,23 +18,23 @@ async function configureEnvironment(func: Function) {
 describe('Test', async () => {
     const node = new Node(false, false, 'http://127.0.0.1:8888');
     let registry: Regsitry;
+    const configure = async () => {
+        try {
+            await node.restart();
+            await node.init();
+            registry = await new Regsitry({
+                account: node.getProvider(),
+                node
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
 
-    before(function (done) {
+    before(async function() {
         this.timeout(30000);
-        configureEnvironment(async () => {
-            try {
-                await node.restart();
-                await node.init();
-                registry = await new Regsitry({
-                    account: node.getProvider(),
-                    node
-                });
-            } catch (e) {
-                console.log(e);
-            }
-            done();
-        });
+        await configureEnvironment(configure);
     });
 
   it('#initiateProvider()', async () => {
@@ -47,22 +47,47 @@ describe('Test', async () => {
         const res = await registry.queryProviderEndpoints(0, -1, 10);
         await expect(res.rows[0].specifier).to.be.equal('test_endpoints');
     });
-    it("#listenNewProvider()", done => {
-      registry.listenNewProvider(async (data: any) => {
+    after(function () {
+        node.kill();
+    })
+});
+describe('Test-listeners', async () => {
+    const node = new Node(false, false, 'http://127.0.0.1:8888');
+    let registry: Regsitry;
+    const configure = async () => {
         try {
-          await expect(data[0].data.title).to.be.equal('tests');
-          done();
-        } catch(err){done (err)}
-      });
-      registry.initiateProvider('tests', 10);
+            await node.restart();
+            await node.init();
+            registry = await new Regsitry({
+                account: node.getProvider(),
+                node
+            });
+        }catch (e) {
+            console.log(e);
+        }
+    }
+
+    before(async function() {
+        this.timeout(30000);
+        await configureEnvironment(configure);
+    });
+
+    it("#listenNewProvider()", done => {
+        registry.listenNewProvider(async (data: any) => {
+            try {
+                await expect(data[0].data.title).to.be.equal('tests');
+                done();
+            }catch(err){done (err)}
+        });
+        registry.initiateProvider('tests', 10);
     });
     it('#listenNewEndpoints()', done => {
-      registry.listenNewEndpoint(async (data: any) => {
-        try {
-          await expect(data[0].data.specifier).to.be.equal('test_endpoints');
-          done();
-        } catch(err){done (err)}
-      });
-      registry.addEndpoint('test_endpoints', [3, 0, 0, 2, 10000], 'acc');
+        registry.listenNewEndpoint(async (data: any) => {
+            try {
+                await expect(data[0].data.specifier).to.be.equal('test_endpoints');
+                done();
+            }catch(err){done (err)}
+        });
+        registry.addEndpoint('test_endpoints', [3, 0, 0, 2, 10000], 'acc');
     });
 });
