@@ -10,6 +10,7 @@ export class Bondage {
         this._account = account;
         this._node = node;
         this._zap_account = node.getZapAccount();
+
     }
 
     async connect() {
@@ -65,13 +66,13 @@ export class Bondage {
         );
     }
 
-    async queryIssued(from: number, to: number, limit: number) {
+    async queryIssued(provider: string, from: number, to: number, limit: number) {
         let eos = await this.connect();
 
         return await eos.getTableRows(
             true, // json
             this._zap_account.name, // code
-            this._account.name, // scope
+            provider, // scope
             'issued', // table name
             'endpointid', // table_key
             from, // lower_bound
