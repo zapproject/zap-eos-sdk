@@ -84,15 +84,15 @@ export class Arbiter {
     }
 
     listenSubscriptionStart(callback?: Function) {
-        let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
-        listener.listen(callback, this._node.getZapAccount().name + '::subscribe');
+        let listener = new Utils.DemuxEventListener();
+        listener.on(this._node.getZapAccount().name + '::subscribe', callback);
 
         return listener;
     }
 
     listenSubscriptionEnd(callback?: Function) {
-        let listener = new Utils.SimpleEventListener(this._node.eos_config.httpEndpoint, 1)
-        listener.listen(callback, this._node.getZapAccount().name + '::unsubscribe');
+        let listener = new Utils.DemuxEventListener();
+        listener.on(this._node.getZapAccount().name + '::unsubscribe', callback);
 
         return listener;
     }
