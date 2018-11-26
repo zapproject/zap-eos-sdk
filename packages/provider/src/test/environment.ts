@@ -10,12 +10,16 @@ import { Binaries } from "@zapjs/eos-binaries";
 
 
 //TODO: receive dynamically
-const NODEOS_PATH = '/home/kostya/blockchain/eos/build/programs/nodeos/nodeos';
+/*const NODEOS_PATH = '/home/kostya/blockchain/eos/build/programs/nodeos/nodeos';
 const EOS_DIR = '/home/kostya/blockchain/eos';
+
+const ACC_TEST_PRIV_KEY = '5KfFufnUThaEeqsSeMPt27Poan5g8LUaEorsC1hHm1FgNJfr3sX';
+const ACC_OWNER_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';*/
+const NODEOS_PATH = '/usr/local/bin/nodeos';
+const EOS_DIR = '/home/user/eos';
 
 const ACC_TEST_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';
 const ACC_OWNER_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';
-
 
 function waitEvent(event: stream.Readable, type: string) {
     return new Promise(function (resolve, reject) {
@@ -72,10 +76,8 @@ export class TestNode extends Node {
             throw new Error('Test EOS node is already running.');
         }
         // use spawn function because nodeos has infinity output
-
-      //  this.instance = spawn(this.nodeos_path, ['--contracts-console', '--delete-all-blocks', '--access-control-allow-origin=*']);
+        //this.instance = spawn(this.nodeos_path, ['--contracts-console', '--delete-all-blocks', '--access-control-allow-origin=*']);
         this.instance = spawn(this.nodeos_path, ['-e -p eosio', '--delete-all-blocks', '--plugin eosio::producer_plugin', '--plugin eosio::history_plugin', '--plugin eosio::chain_api_plugin', '--plugin eosio::history_api_plugin', '--plugin eosio::http_plugin'], {shell: true, detached: true});
-      // wait until node is running
         // wait until node is running
 
         while (this.running === false) {
@@ -112,6 +114,7 @@ export class TestNode extends Node {
         const eos = await this.connect();
         await this.registerAccounts(eos);
         await this.deploy(eos);
+        await this.issueTokens(eos);
         await this.grantPermissions(eos);
     }
 
@@ -125,6 +128,14 @@ export class TestNode extends Node {
         return results;
     }
 
+    async issueTokens(eos: any) {
+        return await new Transaction()
+            .sender(this.token)
+            .receiver(this.token)
+            .action('issue')
+            .data({to: this.user.name, quantity: '1000000 TST', memo: ''})
+            .execute(eos);
+    }
 
     async deploy(eos: any) {
         const results: any = [];
@@ -194,8 +205,5 @@ export class TestNode extends Node {
 
     getUserAccount() {
         return this.user;
-    }
-    getTokenAccount() {
-        return this.token;
     }
 }

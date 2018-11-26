@@ -80,7 +80,7 @@ export class Dispatch {
         );
     }
 
-    listenQuries(callback?: Function) {
+    listenQueries(callback?: Function) {
         let listener = new Utils.DemuxEventListener();
         listener.on(this._node.getZapAccount().name + '::query', callback);
 

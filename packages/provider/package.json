@@ -1,0 +1,41 @@
+{
+  "name": "@zapjs/eos-provider",
+  "version": "1.0.0",
+  "description": "Interface for provider functions in eos blockchain",
+  "main": "./out/index.js",
+  "types": "./out/types.d.ts",
+  "typings": "./out",
+  "repository": "https://github.com/smartum-ks/eos-sdk.git",
+  "scripts": {
+    "build": "tsc --module commonjs",
+    "test": "mocha $PKG -r ts-node/register src/test/test.ts --timeout 10000"
+  },
+  "keywords": [
+    "eos",
+    "zap",
+    "provider"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "eosjs": "^16.0.8"
+  },
+  "devDependencies": {
+    "mocha": "5.2.0",
+    "chai": "^4.2.0",
+    "@types/chai": "^4.1.5",
+    "@types/mocha": "^5.2.4",
+    "@types/node": "^10.10.0",
+    "@zapjs/eos-utils": "^1.0.0",
+    "@zapjs/eos-registry": "^1.0.0",
+    "@zapjs/eos-bondage": "^1.0.0",
+    "@zapjs/eos-arbiter": "^1.0.0",
+    "@zapjs/eos-dispatch": "^1.0.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2",
+    "chai-as-promised": "7.1.1",
+    "chai-bignumber": "2.0.2",
+    "@zapjs/eos-binaries": "^1.0.0"
+  }
+}

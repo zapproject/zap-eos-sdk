@@ -15,7 +15,7 @@ async function configureEnvironment(func: Function) {
     await func();
 }
 
-/*describe('Test', async () => {
+describe('Test', async () => {
     const node = new Node(false, false, 'http://127.0.0.1:8888');
     let registry: Regsitry;
     const configure = async () => {
@@ -50,7 +50,7 @@ async function configureEnvironment(func: Function) {
     after(function () {
         node.kill();
     })
-});*/
+});
 describe('Test-listeners', async () => {
     const node = new Node(false, false, 'http://127.0.0.1:8888');
     let registry: Regsitry;
