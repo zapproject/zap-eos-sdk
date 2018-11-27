@@ -25,7 +25,7 @@ export class Subscriber {
             node
         });
         this.dispatch = new Dispatch({
-            account: node.getUserAccount(),
+            account: this._account,
             node
         });
     }
@@ -35,30 +35,27 @@ export class Subscriber {
     }
 
     async bond(provider: string, endpoint: string, amount: number) {
-        await this.bondage.bond(provider, endpoint, amount);
+        return await this.bondage.bond(provider, endpoint, amount);
     }
 
     async unbond(provider: string, endpoint: string, amount: number) {
-      await this.bondage.unbond(provider, endpoint, amount);
+        return await this.bondage.unbond(provider, endpoint, amount);
     }
 
     async queryHolders(from: number, to: number, limit: number) {
-        await this.bondage.queryHolders(from, to, limit);
+        return await this.bondage.queryHolders(from, to, limit);
     }
     async subscribe(provider: string, endpoint: string, dots: number, params: string) {
-        await this.bondage.subscribe(provider, endpoint, dots, params);
+        return await this.arbiter.subscribe(provider, endpoint, dots, params);
     }
     async unsubscribe(provider: string, endpoint: string) {
-        await this.bondage.unsubscribeSubscriber(provider, endpoint);
+        return await this.arbiter.unsubscribeSubscriber(provider, endpoint);
     }
     async query(provider: string, endpoint: string, query: string, onchain_provider: boolean) {
-        await this.dispatch.query(provider, endpoint, query, onchain_provider);
+        return await this.dispatch.query(provider, endpoint, query, onchain_provider);
     }
     async cancelQuery(id: number)  {
-        await this.dispatch.cancelQuery(id);
-    }
-    async queryQueriesInfo(from: number, to: number, limit: number) {
-      await this.dispatch.queryQueriesInfo(from, to, limit);
+        return await this.dispatch.cancelQuery(id);
     }
 
 }
