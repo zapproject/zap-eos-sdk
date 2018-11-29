@@ -45,17 +45,20 @@ export class Subscriber {
     async queryHolders(from: number, to: number, limit: number) {
         return await this.bondage.queryHolders(from, to, limit);
     }
+
     async subscribe(provider: string, endpoint: string, dots: number, params: string) {
         return await this.arbiter.subscribe(provider, endpoint, dots, params);
     }
+
     async unsubscribe(provider: string, endpoint: string) {
         return await this.arbiter.unsubscribeSubscriber(provider, endpoint);
     }
+
     async query(provider: string, endpoint: string, query: string, onchain_provider: boolean) {
         return await this.dispatch.query(provider, endpoint, query, onchain_provider);
     }
+
     async cancelQuery(id: number)  {
         return await this.dispatch.cancelQuery(id);
     }
-
 }

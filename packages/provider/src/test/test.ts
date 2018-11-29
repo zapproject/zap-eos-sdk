@@ -2,8 +2,8 @@ const expect = require('chai')
     .use(require('chai-as-promised'))
     .use(require('chai-bignumber'))
     .expect;
-import { Provider } from "@zapjs/eos-provider";
-import { Subscriber } from "../../src";
+import { Subscriber } from "@zapjs/eos-subscriber";
+import { Provider } from "../../src";
 import { TestNode as Node } from './environment';
 
 
@@ -42,7 +42,7 @@ describe('Test', () => {
 
     it('#registry()', async () => {
         await provider.initiateProvider('tests', 10);
-        await provider.addEndpoint('endp', [4, 0, 0, 2, 10000], '');
+        await provider.addEndpoint('endp', [3, 0, 0, 2, 10000], '');
         const resProviders = await provider.queryProviderList(0, -1, 10);
         await expect(resProviders.rows[0].title).to.be.equal('tests');
         const resEndpoints = await provider.queryProviderEndpoints(0, -1, 10);

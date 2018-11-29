@@ -79,6 +79,7 @@ export class TestNode extends Node {
         //this.instance = spawn(this.nodeos_path, ['--contracts-console', '--delete-all-blocks', '--access-control-allow-origin=*']);
         this.instance = spawn(this.nodeos_path, ['-e -p eosio', '--delete-all-blocks', '--plugin eosio::producer_plugin', '--plugin eosio::history_plugin', '--plugin eosio::chain_api_plugin', '--plugin eosio::history_api_plugin', '--plugin eosio::http_plugin'], {shell: true, detached: true});
         // wait until node is running
+        // wait until node is running
 
         while (this.running === false) {
             await waitEvent(this.instance.stderr, 'data');

@@ -31,7 +31,7 @@ export class Provider {
             node
         });
         this.dispatch = new Dispatch({
-            account: node.getUserAccount(),
+            account: this._account,
             node
         });
     }
@@ -39,29 +39,41 @@ export class Provider {
     async connect() {
         return await this._node.connect();
     }
+    
     async initiateProvider(title: string, public_key: number) {
         return await this.registry.initiateProvider(title, public_key);
     }
+
     async addEndpoint(endpoint_specifier: string, functions: Array<number>, broker: string) {
-        return await this.registry(endpoint_specifier, functions, broker);
+        return await this.registry.addEndpoint(endpoint_specifier, functions, broker);
     }
+
     async queryProviderList(from: number, to: number, limit: number = -1) {
         return await this.registry.queryProviderList(from, to, limit);
     }
+
     async queryProviderEndpoints(from: number, to: number, limit: number = -1) {
         return await this.registry.queryProviderEndpoints(from, to, limit);
     }
+
     async queryIssued(from: number, to: number, limit: number) {
         return await this.bondage.queryIssued(this._account.name, from, to, limit);
     }
-    async unsubscribe(subscriber: string, endpoint: string) {
+
+    async unsubscribeProvider(subscriber: string, endpoint: string) {
         return await this.arbiter.unsubscribeProvider(subscriber, endpoint);
     }
+
     async querySubscriptions(from: number, to: number, limit: number) {
         return await this.arbiter.querySubscriptions(this._account.name, from, to, limit);
     }
+
     async respond(id: number, params: string) {
-        await this.dispatch.respond(id, params);
+        return await this.dispatch.respond(id, params);
+    }
+
+    async queryQueriesInfo(from: number, to: number, limit: number) {
+      return await this.dispatch.queryQueriesInfo(from, to, limit);
     }
 
 }
