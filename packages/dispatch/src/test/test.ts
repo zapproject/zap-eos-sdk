@@ -161,7 +161,7 @@ describe('Test-listeners', () => {
     });
 
     it('#listenQueries()', done => {
-        dispatch.listenQuries(async (data: any) => {
+        dispatch.listenQueries(async (data: any) => {
             if (queryIsMade) return;
             try {
                 await expect(data[0].data.query).to.be.equal('test_query');

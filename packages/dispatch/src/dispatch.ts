@@ -69,7 +69,7 @@ export class Dispatch {
         return await eos.getTableRows(
             true, // json
             this._zap_account.name, // code
-            this._account.name, // scope
+            this._zap_account.name, // scope
             'qdata', // table name
             'id', // table_key
             from, // lower_bound
@@ -80,7 +80,7 @@ export class Dispatch {
         );
     }
 
-    listenQuries(callback?: Function) {
+    listenQueries(callback?: Function) {
         let listener = new Utils.DemuxEventListener();
         listener.on(this._node.getZapAccount().name + '::query', callback);
 
