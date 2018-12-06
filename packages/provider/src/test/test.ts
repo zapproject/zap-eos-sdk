@@ -5,6 +5,7 @@ const expect = require('chai')
 import { Subscriber } from "@zapjs/eos-subscriber";
 import { Provider } from "../../src";
 import { TestNode as Node } from './environment';
+var BigNumber = require('big-number');
 
 
 async function configureEnvironment(func: Function) {
@@ -43,6 +44,7 @@ describe('Test', () => {
     it('#registry()', async () => {
         await provider.initiateProvider('tests', 10);
         await provider.addEndpoint('endp', [3, 0, 0, 2, 10000], '');
+        await provider.addEndpoint('endp2', [3, 0, 0, 2, 10000], '');
         const resProviders = await provider.queryProviderList(0, -1, 10);
         await expect(resProviders.rows[0].title).to.be.equal('tests');
         const resEndpoints = await provider.queryProviderEndpoints(0, -1, 10);
@@ -53,6 +55,23 @@ describe('Test', () => {
         await subscriber.bond(node.getProviderAccount().name, 'endp', 9);
         const issued = await provider.queryIssued(0, 1, 1);
         const holders = await subscriber.queryHolders(0, -1, 10);
+        const eos = await node.connect();
+        const providerName = "zap.provider";
+        const endpointName = "endp";
+        const encodedName = new BigNumber(eos.modules.format.encodeName(providerName, false));
+        console.log( await eos.getTableRows(
+            true, // json
+            node.getZapAccount().name, // code
+            node.getUserAccount().name, // scope
+            'holder', // table name
+            '', // table_key
+            encodedName.toString(), // lower_bound
+            encodedName.plus(1).toString(), // upper_bound
+            undefined, // limit
+            'i64', // key_type
+            1 // index position
+        ));
+        //console.log(JSON.stringify(issued), JSON.stringify(holders));
         await expect(issued.rows[0].dots).to.be.equal(9);
         await expect(holders.rows[0].dots).to.be.equal(9);
     });
@@ -96,7 +115,7 @@ describe('Test', () => {
     it('#respond()', async () => {
       await subscriber.query(node.getProviderAccount().name, 'endp', 'test_query2', false);
       let qdata = await provider.queryQueriesInfo(0, -1 , 10);
-      await provider.respond(qdata.rows[0].id, '{p1: 1, p2: 2}');
+      console.log(await provider.respond(qdata.rows[0].id, '{p1: 1, p2: 2}'));
     });
 
     it('#unbond()', async () => {
@@ -106,7 +125,7 @@ describe('Test', () => {
         await expect(issued.rows[0].dots).to.be.equal(3);
         await expect(holders.rows[0].dots).to.be.equal(0);
     });
-    
+
     after(() => {
         node.kill();
     })

@@ -15,7 +15,7 @@ async function configureEnvironment(func: Function) {
     await func();
 }
 
-/*describe('Test', async () => {
+describe('Test', async () => {
     const node = new Node(false, false, 'http://127.0.0.1:8888');
     let registry: Regsitry;
     const configure = async () => {
@@ -45,12 +45,13 @@ async function configureEnvironment(func: Function) {
     it('#initiateEndpoints()', async () => {
         await registry.addEndpoint('test_endpoints', [3, 0, 0, 2, 1], 'acc');
         const res = await registry.queryProviderEndpoints(0, -1, 10);
+        await registry.addEndpoint('test_endpoints2', [3, 0, 0, 2, 1], 'acc');
         await expect(res.rows[0].specifier).to.be.equal('test_endpoints');
     });
     after(function () {
         node.kill();
     })
-});*/
+});
 describe('Test-listeners', async () => {
     const node = new Node(false, false, 'http://127.0.0.1:8888');
     let registry: Regsitry;

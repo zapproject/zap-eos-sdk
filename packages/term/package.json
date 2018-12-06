@@ -1,0 +1,33 @@
+{
+  "name": "@zapjs/eos-term",
+  "version": "1.0.0",
+  "description": "Zap-term for eos",
+  "main": "./out/index.js",
+  "types": "./out/types.d.ts",
+  "typings": "./out",
+  "repository": "https://github.com/smartum-ks/eos-sdk.git",
+  "scripts": {
+    "build": "tsc --module commonjs"
+  },
+  "keywords": [
+    "eos",
+    "zap",
+    "registry"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "eosjs": "^16.0.8",
+    "big-number": "1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^10.10.3",
+    "@zapjs/eos-utils": "^1.0.0",
+    "@zapjs/eos-subscriber": "^1.0.0",
+    "@zapjs/eos-provider": "^1.0.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2",
+    "@zapjs/eos-binaries": "^1.0.0"
+  }
+}

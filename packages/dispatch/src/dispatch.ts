@@ -5,10 +5,12 @@ export class Dispatch {
     _account: Utils.Account;
     _node: Utils.Node;
     _zap_account: Utils.Account;
+    listenerNextQuery: any;
 
     constructor({account, node}: DispatchOptions) {
         this._account = account;
         this._node = node;
+        this.listenerNextQuery = new Utils.DemuxEventListener();
         this._zap_account = node.getZapAccount();
     }
 
@@ -85,6 +87,10 @@ export class Dispatch {
         listener.on(this._node.getZapAccount().name + '::query', callback);
 
         return listener;
+    }
+
+    listenNextQuery(provider: string, lastTaken: string, callback?: Function) {
+        this.listenerNextQuery.takeNext(provider, this._node.getZapAccount().name + '::query', lastTaken, callback);
     }
 
     listenResponses(callback?: Function) {

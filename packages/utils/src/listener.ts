@@ -35,6 +35,19 @@ export class EventObserver {
       (this.incoming && ObjectId(this.incoming.id) > ObjectId(this.lastTakenId))) this.broadcast(this.incoming);
     },500);
   }
+  async takeNext(provider: string, action: string, lastTaken: string, fn?: Function) {
+    const dbName = 'test';
+    const client = await MongoClient.connect(url, { useNewUrlParser: true });
+    const db = client.db(dbName);
+    const collection = db.collection(action.split('::')[1]);
+
+    //if (lastTaken) await collection.update({ "_id": ObjectId(lastTaken) }, { "answered": true});
+
+    const params = (lastTaken) ? {"_id" : { "$gt" : ObjectId(lastTaken) }, "answered": false, provider: provider} :
+                                 {"_id" : { "$gt" : ObjectId.createFromTime(Date.now() / 1000 - 2*60*60) }, "answered": false, provider: provider};
+    const res = await collection.find(params).limit(1).toArray();
+    if(fn) fn(null, res);
+  }
 
 
 
@@ -51,7 +64,7 @@ export class EventObserver {
 
     const params = (this.lastTakenId) ? {"_id" : { "$gt" : ObjectId(this.lastTakenId) }} : {"_id" : { "$gte" : ObjectId(info.id) }};
     const res = await collection.find(params).toArray();
-    if(this.observerFunction) this.observerFunction(res);
+    if(this.observerFunction) this.observerFunction(null, res);
     this.lastTakenId = res[res.length - 1]._id;
     this.process = false;
   }

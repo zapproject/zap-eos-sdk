@@ -6,6 +6,7 @@
     "lerna": "^3.3.2"
   },
   "dependencies": {
+    "big-number": "^1.0.0",
     "eosjs": "^16.0.7",
     "sleep": "^5.2.3"
   },

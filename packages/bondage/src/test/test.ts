@@ -34,6 +34,7 @@ describe('Test', () => {
     let node: any;
     let registry: Regsitry;
     let bondage: Bondage;
+    let bondageProvider: Bondage;
     let minting: Minting;
 
     before(function (done) {
@@ -52,6 +53,10 @@ describe('Test', () => {
                     account: node.getUserAccount(),
                     node
                 });
+                bondageProvider = new Bondage({
+                    account: node.getProviderAccount(),
+                    node
+                });
                 minting = await new Minting(node.getTokenAccount(), node);
 
             } catch (e) {
@@ -67,14 +72,14 @@ describe('Test', () => {
         await registry.initiateProvider('tests', 10);
         await registry.addEndpoint('endp', [3, 0, 0, 2, 10000], '');
         await bondage.bond(node.getProviderAccount().name, 'endp', 1);
-        const issued = await bondage.queryIssued(node.getProviderAccount().name, 0, 1, 1);
+        const issued = await bondageProvider.queryIssued(0, 1, 1);
         const holders = await bondage.queryHolders(0, -1, 10);
         await expect(issued.rows[0].dots).to.be.equal(1);
         await expect(holders.rows[0].dots).to.be.equal(1);
     });
     it('#unbond()', async () => {
       await bondage.unbond(node.getProviderAccount().name, 'endp', 1);
-      const issued = await bondage.queryIssued(node.getProviderAccount().name, 0, 1, 1);
+      const issued = await bondageProvider.queryIssued(0, 1, 1);
       const holders = await bondage.queryHolders(0, -1, 10);
       await expect(issued.rows[0].dots).to.be.equal(0);
       await expect(holders.rows[0].dots).to.be.equal(0);

@@ -7,7 +7,8 @@ const PROJECT_PATH = path.join(__dirname + '/..');
 import * as stream from "stream";
 
 import { Binaries } from "@zapjs/eos-binaries";
-
+import { Subscriber } from "@zapjs/eos-subscriber";
+import { Provider } from "@zapjs/eos-provider";
 
 //TODO: receive dynamically
 /*const NODEOS_PATH = '/home/kostya/blockchain/eos/build/programs/nodeos/nodeos';
@@ -118,7 +119,31 @@ export class TestNode extends Node {
         await this.grantPermissions(eos);
     }
 
+    async registerProvider(name: string) {
+      const eos = await this.connect();
+      this.provider = new Account(name);
+      this.provider.usePrivateKey(ACC_OWNER_PRIV_KEY);
+      await this.provider.register(eos)
+    }
+    async registerSubscriber(name: string) {
+      const eos = await this.connect();
+      this.user = new Account(name);
+      this.user.usePrivateKey(ACC_OWNER_PRIV_KEY);
+      await this.user.register(eos);
+    }
 
+    async loadProvider(name: string, node: any){
+      const eos = await node.connect();
+      const exist = await eos.getAccount(name);
+      if (!exist) console.log('no such provider');
+      const providerAcc = new Account(name);
+      providerAcc.usePrivateKey(ACC_OWNER_PRIV_KEY);
+      const provider: Provider = new Provider({
+        account: providerAcc,
+        node
+      });
+      return provider;
+    }
     async registerAccounts(eos: any) {
         const results = [];
         results.push(await this.provider.register(eos));

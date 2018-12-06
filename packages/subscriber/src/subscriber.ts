@@ -61,4 +61,7 @@ export class Subscriber {
     async cancelQuery(id: number)  {
         return await this.dispatch.cancelQuery(id);
     }
+    async listenResponses(callback: Function)  {
+        return await this.dispatch.listenResponses(callback);
+    }
 }

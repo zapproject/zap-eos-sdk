@@ -39,7 +39,7 @@ export class Provider {
     async connect() {
         return await this._node.connect();
     }
-    
+
     async initiateProvider(title: string, public_key: number) {
         return await this.registry.initiateProvider(title, public_key);
     }
@@ -57,7 +57,7 @@ export class Provider {
     }
 
     async queryIssued(from: number, to: number, limit: number) {
-        return await this.bondage.queryIssued(this._account.name, from, to, limit);
+        return await this.bondage.queryIssued(from, to, limit);
     }
 
     async unsubscribeProvider(subscriber: string, endpoint: string) {
@@ -74,6 +74,9 @@ export class Provider {
 
     async queryQueriesInfo(from: number, to: number, limit: number) {
       return await this.dispatch.queryQueriesInfo(from, to, limit);
+    }
+    async listenNextQuery(lastTaken: string, callback: Function) {
+      return await this.dispatch.listenNextQuery(this._account.name, lastTaken, callback);
     }
 
 }

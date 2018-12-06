@@ -49,6 +49,7 @@ export class Bondage {
             .execute(eos);
     }
 
+
     async queryHolders(from: number, to: number, limit: number) {
         let eos = await this.connect();
 
@@ -66,13 +67,13 @@ export class Bondage {
         );
     }
 
-    async queryIssued(provider: string, from: number, to: number, limit: number) {
+    async queryIssued(from: number, to: number, limit: number) {
         let eos = await this.connect();
 
         return await eos.getTableRows(
             true, // json
             this._zap_account.name, // code
-            provider, // scope
+            this._account.name, // scope
             'issued', // table name
             'endpointid', // table_key
             from, // lower_bound

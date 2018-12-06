@@ -31,6 +31,7 @@ describe('Test', () => {
     let node: any;
     let registry: Regsitry;
     let bondage: Bondage;
+    let bondageP: Bondage;
     let dispatch: Dispatch;
     let providerDispatch: Dispatch;
 
@@ -46,10 +47,12 @@ describe('Test', () => {
                     account: node.getProviderAccount(),
                     node
                 });
+
                 bondage = new Bondage({
                     account: node.getUserAccount(),
                     node
                 });
+
                 dispatch = new Dispatch({
                     account: node.getUserAccount(),
                     node
@@ -70,8 +73,15 @@ describe('Test', () => {
     it('#query()', async () => {
         await registry.initiateProvider('tests', 10);
         await registry.addEndpoint('endp', [3, 0, 0, 2, 10000], '');
+        await registry.addEndpoint('endp2', [3, 0, 0, 2, 10000], '');
         await bondage.bond(node.getProviderAccount().name, 'endp', 1);
+        await bondage.bond(node.getProviderAccount().name, 'endp2', 1);
+
+
+
+
         await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false);
+
 
         let eos = await node.connect();
         let qdata = await getRowsByPrimaryKey(eos, node, node.getZapAccount().name, 'qdata', 'id');
@@ -101,7 +111,7 @@ describe('Test', () => {
     });
 
     it('#respond()', async () => {
-        await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false);
+       await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false);
 
         let eos = await node.connect();
         let qdata = await getRowsByPrimaryKey(eos, node, node.getZapAccount().name, 'qdata', 'id');
@@ -115,7 +125,7 @@ describe('Test', () => {
     });
 
 
-    after(() => {
+   after(() => {
         node.kill();
     })
 });
@@ -189,6 +199,7 @@ describe('Test-listeners', () => {
         dispatch.listenResponses(async (data: any) => {
             try {
                 await expect(data[0].data.params).to.be.equal('{p1: 1, p2: 2}');
+                console.log(JSON.stringify(data));
                 done();
             }catch(err){done (err)}
         });
