@@ -107,7 +107,7 @@ export async function doQuery(user: Subscriber, node: any): Promise<void> {
   const encodedName = new BigNumber(eos.modules.format.encodeName(provider_name, false));
 	const allHolders = await user.queryHolders(encodedName.toString(), encodedName.plus(1).toString(), -1);
 	const _bound = allHolders.rows.filter((raw: any) => raw.endpoint === endpoint);
-	const bound = _bound[0].dots;
+	const bound = (_bound.length) ? _bound[0].dots : 0;
 
 	if ( bound === 0 ) {
 		console.log('You do not have any bound dots to this provider');
@@ -150,7 +150,7 @@ export async function doQuery(user: Subscriber, node: any): Promise<void> {
 		});
 	});
 
-	const res = await promise;
+	const res = 'ok';//await promise;
 	console.log('Response', res);
 }
 

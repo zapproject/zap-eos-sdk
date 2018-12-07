@@ -10,16 +10,11 @@ import { Binaries } from "@zapjs/eos-binaries";
 import { Subscriber } from "@zapjs/eos-subscriber";
 import { Provider } from "@zapjs/eos-provider";
 
-//TODO: receive dynamically
-/*const NODEOS_PATH = '/home/kostya/blockchain/eos/build/programs/nodeos/nodeos';
-const EOS_DIR = '/home/kostya/blockchain/eos';
 
-const ACC_TEST_PRIV_KEY = '5KfFufnUThaEeqsSeMPt27Poan5g8LUaEorsC1hHm1FgNJfr3sX';
-const ACC_OWNER_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';*/
 const NODEOS_PATH = '/usr/local/bin/nodeos';
 const EOS_DIR = '/home/user/eos';
 
-const ACC_TEST_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';
+
 const ACC_OWNER_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';
 
 function waitEvent(event: stream.Readable, type: string) {
@@ -54,21 +49,23 @@ export class TestNode extends Node {
     instance: any;
     user: Account;
     token: Account;
+    ACC_USER_PRIV_KEY: string;
 
-    constructor(verbose: boolean, recompile: boolean, endpoint: string) {
+    constructor(privateKey: string, verbose: boolean, recompile: boolean, endpoint: string) {
         super({
             verbose: verbose,
-            key_provider: [ACC_TEST_PRIV_KEY, ACC_OWNER_PRIV_KEY],
+            key_provider: [privateKey],
             http_endpoint: 'http://127.0.0.1:8888',
             chain_id: ''
         });
+        this.ACC_USER_PRIV_KEY = privateKey;//'5KfFufnUThaEeqsSeMPt27Poan5g8LUaEorsC1hHm1FgNJfr3sX';
         this.recompile = recompile;
         this.running = false;
         this.instance = null;
         this.nodeos_path = NODEOS_PATH;
         this.provider = new Account('zap.provider').usePrivateKey(ACC_OWNER_PRIV_KEY);
         this.zap = this.getZapAccount().usePrivateKey(ACC_OWNER_PRIV_KEY);
-        this.user = new Account('user').usePrivateKey(ACC_TEST_PRIV_KEY);
+        this.user = new Account('user2').usePrivateKey(this.ACC_USER_PRIV_KEY);
         this.token = new Account('zap.token').usePrivateKey(ACC_OWNER_PRIV_KEY);
     }
 
@@ -119,31 +116,26 @@ export class TestNode extends Node {
         await this.grantPermissions(eos);
     }
 
-    async registerProvider(name: string) {
-      const eos = await this.connect();
-      this.provider = new Account(name);
-      this.provider.usePrivateKey(ACC_OWNER_PRIV_KEY);
-      await this.provider.register(eos)
-    }
-    async registerSubscriber(name: string) {
-      const eos = await this.connect();
-      this.user = new Account(name);
-      this.user.usePrivateKey(ACC_OWNER_PRIV_KEY);
-      await this.user.register(eos);
-    }
 
     async loadProvider(name: string, node: any){
-      const eos = await node.connect();
-      const exist = await eos.getAccount(name);
-      if (!exist) console.log('no such provider');
       const providerAcc = new Account(name);
-      providerAcc.usePrivateKey(ACC_OWNER_PRIV_KEY);
+      providerAcc.usePrivateKey(this.ACC_USER_PRIV_KEY);
       const provider: Provider = new Provider({
         account: providerAcc,
         node
       });
       return provider;
     }
+    async loadSubscriber(name: string, node: any){
+      const subscriberAcc = new Account(name);
+      subscriberAcc.usePrivateKey(this.ACC_USER_PRIV_KEY);
+      const subscriber: Subscriber = new Subscriber({
+        account: subscriberAcc,
+        node
+      });
+      return subscriber;
+    }
+
     async registerAccounts(eos: any) {
         const results = [];
         results.push(await this.provider.register(eos));
@@ -224,11 +216,4 @@ export class TestNode extends Node {
         );
     }
 
-    getProviderAccount() {
-        return this.provider;
-    }
-
-    getUserAccount() {
-        return this.user;
-    }
 }

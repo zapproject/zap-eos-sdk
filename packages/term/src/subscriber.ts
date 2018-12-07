@@ -24,7 +24,7 @@ export async function createSubscriberParams(): Promise<any> {
 export async function doBondage(user: Subscriber, node: any) {
 	// Load subscriber information
 	const eos = await node.connect();
-	const bal = await eos.getCurrencyBalance("zap.token", user._account.name, 'TST'); 
+	const bal = await eos.getCurrencyBalance("zap.token", user._account.name, 'TST');
 
 	console.log('You have ', bal[0]);
 
@@ -146,7 +146,7 @@ export async function listOracles(provider: Provider, node: any) {
       for (const [index, endpoint] of endpoints.rows.entries()) {
         console.log(`Provider ${await provider._account.name} / Endpoint ${endpoint.specifier}`);
 				const totalBound =  await provider.queryIssued(index, index + 1, 1);
-				const curve = calcDotPrice(endpoint, totalBound.rows[0].dots);
+				const curve = (totalBound.rows.length) ? calcDotPrice(endpoint, totalBound.rows[0].dots) : 'no dots issued';
         console.log(`Curve: ${curve}`);
       }
     }

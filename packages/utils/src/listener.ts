@@ -6,7 +6,7 @@ const fork = require('child_process').fork;
 const program = path.resolve(__dirname,'..', '..', '..', 'packages/cacher/out/index.js');
 const parameters = ['zap.main'];
 const options = {stdio:  ['pipe', 1, 2, 'ipc']};
-let child = fork(program, parameters, options);
+let child: any;
 import {Message} from "./types/types";
 
 
@@ -43,9 +43,12 @@ export class EventObserver {
 
     //if (lastTaken) await collection.update({ "_id": ObjectId(lastTaken) }, { "answered": true});
 
-    const params = (lastTaken) ? {"_id" : { "$gt" : ObjectId(lastTaken) }, "answered": false, provider: provider} :
-                                 {"_id" : { "$gt" : ObjectId.createFromTime(Date.now() / 1000 - 2*60*60) }, "answered": false, provider: provider};
+    const params = (lastTaken) ? {"_id" : { "$gt" : ObjectId(lastTaken) }, "answered": false, "data.provider": provider} :
+                                 {"_id" : { "$gt" : ObjectId.createFromTime(Date.now() / 1000 - 2*60*60) }, "answered": false, "data.provider": provider};
     const res = await collection.find(params).limit(1).toArray();
+    console.log(res);
+
+
     if(fn) fn(null, res);
   }
 
@@ -70,5 +73,8 @@ export class EventObserver {
   }
   kill() {
       if (child) child.kill();
+  }
+  static start() {
+    child = fork(program, parameters, options);
   }
 }

@@ -1,33 +1,41 @@
 #!/usr/bin/env node
-import { ask, loadAccount, loadAccount2} from "./util";
+import { ask, loadAccount } from "./util";
 import {TestNode as Node} from "./environment";
 import { Subscriber } from "@zapjs/eos-subscriber";
 import { Provider } from "@zapjs/eos-provider";
+import { DemuxEventListener } from "@zapjs/eos-utils";
 import { createProviderParams, createProviderCurve, getEndpointInfo, doQuery, doResponses } from "./provider";
 import { createSubscriberParams, doBondage, doUnbondage, listOracles, viewInfo } from "./subscriber";
 import { spawn, execSync } from 'child_process';
 import * as stream from "stream";
+const eos_ecc = require('eosjs-ecc');
 
 
 
 async function main() {
-  const node = new Node(false, false, 'http://127.0.0.1:8888');
+
+  const privateKey = await ask('Enter your private key: ');
+  const node = new Node(privateKey, false, false, 'http://127.0.0.1:8888');
+
 // Get the provider and contracts
   await node.restart();
   await node.init();
-  await node.connect();
-  let provider = new Provider({
-    account: node.getProviderAccount(),
-    node
-  });
-  const subscriber  = new Subscriber({
-    account: node.getUserAccount(),
-    node
-  });
-  await provider.initiateProvider('tests', 10);
+  const eos = await node.connect();
+  DemuxEventListener.start();
+  const accountName = await loadAccount(privateKey, eos);
+  //const mnemonic = await ask('Whats your mnemonic (empty entry will use blank mnemonic): ');
+  let provider = await node.loadProvider(accountName, node);
+  let subscriber = await node.loadSubscriber(accountName, node);
 
 
-  let providerTitle = provider._account.name;
+  const providers: any = await provider.queryProviderList(0, -1, -1);
+
+  const foundProvider = providers.rows.filter((row: any) => row.user ===  accountName);
+
+  let providerTitle = (foundProvider.length) ? foundProvider[0].title : '';
+
+
+
 	let subscriberTitle = subscriber._account.name;
 	if (providerTitle.length > 0) {
 		console.log('Found provider:', providerTitle);
@@ -50,25 +58,19 @@ async function main() {
 		else {
 			console.log('1) Instantiate Bonding Curve');
 		}
-
-		if (subscriberTitle.length > 0) {
 		  console.log('2) Get Endpoint');
 		  console.log('3) Bond Zap');
 		  console.log('4) Unbond Zap');
 		  console.log('5) Query');
-		}
 
-		if ( providerTitle.length > 0 && subscriberTitle.length > 0) {
+		if ( providerTitle.length > 0) {
 			console.log('6) Respond to Queries');
-		}
-		else if ( providerTitle.length > 0 && subscriberTitle.length <= 0) {
-			console.log('2) Respond to Queries');
 		}
 		else {
 			console.log('6) Respond to Queries (unavailable)')
 		}
 
-		if (subscriberTitle.length > 0) console.log('7) List Oracles')
+	  console.log('7) List Oracles')
 
 		const option: string = (await ask('Option> ')).trim();
 
@@ -77,29 +79,14 @@ async function main() {
 			process.exit(0);
 		}
 		else if ( option == '0' ) {
-			if ( subscriberTitle == '' ) {
-				const title =  await createSubscriberParams();
-        await node.registerSubscriber(title);
-        provider = new Provider({
-          account: node.getProviderAccount(),
-          node
-        });
-				subscriberTitle = await provider._account.name;
-			}
-			else {
-			  await viewInfo(subscriber, node);
-			}
+			await viewInfo(subscriber, node);
 		}
 		else if ( option == '1' ) {
 			if ( providerTitle == '' ) {
 				const params =  await createProviderParams();
-				await node.registerProvider(params.title);
-        provider = new Provider({
-          account: node.getProviderAccount(),
-          node
-        });
 				await provider.initiateProvider(params.title, params.public_key);
-				providerTitle = await provider._account.name;
+				providerTitle = provider._account.name;
+        console.log(`Created ${provider._account.name}: ${params.title}`)
 			}
 			else {
 				await createProviderCurve(provider);
@@ -127,25 +114,6 @@ async function main() {
 		}
 		else if ( option == '7' ) {
 			await listOracles(provider, node);
-		}
-    else if ( option == '8' ) {
-			const params =  await createProviderParams();
-			await node.registerProvider(params.title);
-      provider = new Provider({
-        account: node.getProviderAccount(),
-        node
-      });
-			await provider.initiateProvider(params.title, params.public_key);
-			providerTitle = await provider._account.name;
-		}
-    else if ( option == '9' ) {
-			const title =  await createSubscriberParams();
-      await node.registerSubscriber(title);
-      provider = new Provider({
-        account: node.getProviderAccount(),
-        node
-      });
-			subscriberTitle = await provider._account.name;
 		}
 		else {
 			console.error('Unknown option', option);

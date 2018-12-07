@@ -3,7 +3,7 @@ import { Provider} from '@zapjs/eos-provider';
 import { Subscriber} from '@zapjs/eos-subscriber';
 import { join } from "path";
 import * as readline from "readline";
-
+const eos_ecc = require('eosjs-ecc');
 
 const ACC_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';
 
@@ -113,31 +113,34 @@ export function sleep(timeout: number): Promise<void> {
 		setTimeout(resolve, timeout);
 	})
 }
-export function loadAccount() {
-	return 'test';
+export async function loadAccount(privateKey: string, eos: any) {
+  const accounts = await eos.getKeyAccounts({public_key: eos_ecc.privateToPublic(privateKey)});
+	return accounts.account_names[0];
 }
-export function loadAccount2() {
-	return 'test2';
-}
+
 export function calcDotPrice(endpoint: any, dot: number) {
-			 let index = 0;
-			 while(index < endpoint.functions.length) {
-					 const len = endpoint.functions[index];
-					 const end = endpoint.functions[index + len + 1];
+	if (!endpoint.functions) return 0;
+	let index = 0;
+	while(index < endpoint.functions.length) {
+		const len = endpoint.functions[index];
+		const end = endpoint.functions[index + len + 1];
 
-					 if(dot > end){
-							 // move onto the next piece
-							 index += len + 2;
-							 continue;
-					 }
+		if(dot > end) {
+		// move onto the next piece
+			index += len + 2;
+			continue;
+		}
 
-					 // calculate at this piece
-					 let sum = 0;
-					 for(let i = 0; i < len; i++){
-							 const coeff = endpoint.functions[index + i + 1];
-							 sum += coeff * Math.pow(dot, i);
-					 }
-					 return sum;
-			 }
-			 return -1;
-	 }
+		// calculate at this piece
+		let sum = 0;
+		for(let i = 0; i < len; i++){
+	  	const coeff = endpoint.functions[index + i + 1];
+	  	sum += coeff * Math.pow(dot, i);
+	 	}
+
+		return sum;
+
+	}
+
+	return -1;
+}
