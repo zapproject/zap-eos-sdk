@@ -5,21 +5,6 @@ import { sleep, ask, calcDotPrice} from "./util";
 
 
 
-export async function createSubscriberParams(): Promise<any> {
-	console.log('Create a subscriber');
-	const title = await ask('Title> ');
-
-	if ( title.length == 0 ) {
-		console.log('Not creating a subscriber now. Title cannot be empty.');
-		return;
-	}
-
-
-
-	console.log('Creating subscriber...');
-	return title;
-}
-
 
 export async function doBondage(user: Subscriber, node: any) {
 	// Load subscriber information
@@ -56,7 +41,7 @@ export async function doBondage(user: Subscriber, node: any) {
 		}
 	});
 	if ( !endp ) {
-		console.log('Unable to find the endpoint.');
+	 	console.log('Unable to find the endpoint.');
 		return;
 	}
 
@@ -69,10 +54,10 @@ export async function doBondage(user: Subscriber, node: any) {
 
 	console.log(`This will require ${price.toString()} wei ZAP. Bonding ${dots} DOTs...`);
 
-	if ( bal < price  ) {
-		console.log('Balance insufficent.');
-		return;
-	}
+	 	if ( bal < price ) {
+			console.log('Balance insufficent.');
+			return;
+		}
 
 	console.log('Bonding to the oracle...');
 
@@ -131,27 +116,27 @@ export async function doUnbondage(user: Subscriber, node: any) {
 export async function listOracles(provider: Provider, node: any) {
 	const addresses: any = await provider.queryProviderList(0, -1, -1);
 	if(Array.isArray(addresses.rows)) {
-    if (addresses.length == 0) {
-      console.log(`Didn't find any providers`);
-      return;
-    }
+		if (addresses.length == 0) {
+			console.log(`Didn't find any providers`);
+			return;
+		}
 
 
-    const providers: any[] = await Promise.all(addresses.rows.map(async (address: any) => await node.loadProvider(address.user, node)));
+		const providers: any[] = await Promise.all(addresses.rows.map(async (address: any) => await node.loadProvider(address.user, node)));
 
-        // // Display each one
-    for (const provider of providers) {
-      const endpoints = await provider.queryProviderEndpoints(0, -1, -1);
+				// // Display each one
+		for (const provider of providers) {
+			const endpoints = await provider.queryProviderEndpoints(0, -1, -1);
 
-      for (const [index, endpoint] of endpoints.rows.entries()) {
-        console.log(`Provider ${await provider._account.name} / Endpoint ${endpoint.specifier}`);
-				const totalBound =  await provider.queryIssued(index, index + 1, 1);
+			for (const [index, endpoint] of endpoints.rows.entries()) {
+				console.log(`Provider ${await provider._account.name} / Endpoint ${endpoint.specifier}`);
+				const totalBound =	await provider.queryIssued(index, index + 1, 1);
 				const curve = (totalBound.rows.length) ? calcDotPrice(endpoint, totalBound.rows[0].dots) : 'no dots issued';
-        console.log(`Curve: ${curve}`);
-      }
-    }
-  } else {
-    	console.error("Fail to retrieve providers, unknown type")
+				console.log(`Curve: ${curve}`);
+			}
+		}
+	} else {
+		console.error("Fail to retrieve providers, unknown type")
 		return;
 	}
 }
