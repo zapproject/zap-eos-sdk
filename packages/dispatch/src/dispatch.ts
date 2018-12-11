@@ -18,7 +18,7 @@ export class Dispatch {
         return await this._node.connect();
     }
 
-    async query(provider: string, endpoint: string, query: string, onchain_provider: boolean) {
+    async query(provider: string, endpoint: string, query: string, onchain_provider: boolean, timestamp: number) {
         let eos = await this.connect();
 
         return new Utils.Transaction()
@@ -31,12 +31,13 @@ export class Dispatch {
                 endpoint: endpoint,
                 query: query,
                 onchain_provider: onchain_provider ? 1 : 0,
-                onchain_subscriber: 0 // if we call it from js then it not onchain subscriber
+                onchain_subscriber: 0, // if we call it from js then it not onchain subscriber
+                timestamp
             })
             .execute(eos);
     }
 
-    async respond(id: number, params: string) {
+    async respond(id: number, params: string, subscriber: string) {
         let eos = await this.connect();
 
         return new Utils.Transaction()
@@ -45,8 +46,9 @@ export class Dispatch {
             .action('respond')
             .data({
                 responder: this._account.name,
-                id: id,
-                params: params
+                id,
+                params,
+                subscriber
             })
             .execute(eos);
     }

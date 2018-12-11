@@ -48,6 +48,7 @@ export class TestNode extends Node {
     recompile: boolean;
     running: boolean;
     provider: Account;
+    provider2: Account;
     zap: Account;
     nodeos_path: string;
     instance: any;
@@ -66,6 +67,7 @@ export class TestNode extends Node {
         this.instance = null;
         this.nodeos_path = NODEOS_PATH;
         this.provider = new Account('zap.provider').usePrivateKey(ACC_OWNER_PRIV_KEY);
+        this.provider2 = new Account('zapprovider2').usePrivateKey(ACC_OWNER_PRIV_KEY);
         this.zap = this.getZapAccount().usePrivateKey(ACC_OWNER_PRIV_KEY);
         this.user = new Account('user').usePrivateKey(ACC_TEST_PRIV_KEY);
         this.token = new Account('zap.token').usePrivateKey(ACC_OWNER_PRIV_KEY);
@@ -122,6 +124,7 @@ export class TestNode extends Node {
     async registerAccounts(eos: any) {
         const results = [];
         results.push(await this.provider.register(eos));
+        results.push(await this.provider2.register(eos));
         results.push(await this.zap.register(eos));
         results.push(await this.token.register(eos));
         results.push(await this.user.register(eos));
@@ -201,6 +204,9 @@ export class TestNode extends Node {
 
     getProviderAccount() {
         return this.provider;
+    }
+    getProviderAccount2() {
+        return this.provider2;
     }
 
     getUserAccount() {

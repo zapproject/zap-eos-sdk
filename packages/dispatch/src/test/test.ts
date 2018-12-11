@@ -6,6 +6,7 @@ import {Regsitry} from "@zapjs/eos-registry";
 import {Bondage} from "@zapjs/eos-bondage";
 import {Dispatch} from "../../src";
 import {TestNode as Node} from './environment';
+import * as Utils from "@zapjs/eos-utils";
 
 
 async function configureEnvironment(func: Function) {
@@ -30,6 +31,7 @@ async function getRowsByPrimaryKey(eos: any, node: any, scope: string, table_nam
 describe('Test', () => {
     let node: any;
     let registry: Regsitry;
+    let registry2: Regsitry;
     let bondage: Bondage;
     let bondageP: Bondage;
     let dispatch: Dispatch;
@@ -45,6 +47,10 @@ describe('Test', () => {
                 await node.connect();
                 registry = new Regsitry({
                     account: node.getProviderAccount(),
+                    node
+                });
+                registry2 = new Regsitry({
+                    account: node.getProviderAccount2(),
                     node
                 });
 
@@ -73,15 +79,8 @@ describe('Test', () => {
     it('#query()', async () => {
         await registry.initiateProvider('tests', 10);
         await registry.addEndpoint('endp', [3, 0, 0, 2, 10000], '');
-        await registry.addEndpoint('endp2', [3, 0, 0, 2, 10000], '');
         await bondage.bond(node.getProviderAccount().name, 'endp', 1);
-        await bondage.bond(node.getProviderAccount().name, 'endp2', 1);
-
-
-
-
         await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false);
-
 
         let eos = await node.connect();
         let qdata = await getRowsByPrimaryKey(eos, node, node.getZapAccount().name, 'qdata', 'id');
