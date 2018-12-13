@@ -80,7 +80,7 @@ describe('Test', () => {
         await registry.initiateProvider('tests', 10);
         await registry.addEndpoint('endp', [3, 0, 0, 2, 10000], '');
         await bondage.bond(node.getProviderAccount().name, 'endp', 1);
-        await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false);
+        await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false, Date.now());
 
         let eos = await node.connect();
         let qdata = await getRowsByPrimaryKey(eos, node, node.getZapAccount().name, 'qdata', 'id');
@@ -93,7 +93,7 @@ describe('Test', () => {
 
     it('#query() - fail if not enough dots', async () => {
         try {
-            await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false);
+            await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false, Date.now());
         } catch (e) {
             await expect(e).to.be.not.empty;
         }
@@ -103,14 +103,16 @@ describe('Test', () => {
         await dispatch.cancelQuery(0);
 
         let eos = await node.connect();
+        let qdata = await getRowsByPrimaryKey(eos, node, node.getZapAccount().name, 'qdata', 'id');
         let holder = await getRowsByPrimaryKey(eos, node, node.getUserAccount().name, 'holder', 'provider');
+        console.log(JSON.stringify(holder), JSON.stringify(holder))
 
         await expect(holder.rows[0].escrow).to.be.equal(0);
         await expect(holder.rows[0].dots).to.be.equal(1);
     });
 
     it('#respond()', async () => {
-       await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false);
+       await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false, Date.now());
 
         let eos = await node.connect();
         let qdata = await getRowsByPrimaryKey(eos, node, node.getZapAccount().name, 'qdata', 'id');
@@ -120,7 +122,7 @@ describe('Test', () => {
         await expect(holder.rows[0].escrow).to.be.equal(1);
         await expect(holder.rows[0].dots).to.be.equal(0);
 
-        await providerDispatch.respond(qdata.rows[0].id, '{p1: 1, p2: 2}');
+        await providerDispatch.respond(qdata.rows[0].id, '{p1: 1, p2: 2}', qdata.rows[0].subscriber);
     });
 
 
@@ -170,7 +172,7 @@ describe('Test-listeners', () => {
     });
 
     it('#listenQueries()', done => {
-        dispatch.listenQueries(async (data: any) => {
+        dispatch.listenQueries(async (err: any, data: any) => {
             if (queryIsMade) return;
             try {
                 await expect(data[0].data.query).to.be.equal('test_query');
@@ -181,11 +183,11 @@ describe('Test-listeners', () => {
         registry.initiateProvider('tests', 10).then(() =>
         registry.addEndpoint('endp', [3, 0, 0, 2, 10000], '')).then(() =>
         bondage.bond(node.getProviderAccount().name, 'endp', 1)).then(() =>
-        dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false));
+        dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false, Date.now()));
     });
 
     it('#listenCancels()', done => {
-        dispatch.listenCancels(async (data: any) => {
+        dispatch.listenCancels(async (err:any, data: any) => {
             try {
                 await expect(data[0].name).to.be.equal('cancelquery');
                 done();
@@ -195,17 +197,17 @@ describe('Test-listeners', () => {
     });
 
     it('#listenResponses()', done => {
-        dispatch.listenResponses(async (data: any) => {
+        dispatch.listenResponses(async (err: any, data: any) => {
             try {
                 await expect(data[0].data.params).to.be.equal('{p1: 1, p2: 2}');
                 console.log(JSON.stringify(data));
                 done();
             }catch(err){done (err)}
         });
-        dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false).then(() =>
+        dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false, Date.now()).then(() =>
         node.connect()).then( eos =>
-        getRowsByPrimaryKey(eos, node, node.getZapAccount().name, 'qdata', 'id')).then(qdata =>
-        providerDispatch.respond(qdata.rows[0].id, '{p1: 1, p2: 2}'));
+        getRowsByPrimaryKey(eos, node, node.getZapAccount().name, 'qdata', 'id')).then(qdata => { console.log(qdata);
+        providerDispatch.respond(qdata.rows[0].id, '{p1: 1, p2: 2}', qdata.rows[0].subscriber);})
     });
 
 

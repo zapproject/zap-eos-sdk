@@ -68,12 +68,12 @@ export class Provider {
         return await this.arbiter.querySubscriptions(this._account.name, from, to, limit);
     }
 
-    async respond(id: number, params: string) {
-        return await this.dispatch.respond(id, params);
+    async respond(id: number, params: string, subscriber: string) {
+        return await this.dispatch.respond(id, params, subscriber);
     }
 
-    async queryQueriesInfo(from: number, to: number, limit: number) {
-      return await this.dispatch.queryQueriesInfo(from, to, limit);
+    async queryQueriesInfo(from: number, to: number, limit: number, indexType: number) {
+      return await this.dispatch.queryQueriesInfo(from, to, limit, indexType);
     }
     async listenNextQuery(lastTaken: string, callback: Function) {
       return await this.dispatch.listenNextQuery(this._account.name, lastTaken, callback);

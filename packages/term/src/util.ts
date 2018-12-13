@@ -21,14 +21,14 @@ export class TermNode extends Node {
 	constructor(verbose: boolean, endpoint: string) {
 		super({
 				verbose: verbose,
-				key_provider:  [ACC_PRIV_KEY],
+				key_provider:	[ACC_PRIV_KEY],
 				http_endpoint: endpoint,
 				chain_id: ''
 		});
-		this.provider = new Provider({account:  new Account('zap.provider').usePrivateKey(ACC_PRIV_KEY), node: this});// надо по умолчанию чтоли.
+		this.provider = new Provider({account:	new Account('zap.provider').usePrivateKey(ACC_PRIV_KEY), node: this});// надо по умолчанию чтоли.
 		this.subscriber = new Subscriber({account: new Account('user').usePrivateKey(ACC_PRIV_KEY), node: this});
 	}
-  getProvider() {
+	getProvider() {
 		return this.provider;
 	}
 	getSubscriber() {
@@ -38,7 +38,7 @@ export class TermNode extends Node {
 		const eos = await this.connect();
 		let user;
 		try {
-  		user = await eos.getAccount(name);
+			user = await eos.getAccount(name);
 		} catch (err) {
 			console.log(err);
 			return false;
@@ -53,7 +53,7 @@ export class TermNode extends Node {
 		const eos = await this.connect();
 		let user;
 		try {
-		  user = await eos.getAccount(name);
+			user = await eos.getAccount(name);
 		} catch (err) {
 			console.log(err);
 			return false;
@@ -66,9 +66,9 @@ export class TermNode extends Node {
 
 	async registerProvider(name: string) {
 		const eos = await this.connect();
-	  let providerAcc = new Account(name).usePrivateKey(ACC_PRIV_KEY);
+		let providerAcc = new Account(name).usePrivateKey(ACC_PRIV_KEY);
 		try {
-	    await providerAcc.register(eos);
+			await providerAcc.register(eos);
 		} catch (err) {
 			console.log(err);
 			return false;
@@ -80,7 +80,7 @@ export class TermNode extends Node {
 		const eos = await this.connect();
 		let subscriberAcc = new Account(name).usePrivateKey(ACC_PRIV_KEY);
 		try {
-		  await subscriberAcc.register(eos);
+			await subscriberAcc.register(eos);
 		} catch (err) {
 			console.log(err);
 			return false;
@@ -114,7 +114,7 @@ export function sleep(timeout: number): Promise<void> {
 	})
 }
 export async function loadAccount(privateKey: string, eos: any) {
-  const accounts = await eos.getKeyAccounts({public_key: eos_ecc.privateToPublic(privateKey)});
+	const accounts = await eos.getKeyAccounts({public_key: eos_ecc.privateToPublic(privateKey)});
 	return accounts.account_names[0];
 }
 
@@ -134,8 +134,8 @@ export function calcDotPrice(endpoint: any, dot: number) {
 		// calculate at this piece
 		let sum = 0;
 		for(let i = 0; i < len; i++){
-	  	const coeff = endpoint.functions[index + i + 1];
-	  	sum += coeff * Math.pow(dot, i);
+			const coeff = endpoint.functions[index + i + 1];
+			sum += coeff * Math.pow(dot, i);
 	 	}
 
 		return sum;

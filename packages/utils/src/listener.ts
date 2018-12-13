@@ -10,9 +10,6 @@ let child: any;
 import {Message} from "./types/types";
 
 
-
-
-
 export class EventObserver {
   lastTakenId: any;
   process: boolean;
@@ -35,13 +32,13 @@ export class EventObserver {
       (this.incoming && ObjectId(this.incoming.id) > ObjectId(this.lastTakenId))) this.broadcast(this.incoming);
     },500);
   }
+
   async takeNext(provider: string, action: string, lastTaken: string, fn?: Function) {
     const dbName = 'test';
     const client = await MongoClient.connect(url, { useNewUrlParser: true });
     const db = client.db(dbName);
     const collection = db.collection(action.split('::')[1]);
 
-    //if (lastTaken) await collection.update({ "_id": ObjectId(lastTaken) }, { "answered": true});
 
     const params = (lastTaken) ? {"_id" : { "$gt" : ObjectId(lastTaken) }, "answered": false, "data.provider": provider} :
                                  {"_id" : { "$gt" : ObjectId.createFromTime(Date.now() / 1000 - 2*60*60) }, "answered": false, "data.provider": provider};
@@ -52,7 +49,33 @@ export class EventObserver {
     if(fn) fn(null, res);
   }
 
+  static async updateQuery(subscriber: string, timestamp: number, answer: string) {
+    const dbName = 'test';
+    const client = await MongoClient.connect(url, { useNewUrlParser: true });
+    const db = client.db(dbName);
+    const collection = db.collection("query")
+    const params = { "data.subscriber": subscriber, "data.timestamp": timestamp }
+    await collection.updateOne(params, { $set: { "answered": true, "response": answer } });
+  }
 
+  static async getAnswer(subscriber: string, timestamp: number) {
+    const dbName = 'test';
+    const client = await MongoClient.connect(url, { useNewUrlParser: true });
+    const db = client.db(dbName);
+    const collection = db.collection("query")
+    const params = { "data.subscriber": subscriber, "data.timestamp": timestamp }
+    const row = await collection.findOne(params);
+    return row.answer;
+  }
+  /*static async getAnswers(subscriber: string) {
+    const dbName = 'test';
+    const client = await MongoClient.connect(url, { useNewUrlParser: true });
+    const db = client.db(dbName);
+    const collection = db.collection("query")
+    const params = { "data.subscriber": subscriber}
+    const row = await collection.find(params).toArray();
+    return row.answer;
+  }*/
 
   async broadcast (info: Message) {
     if (this.process) return;
@@ -71,9 +94,11 @@ export class EventObserver {
     this.lastTakenId = res[res.length - 1]._id;
     this.process = false;
   }
+
   kill() {
       if (child) child.kill();
   }
+
   static start() {
     child = fork(program, parameters, options);
   }

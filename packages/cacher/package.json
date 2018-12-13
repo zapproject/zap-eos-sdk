@@ -23,7 +23,8 @@
     "demux": "^1.0.3",
     "demux-eos": "2.0.0",
     "mongodoki": "4.0.0",
-    "mongodb": "3.1.8"
+    "mongodb": "3.1.8",
+    "@zapjs/eos-provider": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "5.2.0",

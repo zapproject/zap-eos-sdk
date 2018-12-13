@@ -40,7 +40,7 @@ export async function doBondage(user: Subscriber, node: any) {
 			return true;
 		}
 	});
-	if ( !endp ) {
+	if ( !endp.length ) {
 	 	console.log('Unable to find the endpoint.');
 		return;
 	}
@@ -49,8 +49,8 @@ export async function doBondage(user: Subscriber, node: any) {
 	console.log(`You have ${bound_before} DOTs bound. How many would you like to bond?`);
 
 	// Calculate pricing information
-	const dots: string = await ask('DOTS> ');
-	const price = await calcDotPrice(endp[0], parseInt(dots));
+	const dots: number = parseInt(await ask('DOTS> '));
+	const price = await calcDotPrice(endp[0], dots);
 
 	console.log(`This will require ${price.toString()} wei ZAP. Bonding ${dots} DOTs...`);
 
@@ -58,10 +58,14 @@ export async function doBondage(user: Subscriber, node: any) {
 			console.log('Balance insufficent.');
 			return;
 		}
+		if (dots <= 0 || isNaN(dots)) {
+			console.log('Invalid value');
+			return;
+		}
 
 	console.log('Bonding to the oracle...');
 
-	const bond_txid = await user.bond(provider_name, endpoint, parseInt(dots));
+	const bond_txid = await user.bond(provider_name, endpoint, dots);
 
 	console.log('Bonded to endpoint.');
 	console.log(`Transaction Info: ${bond_txid.transaction_id}`);
@@ -98,6 +102,10 @@ export async function doUnbondage(user: Subscriber, node: any) {
 	console.log(`You have ${bound_before.toString()} DOTs bonded. How many would you like to unbond?`);
 
 	const dots: number = parseInt(await ask('Amount> '));
+	if (dots <= 0 || isNaN(dots)) {
+		console.log('Invalid value');
+		return;
+	}
 	console.log(`Unbonding ${dots} DOTs...`);
 
 	const txid: string | any = await user.unbond( provider._account.name, endpoint, dots);
@@ -142,10 +150,17 @@ export async function listOracles(provider: Provider, node: any) {
 }
 
 
-export async function viewInfo(user: Subscriber, node: any) {
+export async function viewInfo(user: Subscriber, provider: Provider, providerTitle: string, node: any) {
 
 	console.log(`Name: ${user._account.name}`);
 	const eos = await node.connect();
+	let title = providerTitle;
+	let account = provider._account.name;
+	let endpoints = await provider.queryProviderEndpoints(0, -1, -1);
+	if (providerTitle)
+		console.log(`Provider is existed in Registry:
+		\nTitle: ${title},\nAccount : ${account},\nEndpoints: ${endpoints.rows.map((x: any) => x.specifier).join(', ')}`);
+	else console.log("Provider is not existed with this account");
 	const bal = await eos.getCurrencyBalance("zap.token", user._account.name, 'TST');
 	console.log('Balance: ', bal[0]);
 

@@ -32,7 +32,7 @@ export class Dispatch {
                 query: query,
                 onchain_provider: onchain_provider ? 1 : 0,
                 onchain_subscriber: 0, // if we call it from js then it not onchain subscriber
-                timestamp
+                timestamp: timestamp
             })
             .execute(eos);
     }
@@ -46,9 +46,9 @@ export class Dispatch {
             .action('respond')
             .data({
                 responder: this._account.name,
-                id,
-                params,
-                subscriber
+                id: id,
+                params: params,
+                subscriber: subscriber
             })
             .execute(eos);
     }
@@ -67,7 +67,7 @@ export class Dispatch {
             .execute(eos);
     }
 
-    async queryQueriesInfo(from: number, to: number, limit: number) {
+    async queryQueriesInfo(from: number, to: number, limit: number, indexPosition: number) {
         let eos = await this.connect();
 
         return await eos.getTableRows(
@@ -80,7 +80,7 @@ export class Dispatch {
             to, // upper_bound
             limit, // limit
             'i64', // key_type
-            1 // index position
+            indexPosition // index position
         );
     }
 

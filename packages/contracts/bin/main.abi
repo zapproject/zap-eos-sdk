@@ -39,7 +39,11 @@
     },{
       "name": "holder",
       "base": "",
-      "fields": [{
+      "fields": [
+        {
+          "name": "id",
+          "type": "uint64"
+        },{
           "name": "provider",
           "type": "name"
         },{
@@ -85,6 +89,10 @@
         },{
           "name": "onchain",
           "type": "bool"
+        },
+        {
+          "name": "timestamp",
+          "type": "uint128"
         }
       ]
     },{
@@ -241,6 +249,10 @@
         },{
           "name": "onchain_subscriber",
           "type": "bool"
+        },
+        {
+          "name": "timestamp",
+          "type": "uint128"
         }
       ]
     },{
@@ -255,6 +267,10 @@
         },{
           "name": "params",
           "type": "string"
+        },
+        {
+          "name": "subscriber",
+          "type": "name"
         }
       ]
     },{
@@ -377,10 +393,12 @@
       "name": "holder",
       "index_type": "i64",
       "key_names": [
-        "provider"
+        "id",
+        "byprovider"
       ],
       "key_types": [
-        "name"
+        "uint64",
+        "uint64"
       ],
       "type": "holder"
     },{
@@ -397,9 +415,13 @@
       "name": "qdata",
       "index_type": "i64",
       "key_names": [
-        "id"
+        "id",
+        "byprovider",
+        "bytimestamp"
       ],
       "key_types": [
+        "uint64",
+        "uint64",
         "uint64"
       ],
       "type": "qdata"
@@ -407,10 +429,12 @@
       "name": "subscription",
       "index_type": "i64",
       "key_names": [
-        "id"
+        "id",
+        "provider"
       ],
       "key_types": [
-        "uint64"
+        "uint64",
+        "name"
       ],
       "type": "subscription"
     },{

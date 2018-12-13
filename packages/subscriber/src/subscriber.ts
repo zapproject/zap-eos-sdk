@@ -54,8 +54,8 @@ export class Subscriber {
         return await this.arbiter.unsubscribeSubscriber(provider, endpoint);
     }
 
-    async query(provider: string, endpoint: string, query: string, onchain_provider: boolean) {
-        return await this.dispatch.query(provider, endpoint, query, onchain_provider);
+    async query(provider: string, endpoint: string, query: string, onchain_provider: boolean, timestamp: number) {
+        return await this.dispatch.query(provider, endpoint, query, onchain_provider, timestamp);
     }
 
     async cancelQuery(id: number)  {

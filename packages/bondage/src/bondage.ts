@@ -58,12 +58,12 @@ export class Bondage {
             this._zap_account.name, // code
             this._account.name, // scope
             'holder', // table name
-            'provider', // table_key
+            'id', // table_key
             from, // lower_bound
             to, // upper_bound
             limit, // limit
             'i64', // key_type
-            1 // index position
+            3 // index position
         );
     }
 

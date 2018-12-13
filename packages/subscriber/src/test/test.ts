@@ -78,8 +78,8 @@ describe('Test', () => {
     });
 
     it('#query()', async () => {
-      await subscriber.query(node.getProviderAccount().name, 'endp', 'test_query', false);
-      let qdata = await provider.queryQueriesInfo(0, -1 , 10);
+      await subscriber.query(node.getProviderAccount().name, 'endp', 'test_query', false, Date.now());
+      let qdata = await provider.queryQueriesInfo(0, -1 , 10, 1);
       let holder = await subscriber.queryHolders(0, -1, 10);
       await expect(qdata.rows[0].data).to.be.equal('test_query');
       await expect(holder.rows[0].escrow).to.be.equal(4);
@@ -94,9 +94,9 @@ describe('Test', () => {
     });
 
     it('#respond()', async () => {
-      await subscriber.query(node.getProviderAccount().name, 'endp', 'test_query2', false);
-      let qdata = await provider.queryQueriesInfo(0, -1 , 10);
-      await provider.respond(qdata.rows[0].id, '{p1: 1, p2: 2}');
+      await subscriber.query(node.getProviderAccount().name, 'endp', 'test_query2', false, Date.now());
+      let qdata = await provider.queryQueriesInfo(0, -1 , 10, 1);
+      await provider.respond(qdata.rows[0].id, '{p1: 1, p2: 2}', qdata.rows[0].subscriber);
     });
 
     it('#unbond()', async () => {
@@ -106,7 +106,7 @@ describe('Test', () => {
         await expect(issued.rows[0].dots).to.be.equal(3);
         await expect(holders.rows[0].dots).to.be.equal(0);
     });
-    
+
     after(() => {
         node.kill();
     })

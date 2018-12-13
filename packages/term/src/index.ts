@@ -79,13 +79,13 @@ async function main() {
 			process.exit(0);
 		}
 		else if (option == '0') {
-			await viewInfo(subscriber, node);
+			await viewInfo(subscriber, provider, providerTitle, node);
 		}
 		else if (option == '1') {
 			if (providerTitle == '') {
 				const params = await createProviderParams();
 				await provider.initiateProvider(params.title, params.public_key);
-				providerTitle = provider._account.name;
+				providerTitle = params.title;
 				console.log(`Created ${provider._account.name}: ${params.title}`)
 			}
 			else {
@@ -106,7 +106,7 @@ async function main() {
 		}
 		else if (option == '6') {
 			if (providerTitle.length > 0) {
-				await doResponses(provider);
+				await doResponses(provider, node);
 			}
 			else {
 				console.log('Unable to respond without setting up your provider first.');
