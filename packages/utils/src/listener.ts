@@ -33,7 +33,7 @@ export class EventObserver {
     },500);
   }
 
-  async takeNext(provider: string, action: string, lastTaken: string, fn?: Function) {
+  /*async takeNext(provider: string, action: string, lastTaken: string, fn?: Function) {
     const dbName = 'test';
     const client = await MongoClient.connect(url, { useNewUrlParser: true });
     const db = client.db(dbName);
@@ -66,7 +66,7 @@ export class EventObserver {
     const params = { "data.subscriber": subscriber, "data.timestamp": timestamp }
     const row = await collection.findOne(params);
     return row.answer;
-  }
+  }*/
   /*static async getAnswers(subscriber: string) {
     const dbName = 'test';
     const client = await MongoClient.connect(url, { useNewUrlParser: true });
@@ -76,7 +76,14 @@ export class EventObserver {
     const row = await collection.find(params).toArray();
     return row.answer;
   }*/
-
+  static async getPossibleLostAnswer(id: number, subscriber: string, provider: string, timestamp: number) {
+    const dbName = 'test';
+    const client = await MongoClient.connect(url, { useNewUrlParser: true });
+    const db = client.db(dbName);
+    const collection = db.collection("respond");
+    const res = await collection.findOne({"data.id": id, "data.subscriber": subscriber, "data.provider": provider, "createdAt": { "$gt" : timestamp } });
+    return (res) ? res.data.params : '';
+  }
   async broadcast (info: Message) {
     if (this.process) return;
 

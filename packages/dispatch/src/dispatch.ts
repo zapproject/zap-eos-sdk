@@ -91,10 +91,6 @@ export class Dispatch {
         return listener;
     }
 
-    listenNextQuery(provider: string, lastTaken: string, callback?: Function) {
-        this.listenerNextQuery.takeNext(provider, this._node.getZapAccount().name + '::query', lastTaken, callback);
-    }
-
     listenResponses(callback?: Function) {
         let listener = new Utils.DemuxEventListener();
         listener.on(this._node.getZapAccount().name + '::respond', callback);

@@ -75,8 +75,5 @@ export class Provider {
     async queryQueriesInfo(from: number, to: number, limit: number, indexType: number) {
       return await this.dispatch.queryQueriesInfo(from, to, limit, indexType);
     }
-    async listenNextQuery(lastTaken: string, callback: Function) {
-      return await this.dispatch.listenNextQuery(this._account.name, lastTaken, callback);
-    }
 
 }

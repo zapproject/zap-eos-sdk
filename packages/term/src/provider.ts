@@ -85,7 +85,6 @@ export async function getEndpointInfo(user: Subscriber, node: any): Promise<void
 
 
 export async function doQuery(user: Subscriber, node: any): Promise<void> {
-//	console.log(await DemuxEventListener.getAnswers(user._account.name));
 	const provider_name: string = await ask('Provider name> ');
 
 	if ( provider_name.length == 0 ) {
@@ -115,10 +114,9 @@ export async function doQuery(user: Subscriber, node: any): Promise<void> {
 	endpointParam = !!await ask('Onchain provider> ');
 	const query: string = await ask('Query> ');
 	console.log('Querying provider...');
-	const timestamp = parseInt(Date.now().toString().substring(3));
+	const timestamp = Date.now();
 	let transaction = await user.query(provider_name, endpoint, query, endpointParam, timestamp);
 	console.log('Queried provider. Transaction Hash:', transaction.transaction_id);
-	eos.getActions('zap.main').then((res: any) => console.log(JSON.stringify(res)))
 
 
 
@@ -131,34 +129,34 @@ export async function doQuery(user: Subscriber, node: any): Promise<void> {
 		console.log('Waiting for response');
 		let fulfilled = false;
     let id: number | undefined = undefined;
+		user.listenResponses((err: any, _res: any) => {
+			if ( fulfilled ) return;
+			const res = _res[0];
+			if (res.data.id == id &&
+				  res.data.responder === provider._account.name &&
+					res.data.subscriber === user._account.name) {
+						fulfilled = true;
+						resolve(res.data.params);
+					}
+		});
 		while (typeof id === 'undefined') {
 			sleep(500);
-   		const res =await provider.queryQueriesInfo(0, -1, -1, 3); //timestamp, timestamp + 1
+   		const res =await provider.queryQueriesInfo(timestamp, timestamp + 1, 1, 3); //timestamp, timestamp + 1
 			if (res.rows.length) {
 				const filtRes = res.rows.filter((x: any) => x.subscriber === user._account.name);
-				if(filtRes.length) id = filtRes[0].id;
+				if(filtRes.length) {
+					id = filtRes[0].id;
+					const answer = await DemuxEventListener.getPossibleLostAnswer(<number>id, user._account.name, provider._account.name, timestamp);
+					if (answer) {
+						fulfilled = true;
+						resolve(answer);
+					}
+				};
 			}
 		}
-		console.log('Query ID generate was', id);
-		resolve("ok");
+		console.log('Query ID generated was', id);
 
 		// Get the off chain response
-		user.listenResponses(async (err: any, res: any) => {
-		  resolve("ok");
-			return;
-
-		// Only call once
-			if ( fulfilled ) return;
-			fulfilled = true;
-
-			// Output response
-			if (res[0].data.provider === provider_name && res[0].data.subscriber === user._account.name) {
-				try {
-					const res = await DemuxEventListener.getAnswer(user._account.name, timestamp);
-					resolve(res.answer);
-				} catch(err) { reject(err); }
-			}
-		});
 	});
 	const res = await promise;
 	console.log('Response', res);
@@ -174,11 +172,13 @@ export async function doResponses(provider: Provider, node: any) {
 	const nextQuery = async() => {
 		const eos = await node.connect();
 		const encodedName = new BigNumber(eos.modules.format.encodeName(provider._account.name, false));
+		encodedName.plus(1);
 		return new Promise(async (resolve, reject) => {
 			let fulfilled = false;
 			while(!queries.length) {
-				sleep(500);
-				queries = (await provider.queryQueriesInfo(encodedName.toString(), encodedName.plus(1).toString(), 10, 2)).rows;
+				await sleep(500);
+				const res = await provider.queryQueriesInfo(encodedName.minus(1).toString(), encodedName.plus(1).toString(), 10, 2);
+				if (res.rows.length) queries = res.rows;
 			}
 			// Only call once
 			if ( fulfilled ) return;
@@ -197,9 +197,8 @@ export async function doResponses(provider: Provider, node: any) {
 		console.log(`Query [${data.endpoint}]: ${data.data}`);
 
 		const res: string = await ask('Response> ');
-    await DemuxEventListener.updateQuery(data.subscriber, data.timestamp, res);
 		const tx: string | any = await provider.respond(data.id, res, data.subscriber);
 
-		console.log(`Transaction Hash: ${tx.transactionId}\n`);
+		console.log(`Transaction Hash: ${tx.transaction_id}\n`);
 	}
 }

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { ask, loadAccount } from "./util";
-import { TestNode as Node } from "./environment";
+import { TestNode } from "./environment";
+import { ProdNode } from "./prodenvironment";
 import { Subscriber } from "@zapjs/eos-subscriber";
 import { Provider } from "@zapjs/eos-provider";
 import { DemuxEventListener } from "@zapjs/eos-utils";
@@ -15,11 +16,18 @@ const eos_ecc = require('eosjs-ecc');
 async function main() {
 
 	const privateKey = await ask('Enter your private key: ');
-	const node = new Node(privateKey, false, false, 'http://127.0.0.1:8888');
+	let node;
 
-	// Get the provider and contracts
-	await node.restart();
-	await node.init();
+	if (process.argv[2] === 'test') {
+		node = new TestNode(privateKey, false, false, 'http://127.0.0.1:8888');
+		// Get the provider and contracts
+		await node.restart();
+		await node.init();
+	}
+	else  {
+		node = new ProdNode(privateKey, false, process.argv[2]);
+	}
+
 	const eos = await node.connect();
 	DemuxEventListener.start();
 	const accountName = await loadAccount(privateKey, eos);

@@ -92,7 +92,7 @@
         },
         {
           "name": "timestamp",
-          "type": "uint128"
+          "type": "uint64"
         }
       ]
     },{
@@ -252,7 +252,7 @@
         },
         {
           "name": "timestamp",
-          "type": "uint128"
+          "type": "uint64"
         }
       ]
     },{
@@ -394,7 +394,7 @@
       "index_type": "i64",
       "key_names": [
         "id",
-        "byprovider"
+        "provider"
       ],
       "key_types": [
         "uint64",
@@ -416,12 +416,12 @@
       "index_type": "i64",
       "key_names": [
         "id",
-        "byprovider",
-        "bytimestamp"
+        "provider",
+        "timestamp"
       ],
       "key_types": [
         "uint64",
-        "uint64",
+        "name",
         "uint64"
       ],
       "type": "qdata"

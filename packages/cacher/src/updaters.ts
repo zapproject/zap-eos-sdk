@@ -53,7 +53,7 @@ async function updateTransferData(state: any, payload: any, blockInfo: any, cont
       name: payload.name,
       authorization: payload.authorization,
       data: payload.data,
-      createdAt: new Date(),
+      createdAt: Date.now(),
       answered: false,
     });
     process.send({id: s.insertedId, account: payload.account, name: payload.name});
