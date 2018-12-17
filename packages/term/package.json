@@ -18,7 +18,11 @@
   "license": "ISC",
   "dependencies": {
     "eosjs": "^16.0.8",
-    "big-number": "1.0.0"
+    "big-number": "1.0.0",
+    "hdkey": "1.1.0",
+    "wif": "2.0.6",
+    "bip39": "2.5.0",
+    "@zapjs/curve": "2.0.11"
   },
   "devDependencies": {
     "@types/node": "^10.10.3",

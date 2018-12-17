@@ -55,23 +55,6 @@ describe('Test', () => {
         await subscriber.bond(node.getProviderAccount().name, 'endp', 9);
         const issued = await provider.queryIssued(0, 1, 1);
         const holders = await subscriber.queryHolders(0, -1, 10);
-        const eos = await node.connect();
-        const providerName = "zap.provider";
-        const endpointName = "endp";
-        const encodedName = new BigNumber(eos.modules.format.encodeName(providerName, false));
-        console.log( await eos.getTableRows(
-            true, // json
-            node.getZapAccount().name, // code
-            node.getUserAccount().name, // scope
-            'holder', // table name
-            '', // table_key
-            encodedName.toString(), // lower_bound
-            encodedName.plus(1).toString(), // upper_bound
-            undefined, // limit
-            'i64', // key_type
-            1 // index position
-        ));
-        //console.log(JSON.stringify(issued), JSON.stringify(holders));
         await expect(issued.rows[0].dots).to.be.equal(9);
         await expect(holders.rows[0].dots).to.be.equal(9);
     });

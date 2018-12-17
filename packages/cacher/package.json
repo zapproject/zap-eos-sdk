@@ -1,5 +1,5 @@
 {
-  "name": "@zapjs/caching",
+  "name": "@zapjs/eos-caching",
   "version": "1.0.0",
   "description": "Interface for caching functions in eos blockchain",
   "main": "./out/index.js",
@@ -22,7 +22,6 @@
     "chai-bignumber": "2.0.2",
     "demux": "^1.0.3",
     "demux-eos": "2.0.0",
-    "mongodoki": "4.0.0",
     "mongodb": "3.1.8",
     "@zapjs/eos-provider": "^1.0.0"
   },

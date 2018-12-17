@@ -78,11 +78,11 @@ describe('Test', () => {
         await expect(holders.rows[0].dots).to.be.equal(1);
     });
     it('#unbond()', async () => {
-      await bondage.unbond(node.getProviderAccount().name, 'endp', 1);
-      const issued = await bondageProvider.queryIssued(0, 1, 1);
-      const holders = await bondage.queryHolders(0, -1, 10);
-      await expect(issued.rows[0].dots).to.be.equal(0);
-      await expect(holders.rows[0].dots).to.be.equal(0);
+        await bondage.unbond(node.getProviderAccount().name, 'endp', 1);
+        const issued = await bondageProvider.queryIssued(0, 1, 1);
+        const holders = await bondage.queryHolders(0, -1, 10);
+        await expect(issued.rows[0].dots).to.be.equal(0);
+        await expect(holders.rows[0].dots).to.be.equal(0);
     });
 
     after(() => {
@@ -103,6 +103,7 @@ describe('Test-listeners', () => {
                 await node.restart();
                 await node.init();
                 await node.connect();
+                await Utils.DemuxEventListener.start(['http://127.0.0.1:8888', 'zap.main']);
                 registry = new Regsitry({
                     account: node.getProviderAccount(),
                     node
@@ -131,14 +132,13 @@ describe('Test-listeners', () => {
         registry.initiateProvider('tests', 10)).then(() =>
         registry.addEndpoint('endp', [3, 0, 0, 2, 10000], '')).then(() =>
         bondage.bond(node.getProviderAccount().name, 'endp', 1));
-      ;
     });
     it('#listenUnbond()', done => {
         bondage.listenUnbond(async (data: any) => {
             try {
                 await expect(data[0].name).to.be.equal('unbond');
                 done();
-            }catch(err){done (err)}
+            } catch(err) { done (err) }
         });
         bondage.unbond(node.getProviderAccount().name, 'endp', 1);
     });

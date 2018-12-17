@@ -14,7 +14,7 @@ const actionHandler = new ObjectActionHandler(
 )
 
 const actionReader = new NodeosActionReader(
-"http://127.0.0.1:8888", // Thanks EOS Calgary!
+process.argv[2], // Thanks EOS Calgary!
   0, // Start at most recent blocks
 )
 

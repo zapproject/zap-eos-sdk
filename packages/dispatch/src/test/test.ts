@@ -105,14 +105,13 @@ describe('Test', () => {
         let eos = await node.connect();
         let qdata = await getRowsByPrimaryKey(eos, node, node.getZapAccount().name, 'qdata', 'id');
         let holder = await getRowsByPrimaryKey(eos, node, node.getUserAccount().name, 'holder', 'provider');
-        console.log(JSON.stringify(holder), JSON.stringify(holder))
 
         await expect(holder.rows[0].escrow).to.be.equal(0);
         await expect(holder.rows[0].dots).to.be.equal(1);
     });
 
     it('#respond()', async () => {
-       await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false, Date.now());
+        await dispatch.query(node.getProviderAccount().name, 'endp', 'test_query', false, Date.now());
 
         let eos = await node.connect();
         let qdata = await getRowsByPrimaryKey(eos, node, node.getZapAccount().name, 'qdata', 'id');
@@ -146,6 +145,7 @@ describe('Test-listeners', () => {
                 await node.restart();
                 await node.init();
                 await node.connect();
+                await Utils.DemuxEventListener.start(['http://127.0.0.1:8888', 'zap.main']);
                 registry = new Regsitry({
                     account: node.getProviderAccount(),
                     node
@@ -200,7 +200,6 @@ describe('Test-listeners', () => {
         dispatch.listenResponses(async (err: any, data: any) => {
             try {
                 await expect(data[0].data.params).to.be.equal('{p1: 1, p2: 2}');
-                console.log(JSON.stringify(data));
                 done();
             }catch(err){done (err)}
         });

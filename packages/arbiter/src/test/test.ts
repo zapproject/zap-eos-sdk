@@ -6,7 +6,7 @@ import {Regsitry} from "@zapjs/eos-registry";
 import {Bondage} from "@zapjs/eos-bondage";
 import {Arbiter} from "../../src";
 import {TestNode as Node} from './environment';
-
+import * as Utils from "@zapjs/eos-utils";
 
 async function configureEnvironment(func: Function) {
     await func();
@@ -112,6 +112,7 @@ describe('Test-listeners', () => {
                 await node.restart();
                 await node.init();
                 await node.connect();
+                await Utils.DemuxEventListener.start(['http://127.0.0.1:8888', 'zap.main']);
                 registry = new Regsitry({
                     account: node.getProviderAccount(),
                     node

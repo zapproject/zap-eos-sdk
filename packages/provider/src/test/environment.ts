@@ -9,12 +9,6 @@ import * as stream from "stream";
 import { Binaries } from "@zapjs/eos-binaries";
 
 
-//TODO: receive dynamically
-/*const NODEOS_PATH = '/home/kostya/blockchain/eos/build/programs/nodeos/nodeos';
-const EOS_DIR = '/home/kostya/blockchain/eos';
-
-const ACC_TEST_PRIV_KEY = '5KfFufnUThaEeqsSeMPt27Poan5g8LUaEorsC1hHm1FgNJfr3sX';
-const ACC_OWNER_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';*/
 const NODEOS_PATH = '/usr/local/bin/nodeos';
 const EOS_DIR = '/home/user/eos';
 

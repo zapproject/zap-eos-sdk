@@ -59,6 +59,7 @@ describe('Test-listeners', async () => {
         try {
             await node.restart();
             await node.init();
+            await Utils.DemuxEventListener.start(['http://127.0.0.1:8888', 'zap.main']);
             registry = await new Regsitry({
                 account: node.getProvider(),
                 node
