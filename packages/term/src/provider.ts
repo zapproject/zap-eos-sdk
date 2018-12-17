@@ -140,7 +140,7 @@ export async function doQuery(user: Subscriber, node: any): Promise<void> {
 				});
 				while (typeof id === 'undefined') {
 						sleep(500);
-   				const res =await provider.queryQueriesInfo(timestamp, timestamp + 1, 1, 3); //timestamp, timestamp + 1
+   					const res =await provider.queryQueriesInfo(timestamp, timestamp + 1, 1, 3); //timestamp, timestamp + 1
 						if (res.rows.length) {
 								const filtRes = res.rows.filter((x: any) => x.subscriber === user._account.name);
 								if(filtRes.length) {

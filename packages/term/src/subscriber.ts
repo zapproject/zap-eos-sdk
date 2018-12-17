@@ -4,8 +4,6 @@ const BigNumber = require('big-number');
 import { sleep, ask, calcDotPrice} from "./util";
 
 
-
-
 export async function doBondage(user: Subscriber, node: any) {
 		// Load subscriber information
 		const eos = await node.connect();
@@ -22,9 +20,6 @@ export async function doBondage(user: Subscriber, node: any) {
 
 		const endpoint: string = await ask('Endpoint> ');
 
-
-
-
 		const provider: Provider = await node.loadProvider(provider_name, node);
 
 		const encodedName = new BigNumber(eos.modules.format.encodeName(provider._account.name, false));
@@ -33,10 +28,8 @@ export async function doBondage(user: Subscriber, node: any) {
 		const _bound = allHolders.rows.filter((raw: any) => raw.endpoint === endpoint);
 		const bound_before = (_bound.length) ? _bound[0].dots : 0;
 		const endpoints = await provider.queryProviderEndpoints(0, -1, -1);
-		let endpIndex = 0;
 		const endp = endpoints.rows.filter((x: any, index: any, arr: any) => {
 				if(x.specifier === endpoint) {
-						endpIndex = index;
 						return true;
 				}
 		});
@@ -88,14 +81,18 @@ export async function doUnbondage(user: Subscriber, node: any) {
 		const endpoint: string = await ask('Endpoint> ');
 		const eos = await node.connect();
 		const provider: Provider = await node.loadProvider(provider_name, node);
-		const encodedName = new BigNumber(eos.modules.format.encodeName(provider._account.name, false));//title убрать из индекса
+		const encodedName = new BigNumber(eos.modules.format.encodeName(provider._account.name, false));
 
 		const allHolders = await user.queryHolders(encodedName.toString(), encodedName.plus(1).toString(), 1000);
 		const _bound_before = allHolders.rows.filter((raw: any) => raw.endpoint === endpoint);
-		const bound_before = _bound_before[0].dots;
+		const bound_before = (_bound_before.length) ? _bound_before[0].dots : -1;
 
 		if ( bound_before === 0 ) {
 				console.log('You have no DOTs bound to this provider.');
+				return;
+		}
+		else if ( bound_before === -1 ) {
+				console.log("Unable to find the endpoint");
 				return;
 		}
 
@@ -149,7 +146,6 @@ export async function listOracles(provider: Provider, node: any) {
 		}
 }
 
-
 export async function viewInfo(user: Subscriber, provider: Provider, providerTitle: string, node: any) {
 
 		console.log(`Name: ${user._account.name}`);
@@ -157,10 +153,10 @@ export async function viewInfo(user: Subscriber, provider: Provider, providerTit
 		let title = providerTitle;
 		let account = provider._account.name;
 		let endpoints = await provider.queryProviderEndpoints(0, -1, -1);
-		if (providerTitle)
+		if (providerTitle) {
 				console.log(`Provider is existed in Registry:
 				\nTitle: ${title},\nAccount : ${account},\nEndpoints: ${endpoints.rows.map((x: any) => x.specifier).join(', ')}`);
-		else console.log("Provider is not existed with this account");
+			} else console.log("Provider is not existed with this account");
 		const bal = await eos.getCurrencyBalance("zap.token", user._account.name, 'TST');
 		console.log('Balance: ', bal[0]);
 
