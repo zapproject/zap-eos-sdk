@@ -1,7 +1,6 @@
 import {nodeConfig, nodeOptions} from "./types/types";
 import {Account} from "./index";
 
-const Sleep = require('sleep');
 const Eos = require('eosjs');
 
 const STARTUP_TIMEOUT = 30000;
@@ -16,7 +15,11 @@ function checkTimeout(startTime: Date, timeout: number) {
         throw timeoutException
     }
 }
-
+export function sleep(timeout: number): Promise<void> {
+		return new Promise((resolve, reject) => {
+				setTimeout(resolve, timeout);
+		})
+}
 
 export class Node {
     eos_config: nodeConfig;
@@ -50,14 +53,14 @@ export class Node {
                             let res = await eos.getBlock(STARTUP_BLOCK);
                             break;
                         } catch (e) {
-                            Sleep.msleep(STARTUP_REQUESTS_DELAY);
+                            sleep(STARTUP_REQUESTS_DELAY);
                             checkTimeout(startTime, timeout);
                         }
                     }
                     break;
                 }
             } catch (e) {
-                Sleep.msleep(STARTUP_REQUESTS_DELAY);
+                sleep(STARTUP_REQUESTS_DELAY);
                 checkTimeout(startTime, timeout);
             }
         }

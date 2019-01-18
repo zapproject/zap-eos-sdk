@@ -5,9 +5,9 @@ const expect = require('chai')
 const path = require('path');
 const fs = require('fs');
 import {tokenMinting} from "../../src/minting";
-import {Account, Deployer} from '@zapjs/eos-utils';
+import {Account} from '@zapjs/eos-utils';
 import {TestNode as Node} from './environment';
-import * as Utils from "@zapjs/eos-utils";
+
 
 
 async function configureEnvironment(func: Function) {

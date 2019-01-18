@@ -1,6 +1,6 @@
 import {deployerOptions} from "./types/types";
-import {Account} from "./account";
-import {Transaction} from "./transaction";
+import {Account, Transaction} from "@zapjs/eos-utils";
+
 
 export class Deployer {
     _eos: any;

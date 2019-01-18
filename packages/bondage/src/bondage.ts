@@ -84,17 +84,4 @@ export class Bondage {
         );
     }
 
-    listenBond(callback?: Function) {
-        let listener = new Utils.DemuxEventListener();
-        listener.on(this._node.getZapAccount().name + '::bond', callback);
-
-        return listener;
-    }
-
-    listenUnbond(callback?: Function) {
-        let listener = new Utils.DemuxEventListener();
-        listener.on(this._node.getZapAccount().name + '::unbond', callback);
-
-        return listener;
-    }
 }

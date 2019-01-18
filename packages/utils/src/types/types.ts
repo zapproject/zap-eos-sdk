@@ -15,10 +15,6 @@ export type nodeConfig = {
     sign: boolean
 };
 
-export type deployerOptions = {
-    eos: any,
-    contract_name: string
-};
 
 export type Message = {
   name: string,

@@ -5,8 +5,8 @@ import { Dispatch } from "@zapjs/eos-dispatch";
 import { SubscriberOptions } from "./types/types";
 
 export class Subscriber {
-    _account: Utils.Account;
-    _node: Utils.Node;
+    private _account: Utils.Account;
+    private _node: Utils.Node;
     _zap_account: Utils.Account;
     bondage: Bondage;
     arbiter: Arbiter;
@@ -32,6 +32,12 @@ export class Subscriber {
 
     async connect() {
         return await this._node.connect();
+    }
+    getAccount() {
+      return this._account;
+    }
+    getNode() {
+      return this._node;
     }
 
     async bond(provider: string, endpoint: string, amount: number) {
@@ -60,8 +66,5 @@ export class Subscriber {
 
     async cancelQuery(id: number)  {
         return await this.dispatch.cancelQuery(id);
-    }
-    async listenResponses(callback: Function)  {
-        return await this.dispatch.listenResponses(callback);
     }
 }

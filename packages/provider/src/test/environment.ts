@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
-import {Account, Node, Deployer, Transaction, SimpleEventListener as EventListener} from '@zapjs/eos-utils';
+import {Account, Node, Transaction} from '@zapjs/eos-utils';
+import {Deployer} from '@zapjs/eos-node-utils';
 import {spawn, execSync} from 'child_process';
 
 const PROJECT_PATH = path.join(__dirname + '/..');

@@ -1,5 +1,5 @@
 {
-  "name": "@zapjs/minting",
+  "name": "@zapjs/eos-minting",
   "version": "1.0.0",
   "description": "Interface for registry functions in eos blockchain",
   "main": "./out/index.js",
@@ -32,6 +32,7 @@
     "ts-node": "^7.0.1",
     "tslint": "^5.10.0",
     "typescript": "^2.9.2",
+    "@zapjs/eos-node-utils": "^1.0.0",
     "@zapjs/eos-binaries": "^1.0.0"
   }
 }

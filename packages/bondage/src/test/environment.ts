@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
-import {Account, Node, Deployer, Transaction, SimpleEventListener as EventListener} from '@zapjs/eos-utils';
+import {Account, Node, Transaction} from '@zapjs/eos-utils';
+import {Deployer} from '@zapjs/eos-node-utils';
 import {spawn, execSync} from 'child_process';
 
 const PROJECT_PATH = path.join(__dirname + '/..');
@@ -10,8 +11,8 @@ import { Binaries } from "@zapjs/eos-binaries";
 
 
 //TODO: receive dynamically
-const NODEOS_PATH = '/home/kostya/blockchain/eos/build/programs/nodeos/nodeos';
-const EOS_DIR = '/home/kostya/blockchain/eos';
+const NODEOS_PATH = '/usr/local/bin/nodeos';
+const EOS_DIR = '/home/user/eos';
 
 const ACC_TEST_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';
 const ACC_OWNER_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';

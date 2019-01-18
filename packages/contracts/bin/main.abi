@@ -444,7 +444,8 @@
         "id"
       ],
       "key_types": [
-        "uint64"
+        "uint64",
+        "uint256"
       ],
       "type": "params"
     }

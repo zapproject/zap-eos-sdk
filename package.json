@@ -8,7 +8,10 @@
   "dependencies": {
     "big-number": "^1.0.0",
     "eosjs": "^16.0.7",
-    "sleep": "^5.2.3"
+    "sleep": "^5.2.3",
+    "hdkey": "1.1.0",
+    "wif": "2.0.6",
+    "bip39": "2.5.0"
   },
   "workspaces": [
     "packages/*"

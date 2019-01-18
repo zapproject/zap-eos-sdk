@@ -10,7 +10,6 @@ export class Dispatch {
     constructor({account, node}: DispatchOptions) {
         this._account = account;
         this._node = node;
-        this.listenerNextQuery = new Utils.DemuxEventListener();
         this._zap_account = node.getZapAccount();
     }
 
@@ -84,24 +83,4 @@ export class Dispatch {
         );
     }
 
-    listenQueries(callback?: Function) {
-        let listener = new Utils.DemuxEventListener();
-        listener.on(this._node.getZapAccount().name + '::query', callback);
-
-        return listener;
-    }
-
-    listenResponses(callback?: Function) {
-        let listener = new Utils.DemuxEventListener();
-        listener.on(this._node.getZapAccount().name + '::respond', callback);
-
-        return listener;
-    }
-
-    listenCancels(callback?: Function) {
-        let listener = new Utils.DemuxEventListener();
-        listener.on(this._node.getZapAccount().name + '::cancelquery', callback);
-
-        return listener;
-    }
 }

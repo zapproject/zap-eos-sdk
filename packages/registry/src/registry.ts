@@ -39,6 +39,17 @@ export class Registry {
             .execute(eos);
     }
 
+    async setParams(endpoint: string, params: Array<string>) {
+        let eos = await this.connect();
+
+        return await new Utils.Transaction()
+            .sender(this._account)
+            .receiver(this._zap_account_name)
+            .action('setparams')
+            .data({provider: this._account.name, specifier: endpoint, params: params})
+            .execute(eos);
+    }
+
     async queryProviderList(from: number, to: number, limit: number = -1) {
         let eos = await this.connect();
 
@@ -53,6 +64,22 @@ export class Registry {
             limit, // limit
             'i64', // key_type
             1 // index position
+        );
+    }
+    async queryParams(from: number, to: number, limit: number = -1, index: number) {
+        let eos = await this.connect();
+
+        return await eos.getTableRows(
+            true, // json
+            this._zap_account_name.name, // code
+            this._account.name, // scope
+            'params', // table name
+            'provider', // table_key
+            from, // lower_bound
+            to, // upper_bound
+            limit, // limit
+            (index === 2) ? 'i256' : 'i64', // key_type
+            index // index position
         );
     }
 
@@ -73,17 +100,4 @@ export class Registry {
         );
     }
 
-    listenNewProvider(callback?: Function) {
-        let listener = new Utils.DemuxEventListener();
-        listener.on(this._node.getZapAccount().name + '::newprovider', callback);
-
-        return listener;
-    }
-
-    listenNewEndpoint(callback?: Function) {
-        let listener = new Utils.DemuxEventListener();
-        listener.on(this._node.getZapAccount().name + '::addendpoint', callback);
-
-        return listener;
-    }
 }
