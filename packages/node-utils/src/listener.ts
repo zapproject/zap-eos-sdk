@@ -6,6 +6,8 @@ const fork = require('child_process').fork;
 const program = path.resolve(__dirname,'../node_modules/.bin/listen-eos');
 const options = {stdio:  ['pipe', 1, 2, 'ipc']};
 let child: any;
+const events = require('events');
+const eosActionsEventEmitter = new events.EventEmitter();
 import {Message} from "./types/types";
 
 
@@ -14,23 +16,36 @@ export class EventObserver {
   process: boolean;
   observerFunction: Function | undefined;
   incoming: any;
+  intervalId: any;
+  action: any;
+
   constructor () {
     this.lastTakenId = null;
     this.process = false;
     this.incoming = null;
   }
 
+  newIncoming(message: any) {
+    if (this.action !== `${message.account}::${message.name}`) return;
+    this.incoming = {...message};
+  };
+
   on (action: string, fn?: Function) {
     this.observerFunction = fn;
-    child.on('message', (message: any) => {
-      if (action !== `${message.account}::${message.name}`) return;
-      this.incoming = {...message};
-    });
-    setInterval(() => {
+    this.action = action;
+    eosActionsEventEmitter.addListener('message', this.newIncoming);
+
+    this.intervalId = setInterval(() => {
       if((this.incoming && !this.lastTakenId) ||
       (this.incoming && ObjectId(this.incoming.id) > ObjectId(this.lastTakenId))) this.broadcast(this.incoming);
     },500);
   }
+
+  off() {
+    clearInterval(this.intervalId);
+    eosActionsEventEmitter.removeListener('message', this.newIncoming);
+  }
+
 
   static async getPossibleLostAnswer(id: number, subscriber: string, provider: string, timestamp: number) {
     const dbName = 'local';
@@ -63,8 +78,9 @@ export class EventObserver {
     if (child) child.kill();
   }
 
-  static async start(params: [string, string, string]) {
+  static async start(params: [string, string, number]) {
     child = fork(program, params, options);
+    child.on('message', (message: any) => eosActionsEventEmitter.emit("message", message));
     console.log("api server started")
   }
 }
