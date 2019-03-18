@@ -16,29 +16,29 @@ const bip39 = require('bip39')
 
 
 async function main() {
-	const mnemonic = await ask("Enter you seed phrase in order to retrieve your private key>");
+	/*const mnemonic = await ask("Enter you seed phrase in order to retrieve your private key>");
 	const seed = bip39.mnemonicToSeedHex(mnemonic)
 	const master = hdkey.fromMasterSeed(new Buffer(seed, 'hex'))
 	const nodem = master.derive("m/44'/194'/0'/0/0")
 	console.log("privateKey: " + wif.encode(128, nodem._privateKey, false))
 
-	const privateKey = await ask('Enter your private key: ');
+	const privateKey = await ask('Enter your private key: ');*/
 	let node;
 	let endp;
 
 	if (process.argv[2] === 'test') {
 		endp = 'http://127.0.0.1:8888';
-		node = new TestNode(privateKey, false, false, endp);
+		node = new TestNode('5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3', false, false, endp);
 		await node.restart();
 		await node.init();
 	}
 	else  {
-		node = new ProdNode(privateKey, false, process.argv[2]);
+		node = new ProdNode('5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3', false, process.argv[2]);
 		endp =  process.argv[2];
 	}
 
 	const eos = await node.connect();
-	const accountName = await loadAccount(privateKey, eos);
+	const accountName = await loadAccount('5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3', eos);
 	let provider = await node.loadProvider(accountName, node);
 	let subscriber = await node.loadSubscriber(accountName, node);
 

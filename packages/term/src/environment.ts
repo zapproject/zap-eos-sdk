@@ -14,7 +14,7 @@ import { Provider } from "@zapjs/eos-provider";
 const NODEOS_PATH = '/usr/local/bin/nodeos';
 const EOS_DIR = '/home/user/eos';
 
-const ACC_OWNER_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';
+const ACC_OWNER_PRIV_KEY = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';//'5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3';
 
 function waitEvent(event: stream.Readable, type: string) {
 	return new Promise(function (resolve, reject) {
@@ -53,7 +53,7 @@ export class TestNode extends Node {
 	constructor(privateKey: string, verbose: boolean, recompile: boolean, endpoint: string) {
 		super({
 			verbose: verbose,
-			key_provider: [privateKey, '5KfFufnUThaEeqsSeMPt27Poan5g8LUaEorsC1hHm1FgNJfr3sX'],
+			key_provider: [privateKey, '5JYUDViJcV1fw1oxyecfBv33hewaA4MzGeqER29CRdb1FHTKKFH'],
 			http_endpoint: 'http://127.0.0.1:8888',
 			chain_id: ''
 		});
@@ -64,7 +64,7 @@ export class TestNode extends Node {
 		this.nodeos_path = NODEOS_PATH;
 		this.zap = this.getZapAccount().usePrivateKey(this.ACC_USER_PRIV_KEY);
 		this.provider = new Account('zap.provider').usePrivateKey(this.ACC_USER_PRIV_KEY);
-		this.user = new Account('user').usePrivateKey('5KfFufnUThaEeqsSeMPt27Poan5g8LUaEorsC1hHm1FgNJfr3sX');
+		this.user = new Account('user').usePrivateKey('5JYUDViJcV1fw1oxyecfBv33hewaA4MzGeqER29CRdb1FHTKKFH');
 		this.token = new Account('zap.token').usePrivateKey(this.ACC_USER_PRIV_KEY);
 	}
 
@@ -74,7 +74,7 @@ export class TestNode extends Node {
 		}
 		// use spawn function because nodeos has infinity output
 		//this.instance = spawn(this.nodeos_path, ['--contracts-console', '--delete-all-blocks', '--access-control-allow-origin=*']);
-		this.instance = spawn(this.nodeos_path, ['-e -p eosio', '--delete-all-blocks', '--access-control-allow-origin=*', '--contracts-console', '--plugin eosio::producer_plugin', '--plugin eosio::history_plugin', '--plugin eosio::chain_api_plugin', '--plugin eosio::history_api_plugin', '--plugin eosio::http_plugin'], {shell: true, detached: true});
+		this.instance = spawn("nodeos", ['-e -p eosio', '--delete-all-blocks', '--access-control-allow-origin=*', '--contracts-console', '--plugin eosio::producer_plugin', '--plugin eosio::history_plugin', '--plugin eosio::chain_api_plugin', '--plugin eosio::history_api_plugin', '--plugin eosio::http_plugin'], {shell: true, detached: true});
 		// wait until node is running
 
 		while (this.running === false) {

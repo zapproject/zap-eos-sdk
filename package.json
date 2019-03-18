@@ -11,7 +11,9 @@
     "sleep": "^5.2.3",
     "hdkey": "1.1.0",
     "wif": "2.0.6",
-    "bip39": "2.5.0"
+    "bip39": "2.5.0",
+    "@zapjs/curve": "2.0.14",
+    "zap-curve-chart": "git+https://github.com/zapproject/zap-curve-chart.git"
   },
   "workspaces": [
     "packages/*"
