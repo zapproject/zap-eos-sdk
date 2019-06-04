@@ -5,6 +5,7 @@ export class Dispatch {
     _account: Utils.Account;
     _node: Utils.Node;
     _zap_account: Utils.Account;
+    listenerNextQuery: any;
 
     constructor({account, node}: DispatchOptions) {
         this._account = account;
@@ -16,7 +17,7 @@ export class Dispatch {
         return await this._node.connect();
     }
 
-    async query(provider: string, endpoint: string, query: string, onchain_provider: boolean) {
+    async query(provider: string, endpoint: string, query: string, onchain_provider: boolean, timestamp: number) {
         let eos = await this.connect();
 
         return new Utils.Transaction()
@@ -29,12 +30,13 @@ export class Dispatch {
                 endpoint: endpoint,
                 query: query,
                 onchain_provider: onchain_provider ? 1 : 0,
-                onchain_subscriber: 0 // if we call it from js then it not onchain subscriber
+                onchain_subscriber: 0, // if we call it from js then it not onchain subscriber
+                timestamp: timestamp
             })
             .execute(eos);
     }
 
-    async respond(id: number, params: string) {
+    async respond(id: number, params: string, subscriber: string) {
         let eos = await this.connect();
 
         return new Utils.Transaction()
@@ -44,7 +46,8 @@ export class Dispatch {
             .data({
                 responder: this._account.name,
                 id: id,
-                params: params
+                params: params,
+                subscriber: subscriber
             })
             .execute(eos);
     }
@@ -63,7 +66,7 @@ export class Dispatch {
             .execute(eos);
     }
 
-    async queryQueriesInfo(from: number, to: number, limit: number) {
+    async queryQueriesInfo(from: number, to: number, limit: number, indexPosition: number) {
         let eos = await this.connect();
 
         return await eos.getTableRows(
@@ -76,28 +79,8 @@ export class Dispatch {
             to, // upper_bound
             limit, // limit
             'i64', // key_type
-            1 // index position
+            indexPosition // index position
         );
     }
 
-    listenQueries(callback?: Function) {
-        let listener = new Utils.DemuxEventListener();
-        listener.on(this._node.getZapAccount().name + '::query', callback);
-
-        return listener;
-    }
-
-    listenResponses(callback?: Function) {
-        let listener = new Utils.DemuxEventListener();
-        listener.on(this._node.getZapAccount().name + '::respond', callback);
-
-        return listener;
-    }
-
-    listenCancels(callback?: Function) {
-        let listener = new Utils.DemuxEventListener();
-        listener.on(this._node.getZapAccount().name + '::cancelquery', callback);
-
-        return listener;
-    }
 }

@@ -83,17 +83,4 @@ export class Arbiter {
         );
     }
 
-    listenSubscriptionStart(callback?: Function) {
-        let listener = new Utils.DemuxEventListener();
-        listener.on(this._node.getZapAccount().name + '::subscribe', callback);
-
-        return listener;
-    }
-
-    listenSubscriptionEnd(callback?: Function) {
-        let listener = new Utils.DemuxEventListener();
-        listener.on(this._node.getZapAccount().name + '::unsubscribe', callback);
-
-        return listener;
-    }
 }

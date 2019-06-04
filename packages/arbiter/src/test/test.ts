@@ -6,7 +6,7 @@ import {Regsitry} from "@zapjs/eos-registry";
 import {Bondage} from "@zapjs/eos-bondage";
 import {Arbiter} from "../../src";
 import {TestNode as Node} from './environment';
-
+import * as Utils from "@zapjs/eos-utils";
 
 async function configureEnvironment(func: Function) {
     await func();
@@ -91,72 +91,6 @@ describe('Test', () => {
         await arbiterProvider.unsubscribeProvider(node.getUserAccount().name, 'endp');
         let res = await arbiterSub.querySubscriptions(node.getProviderAccount().name, 0, 10, 10);
         await expect(res.rows.length).to.be.equal(0);
-    });
-
-    after(() => {
-        node.kill();
-    })
-});
-describe('Test-listeners', () => {
-    let node: any;
-    let registry: Regsitry;
-    let bondage: Bondage;
-    let arbiterSub: Arbiter;
-    let arbiterProvider: Arbiter;
-
-    before(function (done) {
-        this.timeout(30000);
-        configureEnvironment(async () => {
-            try {
-                node = new Node(false, false, 'http://127.0.0.1:8888');
-                await node.restart();
-                await node.init();
-                await node.connect();
-                registry = new Regsitry({
-                    account: node.getProviderAccount(),
-                    node
-                });
-                bondage = new Bondage({
-                    account: node.getUserAccount(),
-                    node
-                });
-                arbiterSub = new Arbiter({
-                    account: node.getUserAccount(),
-                    node
-                });
-
-                arbiterProvider = new Arbiter({
-                    account: node.getProviderAccount(),
-                    node
-                });
-
-            } catch (e) {
-                console.log(e);
-            }
-            done();
-        });
-    });
-
-    it('#listenSubscriptionStart()', done => {
-        arbiterSub.listenSubscriptionStart(async (data:any) => {
-            try {
-                await expect(data[0].data.dots).to.be.equal(3);
-                done();
-            }catch(err) {done(err);}
-        });
-        registry.initiateProvider('tests', 10).then(() =>
-        registry.addEndpoint('endp', [3, 0, 0, 2, 10000], '')).then(() =>
-        bondage.bond(node.getProviderAccount().name, 'endp', 6)).then(() =>
-        arbiterSub.subscribe(node.getProviderAccount().name, 'endp', 3, '{p: 1}'));
-    });
-    it('#listenSubscriptionEnd()', done => {
-        arbiterSub.listenSubscriptionEnd(async (data:any) => {
-            try {
-                await expect(data[0].data.endpoint).to.be.equal('endp');
-                done();
-            }catch(err) {done(err);}
-        });
-        arbiterSub.unsubscribeSubscriber(node.getProviderAccount().name, 'endp');
     });
 
     after(() => {
