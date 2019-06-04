@@ -1,6 +1,6 @@
 {
   "name": "@zapjs/eos-minting",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Interface for registry functions in eos blockchain",
   "main": "./out/index.js",
   "types": "./out/types.d.ts",
