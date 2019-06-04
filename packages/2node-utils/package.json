@@ -26,6 +26,9 @@
     "@zapjs/eos-utils": "^1.0.0"
   },
   "devDependencies": {
-    "@types/node": "^10.10.0"
+    "@types/node": "^10.10.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2"
   }
 }
