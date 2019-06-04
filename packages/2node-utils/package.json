@@ -1,7 +1,7 @@
 {
   "name": "@zapjs/eos-node-utils",
-  "version": "0.1.0",
-   "private": false,
+  "version": "0.1.1",
+  "private": false,
   "description": "utils for eos sdk",
   "repository": "https://github.com/smartum-ks/eos-sdk.git",
   "main": "./out/index.js",
@@ -19,8 +19,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@zapjs/eos-caching": "^0.1.0",
-    "@zapjs/eos-utils": "^0.1.0",
+    "@zapjs/eos-caching": "^0.1.1",
+    "@zapjs/eos-utils": "^0.1.1",
     "demux": "^2.0.0",
     "demux-eos": "^2.0.0",
     "eosjs": "^16.0.7",

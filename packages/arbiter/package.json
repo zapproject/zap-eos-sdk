@@ -1,6 +1,6 @@
 {
   "name": "@zapjs/eos-arbiter",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "description": "Interface for arbiter functions in eos blockchain",
   "main": "./out/index.js",
@@ -19,17 +19,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@zapjs/eos-bondage": "^0.1.0",
-    "@zapjs/eos-registry": "^0.1.0",
+    "@zapjs/eos-bondage": "^0.1.1",
+    "@zapjs/eos-registry": "^0.1.1",
     "eosjs": "^16.0.8"
   },
   "devDependencies": {
     "@types/chai": "^4.1.5",
     "@types/mocha": "^5.2.4",
     "@types/node": "^10.10.0",
-    "@zapjs/eos-binaries": "^0.1.0",
-    "@zapjs/eos-node-utils": "^0.1.0",
-    "@zapjs/eos-utils": "^0.1.0",
+    "@zapjs/eos-binaries": "^0.1.1",
+    "@zapjs/eos-node-utils": "^0.1.1",
+    "@zapjs/eos-utils": "^0.1.1",
     "chai": "^4.2.0",
     "chai-as-promised": "7.1.1",
     "chai-bignumber": "2.0.2",
