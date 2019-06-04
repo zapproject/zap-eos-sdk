@@ -1,6 +1,7 @@
 {
   "name": "@zapjs/eos-subscriber",
   "version": "1.0.0",
+  "private": false,
   "description": "Interface for subscriber functions in eos blockchain",
   "main": "./out/index.js",
   "types": "./out/types.d.ts",

@@ -1,6 +1,7 @@
 {
   "name": "@zapjs/eos-term",
   "version": "1.0.0",
+  "private": false,
   "description": "Zap-term for eos",
   "main": "./out/index.js",
   "types": "./out/types.d.ts",

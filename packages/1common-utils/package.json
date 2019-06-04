@@ -1,5 +1,6 @@
 {
   "name": "@zapjs/eos-utils",
+  "private": false,
   "version": "1.0.0",
   "description": "utils for eos sdk",
   "repository": "https://github.com/smartum-ks/eos-sdk.git",

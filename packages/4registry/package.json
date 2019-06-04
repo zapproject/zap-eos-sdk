@@ -1,6 +1,7 @@
 {
   "name": "@zapjs/eos-registry",
   "version": "1.0.0",
+  "private": false,
   "description": "Interface for registry functions in eos blockchain",
   "main": "./out/index.js",
   "types": "./out/types.d.ts",

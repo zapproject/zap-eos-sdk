@@ -1,6 +1,7 @@
 {
   "name": "@zapjs/eos-provider",
   "version": "1.0.0",
+  "private": false,
   "description": "Interface for provider functions in eos blockchain",
   "main": "./out/index.js",
   "types": "./out/types.d.ts",

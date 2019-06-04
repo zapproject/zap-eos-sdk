@@ -1,6 +1,7 @@
 {
   "name": "@zapjs/eos-dispatch",
   "version": "1.0.0",
+  "private": false,
   "description": "Interface for dispatch functions in eos blockchain",
   "main": "./out/index.js",
   "types": "./out/types.d.ts",
