@@ -1,6 +1,6 @@
 {
   "name": "@zapjs/eos-binaries",
-  "version": "1.0.0",
+  "version": "0.1.0-alpha.0",
   "private": false,
   "description": "Binaries for eos sdk",
   "repository": "https://github.com/smartum-ks/eos-sdk.git",
@@ -18,8 +18,6 @@
   ],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-  },
   "devDependencies": {
     "@types/node": "^10.10.0",
     "ts-node": "^7.0.1",
