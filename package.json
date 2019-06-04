@@ -2,6 +2,7 @@
   "name": "zap-eos-sdk",
   "repository": "https://github.com/smartum-ks/eos-sdk.git",
   "private": false,
+  "version": "0.0.1",
   "devDependencies": {
     "lerna": "^3.3.2"
   },
