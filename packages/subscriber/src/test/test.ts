@@ -85,7 +85,7 @@
 //       await expect(holder.rows[0].escrow).to.be.equal(4);
 //       await expect(holder.rows[0].dots).to.be.equal(3);
 //     });
-// //
+//
 //     it('#cancelquery()', async () => {
 //         await subscriber.cancelQuery(0);
 //         let holder = await subscriber.queryHolders(0, -1, 10);
