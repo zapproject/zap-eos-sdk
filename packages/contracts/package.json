@@ -17,8 +17,6 @@
   ],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-  },
   "devDependencies": {
     "@types/node": "^10.10.0",
     "ts-node": "^7.0.1",
