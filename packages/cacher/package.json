@@ -1,6 +1,6 @@
 {
   "name": "@zapjs/eos-caching",
-  "version": "1.0.0",
+  "version": "0.0.5",
   "description": "Interface for caching functions in eos blockchain",
   "main": "./out/index.js",
   "types": "./out/types.d.ts",
