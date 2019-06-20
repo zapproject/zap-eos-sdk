@@ -1,18 +1,19 @@
 import {deployerOptions} from "./types/types";
 import {Account, Transaction} from "@zapjs/eos-utils";
+import {Serialize} from "eosjs";
 
 
 export class Deployer {
-    _eos: any;
-    _contract_name: string;
-    _deployer_account?: Account;
-    _wasm: string = '';
-    _abi: string = '';
-    _after_deploy_tr?: Transaction;
-    _before_deploy_tr?: Transaction;
+    private _api: any;
+    private _contract_name: string;
+    private _deployer_account?: Account;
+    private _wasm: string = '';
+    private _abi: string = '';
+    private _after_deploy_tr?: Transaction;
+    private _before_deploy_tr?: Transaction;
 
-    constructor({eos, contract_name}: deployerOptions) {
-        this._eos = eos;
+    constructor({api, contract_name}: deployerOptions) {
+        this._api = api;
         this._contract_name = contract_name;
     }
 
@@ -28,7 +29,6 @@ export class Deployer {
 
     abi(abi: string) {
         this._abi = abi;
-
         return this;
     }
 
@@ -64,16 +64,60 @@ export class Deployer {
         }
 
         if (this._before_deploy_tr) {
-            await this._before_deploy_tr.execute(this._eos);
+            await this._api.transact(this._before_deploy_tr);
         }
+        const buffer = new Serialize.SerialBuffer({
+            textEncoder: this._api.textEncoder,
+            textDecoder: this._api.textDecoder,
+          })
+        
+          let abi = JSON.parse(this._abi);
+          const abiDefinition = this._api.abiTypes.get(`abi_def`)
+          abi = abiDefinition.fields.reduce(
+            (acc: any, { name: fieldName }: any) =>
+              Object.assign(acc, { [fieldName]: acc[fieldName] || [] }),
+            abi
+          )
+          abiDefinition.serialize(buffer, abi)
+        
 
-        let result: Array<any> = [];
         // Publish contract to the blockchain
-        result.push(await this._eos.setcode(this._deployer_account.name, 0, 0, this._wasm)); // @returns {Promise}
-        result.push(await this._eos.setabi(this._deployer_account.name, JSON.parse(this._abi))); // @returns {Promise}
+        const result = await this._api.transact({
+            actions: [{
+                account: 'eosio',
+                name: 'setcode',
+                authorization: [{
+                    actor: this._deployer_account.name,
+                    permission: 'active',
+                }],
+                data: {
+                    account: this._deployer_account.name,
+                    vmtype: 0,
+                    vmversion: 0,
+                    code: this._wasm
+                },
+            },
+                {
+                    account: 'eosio',
+                    name: 'setabi',
+                    authorization: [{
+                        actor: this._deployer_account.name,
+                        permission: 'active',
+                    }],
+                    data: {
+                        account: this._deployer_account.name,
+                        abi: Buffer.from(buffer.asUint8Array()).toString(`hex`)
+                    },
+                }
+
+            ]
+        }, {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        });
 
         if (this._after_deploy_tr) {
-            await this._after_deploy_tr.execute(this._eos);
+            await this._api.transact(this._after_deploy_tr);
         }
 
         return result;

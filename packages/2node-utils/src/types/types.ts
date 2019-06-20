@@ -1,6 +1,6 @@
 
 export type deployerOptions = {
-    eos: any,
+    api: any,
     contract_name: string
 };
 

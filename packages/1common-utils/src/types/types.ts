@@ -2,7 +2,8 @@ export type nodeOptions = {
     verbose: boolean,
     key_provider: Array<string>,
     http_endpoint: string,
-    chain_id: string
+    chain_id: string,
+    contract: string
 }
 
 export type nodeConfig = {

@@ -1,9 +1,10 @@
 import * as Utils from "@zapjs/eos-utils";
+import { Account } from "@zapjs/eos-utils/out/account";
 
 
 export class tokenMinting {
-    _node: Utils.Node;
-    _account: Utils.Account;
+    public _node: Utils.Node;
+    public _account: Utils.Account;
 
 
     constructor(account: Utils.Account, node: Utils.Node) {
@@ -16,27 +17,25 @@ export class tokenMinting {
     }
 
     async issueTokens(receivers: Array<{ id: string, quantity: string }>, memo: string) {
-        const eos = await this.connect();
         const transactions = receivers.map(account =>
             new Utils.Transaction()
                 .sender(this._account)
                 .receiver(this._account)
                 .action('issue')
                 .data({to: account.id, quantity: account.quantity, memo})
-                .execute(eos)
+                .execute(this._node.api)
         );
         return Promise.all(transactions);
     }
 
-    async transferTokens(sender: Utils.Account, receivers: Array<string>, quantity: string, memo: string) {
-        const eos = await this.connect();
+    async transferTokens(sender: Utils.Account, receivers: Array<string>, quantity: string, memo: string, type: string = 'EOS') {
         const transactions = receivers.map(account =>
             new Utils.Transaction()
                 .sender(sender)
-                .receiver(this._account)
+                .receiver(type === 'ZAP' ? this._account : new Account('eosio.token'))
                 .action('transfer')
                 .data({from: sender.name, to: account, quantity, memo})
-                .execute(eos));
+                .execute(this._node.api));
 
         return Promise.all(transactions);
     }

@@ -4,6 +4,7 @@ const expect = require('chai')
     .expect;
 const path = require('path');
 const fs = require('fs');
+const fetch = require('node-fetch');
 import {Regsitry} from "../../src";
 import {Account} from '@zapjs/eos-utils';
 import {TestNode as Node} from './environment';
@@ -16,11 +17,14 @@ async function configureEnvironment(func: Function) {
 }
 
 describe('Test', async () => {
-    const node = new Node(false, false, 'http://127.0.0.1:8888');
+    const url = 'http://127.0.0.1:8888';
+    let node: any;
     let registry: Regsitry;
     const configure = async () => {
         try {
+            node = new Node(true, false, url, '');
             await node.restart();
+            await node.connect();
             await node.init();
             registry = await new Regsitry({
                 account: node.getProvider(),

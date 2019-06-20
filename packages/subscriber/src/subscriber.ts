@@ -6,11 +6,11 @@ import { SubscriberOptions } from "./types/types";
 
 export class Subscriber {
     private _account: Utils.Account;
-    private _node: Utils.Node;
-    _zap_account: Utils.Account;
-    bondage: Bondage;
-    arbiter: Arbiter;
-    dispatch: Dispatch;
+    private _zap_account: Utils.Account;
+    private bondage: Bondage;
+    private arbiter: Arbiter;
+    private dispatch: Dispatch;
+    public _node: Utils.Node;
 
     constructor({account, node}: SubscriberOptions) {
         this._account = account;
@@ -50,6 +50,14 @@ export class Subscriber {
 
     async queryHolders(from: number, to: number, limit: number) {
         return await this.bondage.queryHolders(from, to, limit);
+    }
+
+    async handlePermission(contract: string, type: string) {
+        return await this.bondage.handlePermission(contract, type);
+    }
+
+    async buyRamBytes(amount: number) {
+        return await this.bondage.buyRamBytes(amount);
     }
 
     async subscribe(provider: string, endpoint: string, dots: number, params: string) {

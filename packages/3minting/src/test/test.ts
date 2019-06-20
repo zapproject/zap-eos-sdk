@@ -18,7 +18,7 @@ async function configureEnvironment(func: Function) {
 
 
 describe('Test', () => {
-    const node = new Node(false, false, 'http://127.0.0.1:8888');
+    const node = new Node(false, false, 'http://127.0.0.1:8888', '');
     let minting: any;
 
     before(function (done) {
@@ -26,8 +26,9 @@ describe('Test', () => {
         configureEnvironment(async () => {
             try {
                 await node.restart();
+                await node.connect();
                 await node.init();
-                minting = await new tokenMinting(node.getAccounts().zap, node);
+                minting = await new tokenMinting(node.token, node);
             } catch (e) {
                 console.log(e);
             }
@@ -36,20 +37,19 @@ describe('Test', () => {
     });
 
     it('#issueTokens()', async () => {
-        const eos = await node.connect();
-        await minting.issueTokens([{id: 'user', quantity: '10000 TST'}], 'hi');
-        let tokensAmount = await eos.getCurrencyBalance('zap.main', 'user', 'TST');
-        await expect(tokensAmount[0].toString()).to.be.equal('10000 TST');
+        console.log(await minting.issueTokens([{id: 'zaptest12345', quantity: '10000 ZAP'}], 'hi'));
+        let tokensAmount = await node.rpc.get_currency_balance('zap.token', 'zaptest12345', 'ZAP');
+        console.log(tokensAmount)
+        //await expect(tokensAmount[0].toString()).to.be.equal('10000 TST');
     });
 
     it('#transferTokens()', async () => {
-        const eos = await node.connect();
-        await minting.transferTokens(node.getAccounts().account_user, ['receiver', 'main'], '7 TST', 'hi');
-        let tokensAmountA = await eos.getCurrencyBalance(node.getAccounts().zap.name, 'receiver', 'TST');
+        await minting.transferTokens(node.provider, [node.zap.name], '7 TST', 'hi');
+        let tokensAmountA = await node.rpc.get_currency_balance(node.zap.name, 'receiver', 'TST');
         await expect(tokensAmountA[0].toString()).to.be.equal('7 TST');
-        let tokensAmountB = await eos.getCurrencyBalance(node.getAccounts().zap.name, 'main', 'TST');
+        let tokensAmountB = await node.rpc.get_currency_balance(node.zap.name, 'main', 'TST');
         await expect(tokensAmountB[0].toString()).to.be.equal('7 TST');
-        let restTokensAmount = await eos.getCurrencyBalance(node.getAccounts().zap.name, 'user', 'TST');
+        let restTokensAmount = await node.rpc.get_currency_balance(node.zap.name, 'user', 'TST');
         await expect(restTokensAmount[0].toString()).to.be.equal('9986 TST');
     });
 });

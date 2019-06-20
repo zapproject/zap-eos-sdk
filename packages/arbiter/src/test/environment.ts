@@ -57,7 +57,8 @@ export class TestNode extends Node {
             verbose: verbose,
             key_provider: [ACC_TEST_PRIV_KEY, ACC_OWNER_PRIV_KEY],
             http_endpoint: 'http://127.0.0.1:8888',
-            chain_id: ''
+            chain_id: '',
+            contract: 'zap.main'
         });
         this.recompile = recompile;
         this.running = false;
@@ -137,7 +138,7 @@ export class TestNode extends Node {
 
     async deploy(eos: any) {
         const results: any = [];
-        const deployer = new Deployer({eos: eos, contract_name: 'main'});
+        const deployer = new Deployer({api: eos, contract_name: 'main'});
         deployer.from(this.zap);
         deployer.abi(Binaries.mainAbi);
         deployer.wasm(Binaries.mainWasm);
@@ -150,7 +151,7 @@ export class TestNode extends Node {
             .data({issuer: this.token.name, maximum_supply: '1000000000 TST'});
 
         results.push(
-            await new Deployer({eos: eos, contract_name: 'eosio.token'})
+            await new Deployer({api: eos, contract_name: 'eosio.token'})
                 .from(this.token)
                 .abi(Binaries.tokenAbi)
                 .wasm(Binaries.tokenWasm)

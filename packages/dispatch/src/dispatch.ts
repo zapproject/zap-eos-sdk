@@ -18,8 +18,6 @@ export class Dispatch {
     }
 
     async query(provider: string, endpoint: string, query: string, onchain_provider: boolean, timestamp: number) {
-        let eos = await this.connect();
-
         return new Utils.Transaction()
             .sender(this._account)
             .receiver(this._zap_account)
@@ -33,12 +31,10 @@ export class Dispatch {
                 onchain_subscriber: 0, // if we call it from js then it not onchain subscriber
                 timestamp: timestamp
             })
-            .execute(eos);
+            .execute(this._node.api);
     }
 
     async respond(id: number, params: string, subscriber: string) {
-        let eos = await this.connect();
-
         return new Utils.Transaction()
             .sender(this._account)
             .receiver(this._zap_account)
@@ -49,12 +45,10 @@ export class Dispatch {
                 params: params,
                 subscriber: subscriber
             })
-            .execute(eos);
+            .execute(this._node.api);
     }
 
     async cancelQuery(id: number) {
-        let eos = await this.connect();
-
         return new Utils.Transaction()
             .sender(this._account)
             .receiver(this._zap_account)
@@ -63,24 +57,20 @@ export class Dispatch {
                 subscriber: this._account.name,
                 query_id: id,
             })
-            .execute(eos);
+            .execute(this._node.api);
     }
 
-    async queryQueriesInfo(from: number, to: number, limit: number, indexPosition: number) {
-        let eos = await this.connect();
-
-        return await eos.getTableRows(
-            true, // json
-            this._zap_account.name, // code
-            this._zap_account.name, // scope
-            'qdata', // table name
-            'id', // table_key
-            from, // lower_bound
-            to, // upper_bound
-            limit, // limit
-            'i64', // key_type
-            indexPosition // index position
-        );
+    async queryQueriesInfo(lower_bound: number, upper_bound: number, limit: number, index_position: number) {
+        return await this._node.rpc.get_table_rows({
+            json: true,
+            code: this._zap_account.name,
+            scope: this._zap_account.name,
+            table: 'qdata',
+            lower_bound,
+            upper_bound,
+            limit,
+            key_type: 'i64',
+            index_position
+        });
     }
-
 }

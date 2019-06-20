@@ -1,4 +1,5 @@
 import {Account} from './account.js';
+const fetch = require('node-fetch');
 
 export class Transaction {
     actions: Array<any> = [{}];
@@ -9,14 +10,14 @@ export class Transaction {
         this.isTransaction = true;
     }
 
-    sender(account: Account) {
+    sender(account: Account, authorization?: string) {
         if (!account.isAccount) {
             throw new Error('Account must be instance of account.js');
         }
 
         this.actions[0].authorization = [{
             actor: account.name,
-            permission: account.default_auth
+            permission: authorization || account.default_auth
         }];
 
         return this;
@@ -59,7 +60,9 @@ export class Transaction {
         return { actions: this.actions };
     }
 
-    async execute(eos: any) {
-        return await eos.transaction({ actions: this.actions })
+    async execute(api: any) {
+        return await api.transact(
+            { actions: this.actions },
+            { blocksBehind: 3, expireSeconds: 60 })
     }
 }

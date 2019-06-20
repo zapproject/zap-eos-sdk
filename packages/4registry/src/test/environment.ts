@@ -29,21 +29,24 @@ function waitEvent(event: stream.Readable, type: string) {
 }
 
 export class TestNode extends Node {
-    recompile: boolean;
-    running: boolean;
-    provider: Account;
-    zap: Account;
-    nodeos_path: string;
-    instance: any;
+    private recompile: boolean;
+    private running: boolean;
+    private provider: Account;
+    private zap: Account;
+    private token: Account;
+    private nodeos_path: string;
+    private instance: any;
 
-    constructor(verbose: boolean, recompile: boolean, endpoint: string) {
-        super({verbose: verbose, key_provider: [ACC_TEST_PRIV_KEY, ACC_OWNER_PRIV_KEY], http_endpoint: 'http://127.0.0.1:8888', chain_id: ''});
+    constructor(verbose: boolean, recompile: boolean, endpoint: string, chain_id: any) {
+        super({verbose: verbose, key_provider: ["5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"], http_endpoint: endpoint, chain_id, contract: "zapcoretest1"});
         this.recompile = recompile;
         this.running = false;
         this.instance = null;
         this.nodeos_path = NODEOS_PATH;
-        this.provider = new Account('zap.provider');
+        this.provider = new Account('zaptest12345');
         this.provider.usePrivateKey(ACC_OWNER_PRIV_KEY);
+        this.token = new Account('zap.token');
+        this.token.usePrivateKey(ACC_OWNER_PRIV_KEY);
         this.zap = this.getZapAccount();
         this.zap.usePrivateKey(ACC_OWNER_PRIV_KEY);
     }
@@ -52,7 +55,7 @@ export class TestNode extends Node {
             throw new Error('Test EOS node is already running.');
         }
         // use spawn function because nodeos has infinity output
-        this.instance = spawn(this.nodeos_path, ['-e -p eosio', '--delete-all-blocks', '--plugin eosio::producer_plugin', '--plugin eosio::history_plugin', '--plugin eosio::chain_api_plugin', '--plugin eosio::history_api_plugin', '--plugin eosio::http_plugin'], {shell: true, detached: true});
+        this.instance = spawn('nodeos', ['-e -p eosio', '--delete-all-blocks', '--plugin eosio::producer_plugin', '--plugin eosio::history_plugin', '--plugin eosio::chain_api_plugin', '--plugin eosio::history_api_plugin', '--plugin eosio::http_plugin'], {shell: true, detached: true});
         // wait until node is running
 
         while (this.running === false) {
@@ -62,7 +65,6 @@ export class TestNode extends Node {
                 }
         }
 
-        if (this.verbose) console.log('Eos node is running.')
     }
 
     kill() {
@@ -72,44 +74,54 @@ export class TestNode extends Node {
             //process.kill(-this.instance.pid, "SIGINT");
                 this.instance = null;
                 this.running = false;
-                if (this.verbose) console.log('Eos node killed.');
         }
     }
 
      async restart() {
-         this.kill();
-         await this.run();
-     }
-
-
-    async init() {
-
+        this.kill();
+        await this.run();
         if (!this.running) {
             throw new Error('Eos node must running receiver setup initial state.');
         }
-
-        const eos = await this.connect();
-        await this.registerAccounts(eos);
-        await this.deploy(eos);
     }
 
+    async init() {
+        await this.registerAccounts(this.api);
+        await this.deploy(this.api);
+    }
 
-    async registerAccounts(eos: any) {
+    async registerAccounts(api: any) {
         const results = [];
-        results.push(await this.provider.register(eos));
-        results.push(await this.zap.register(eos));
+        results.push(await this.provider.register(api));
+        results.push(await this.zap.register(api));
+        results.push(await this.token.register(api));
         return results;
     }
 
-    async deploy(eos: any) {
+    async deploy(api: any) {
         const results: any = [];
-        const deployer = new Deployer({eos: eos, contract_name: 'main'});
+        const deployer = new Deployer({api, contract_name: 'main'});
         deployer.from(this.zap);
         deployer.abi(Binaries.mainAbi);
         deployer.wasm(Binaries.mainWasm);
         results.push(await deployer.deploy());
+        let createTokenTransaction = new Transaction()
+            .sender(this.token)
+            .receiver(this.token)
+            .action('create')
+            .data({issuer: this.token.name, maximum_supply: '1000000000 TST'});
+
+        results.push(
+            await new Deployer({api, contract_name: 'eosio.token'})
+                .from(this.token)
+                .abi(Binaries.tokenAbi)
+                .wasm(Binaries.tokenWasm)
+                //.afterDeploy(createTokenTransaction)
+                .deploy()
+        );
         return results;
     }
+
     getProvider() {
         return this.provider;
     }

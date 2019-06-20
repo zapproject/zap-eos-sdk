@@ -41,23 +41,23 @@ describe('Test', () => {
         this.timeout(30000);
         configureEnvironment(async () => {
             try {
-                node = new Node(false, false, 'http://127.0.0.1:8888');
+                node = new Node(false, false, 'http://127.0.0.1:8888', '');
                 await node.restart();
-                await node.init();
                 await node.connect();
+                await node.init();
                 registry = new Regsitry({
-                    account: node.getProviderAccount(),
+                    account: node.provider,
                     node
                 });
                 bondage = new Bondage({
-                    account: node.getUserAccount(),
+                    account: node.user,
                     node
                 });
                 bondageProvider = new Bondage({
-                    account: node.getProviderAccount(),
+                    account: node.token,
                     node
                 });
-                minting = await new Minting(node.getTokenAccount(), node);
+                minting = await new Minting(node.token, node);
 
             } catch (e) {
                 console.log(e);
@@ -67,18 +67,19 @@ describe('Test', () => {
     });
 
     it('#bond()', async () => {
-        let eos = await node.connect();
-        await minting.issueTokens([{id: node.getUserAccount().name, quantity: '300000 TST'}], 'hi');
+        await bondage.handlePermission(node.zap.name, 'add');
+        await minting.issueTokens([{id: node.user.name, quantity: '300000 TST'}], 'hi');
         await registry.initiateProvider('tests', 10);
         await registry.addEndpoint('endp', [3, 0, 0, 2, 10000], '');
-        await bondage.bond(node.getProviderAccount().name, 'endp', 1);
+        await bondage.bond(node.provider.name, 'endp', 1);
         const issued = await bondageProvider.queryIssued(0, 1, 1);
         const holders = await bondage.queryHolders(0, -1, 10);
         await expect(issued.rows[0].dots).to.be.equal(1);
         await expect(holders.rows[0].dots).to.be.equal(1);
     });
     it('#unbond()', async () => {
-        await bondage.unbond(node.getProviderAccount().name, 'endp', 1);
+        //await bondage.handlePermission(node.zap.name, 'add');
+        await bondage.unbond(node.provider.name, 'endp', 1);
         const issued = await bondageProvider.queryIssued(0, 1, 1);
         const holders = await bondage.queryHolders(0, -1, 10);
         await expect(issued.rows[0].dots).to.be.equal(0);

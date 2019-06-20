@@ -21,7 +21,7 @@
   "dependencies": {
     "demux": "^2.0.0",
     "demux-eos": "^2.0.0",
-    "eosjs": "^16.0.7",
+    "eosjs": "20.0.0",
     "sleep": "^5.2.3",
     "@zapjs/eos-caching": "^1.0.0",
     "@zapjs/eos-utils": "^1.0.0"

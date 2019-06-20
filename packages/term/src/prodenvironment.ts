@@ -10,7 +10,8 @@ export class ProdNode extends Node {
 			verbose: verbose,
 			key_provider: [privateKey],
 			http_endpoint: endpoint,
-			chain_id: ''
+			chain_id: '',
+			contract: 'zap.main'
 		});
 		this.ACC_USER_PRIV_KEY = privateKey;
 	}

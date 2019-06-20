@@ -7,13 +7,13 @@ import { ProviderOptions } from "./types/types";
 
 export class Provider {
     private _account: Utils.Account;
-    private _node: Utils.Node;
-    _zap_account: Utils.Account;
-    title: string;
-    bondage: Bondage;
-    arbiter: Arbiter;
-    dispatch: Dispatch;
-    registry: Regsitry;
+    private _zap_account: Utils.Account;
+    private title: string;
+    private bondage: Bondage;
+    private arbiter: Arbiter;
+    private dispatch: Dispatch;
+    private registry: Regsitry;
+    public _node: Utils.Node;
 
     constructor({account, node}: ProviderOptions) {
         this._account = account;

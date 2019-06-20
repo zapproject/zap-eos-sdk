@@ -1,11 +1,19 @@
 import {nodeConfig, nodeOptions} from "./types/types";
 import {Account} from "./index";
+import { Api, JsonRpc, RpcError } from 'eosjs';
+import { JsSignatureProvider } from 'eosjs/dist/eosjs-jssig';    
+const nodeTextDecoder = require('util').TextDecoder;
+const nodeTextEncoder = require('util').TextEncoder;
+const edgeTextEncoder = require('text-encoding').TextEncoder;
+const edgeTextDecoder = require('text-encoding').TextDecoder; 
+const fetch = require('node-fetch');
 
+//const Sleep = require('sleep');
 const Eos = require('eosjs');
 
 const STARTUP_TIMEOUT = 30000;
 const STARTUP_REQUESTS_DELAY = 100;
-const STARTUP_BLOCK = 3;
+const STARTUP_BLOCK = 6;
 
 
 function checkTimeout(startTime: Date, timeout: number) {
@@ -15,52 +23,64 @@ function checkTimeout(startTime: Date, timeout: number) {
         throw timeoutException
     }
 }
-export function sleep(timeout: number): Promise<void> {
-		return new Promise((resolve, reject) => {
-				setTimeout(resolve, timeout);
-		})
-}
+
 
 export class Node {
-    eos_config: nodeConfig;
-    verbose: boolean;
-    private _zap_account: Account = new Account('zap.main');
+    private _zap_account: Account;
+    public verbose: boolean;
+    public api: any;
+    public rpc: any;
+    public rpcError: any;
+    public testnet: string;
 
-    constructor({verbose, key_provider, http_endpoint, chain_id}: nodeOptions) {
-        this.eos_config = {
-            chainId: chain_id, // 32 byte (64 char) hex string
-            keyProvider: key_provider, // WIF string or array of keys..
-            httpEndpoint: http_endpoint,
-            expireInSeconds: 60,
-            broadcast: true,
-            verbose: verbose, // API activity
-            sign: true
-        };
 
+    constructor({verbose, key_provider, http_endpoint, chain_id, contract}: nodeOptions) {
+        this.testnet = http_endpoint; 
+        const signatureProvider = new JsSignatureProvider(key_provider);
+        //@ts-ignore
+        this.rpc = new JsonRpc(http_endpoint, { fetch });
+        this.api = new Api(
+            {
+                rpc: this.rpc,
+                chainId: chain_id,
+                signatureProvider,
+                textDecoder: (typeof navigator === 'undefined') ? new nodeTextDecoder() :
+                navigator.product == 'ReactNative' || /rv:11.0/i.test(navigator.userAgent) || /Edge\/\d./i.test(navigator.userAgent) ? 
+                new edgeTextDecoder()  : new TextDecoder(),
+                textEncoder: (typeof navigator === 'undefined') ? new nodeTextEncoder :
+                navigator.product == 'ReactNative' || /rv:11.0/i.test(navigator.userAgent) || /Edge\/\d./i.test(navigator.userAgent) ?
+                new edgeTextEncoder()  : new TextEncoder()
+            });
+        this._zap_account = new Account(contract);
         this.verbose = verbose;
     }
+    public sleep(miliseconds: number) {
+        var currentTime = new Date().getTime();
+        while (currentTime + miliseconds >= new Date().getTime()) {
+        }
+     }
 
     async _waitNodeStartup(timeout: number) {
-        // wait for block production
+        
+
         let startTime = new Date();
-        let eos = Eos(this.eos_config);
         while (true) {
             try {
-                let res = await eos.getInfo({});
+                let res = await this.rpc.get_info({});
                 if (res.head_block_producer) {
                     while (true) {
                         try {
-                            let res = await eos.getBlock(STARTUP_BLOCK);
+                            let res = await this.rpc.get_block(STARTUP_BLOCK);
                             break;
                         } catch (e) {
-                            sleep(STARTUP_REQUESTS_DELAY);
+                            this.sleep(STARTUP_REQUESTS_DELAY);
                             checkTimeout(startTime, timeout);
                         }
                     }
                     break;
                 }
             } catch (e) {
-                sleep(STARTUP_REQUESTS_DELAY);
+               this.sleep(STARTUP_REQUESTS_DELAY);
                 checkTimeout(startTime, timeout);
             }
         }
@@ -68,7 +88,6 @@ export class Node {
 
     async connect() {
         await this._waitNodeStartup(STARTUP_TIMEOUT);
-        return Eos(this.eos_config);
     }
 
     getZapAccount() {
