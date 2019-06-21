@@ -35,6 +35,7 @@ describe('Test', () => {
     let registry: Regsitry;
     let bondage: Bondage;
     let bondageProvider: Bondage;
+    let main: Bondage;
     let minting: Minting;
 
     before(function (done) {
@@ -54,7 +55,11 @@ describe('Test', () => {
                     node
                 });
                 bondageProvider = new Bondage({
-                    account: node.token,
+                    account: node.provider,
+                    node
+                });
+                main = new Bondage({
+                    account: node.zap,
                     node
                 });
                 minting = await new Minting(node.token, node);
@@ -78,7 +83,7 @@ describe('Test', () => {
         await expect(holders.rows[0].dots).to.be.equal(1);
     });
     it('#unbond()', async () => {
-        //await bondage.handlePermission(node.zap.name, 'add');
+        await main.handlePermission(node.zap.name, 'add');
         await bondage.unbond(node.provider.name, 'endp', 1);
         const issued = await bondageProvider.queryIssued(0, 1, 1);
         const holders = await bondage.queryHolders(0, -1, 10);

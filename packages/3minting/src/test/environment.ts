@@ -6,6 +6,7 @@ import { spawn, execSync } from 'child_process';
 const PROJECT_PATH = path.join(__dirname + '/..');
 import * as stream from "stream";
 import { Binaries } from "@zapjs/eos-binaries";
+import { runInThisContext } from 'vm';
 
 
 //TODO: receive dynamically
@@ -109,10 +110,10 @@ export class TestNode extends Node {
             .sender(this.token)
             .receiver(this.token)
             .action('create')
-            .data({issuer: this.token.name, maximum_supply: '1000000000 TST'});
+            .data({issuer: this.token.name, maximum_supply: "100000000 TST"});
 
         results.push(
-            await new Deployer({api, contract_name: 'token'})
+            await new Deployer({api, contract_name: 'zap.token'})
                 .from(this.token)
                 .abi(Binaries.tokenAbi)
                 .wasm(Binaries.tokenWasm)

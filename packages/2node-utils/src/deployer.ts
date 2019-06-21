@@ -57,6 +57,11 @@ export class Deployer {
 
         return this;
     }
+    sleep(timeout: number): Promise<void> {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, timeout);
+        })
+    }
 
     async deploy() {
         if (!this._wasm || !this._abi || !this._deployer_account) {
@@ -80,7 +85,6 @@ export class Deployer {
           )
           abiDefinition.serialize(buffer, abi)
         
-
         // Publish contract to the blockchain
         const result = await this._api.transact({
             actions: [{
@@ -117,7 +121,7 @@ export class Deployer {
         });
 
         if (this._after_deploy_tr) {
-            await this._api.transact(this._after_deploy_tr);
+            await this._after_deploy_tr.execute(this._api);
         }
 
         return result;

@@ -27,8 +27,8 @@ export class Dispatch {
                 provider: provider,
                 endpoint: endpoint,
                 query: query,
-                onchain_provider: onchain_provider ? 1 : 0,
-                onchain_subscriber: 0, // if we call it from js then it not onchain subscriber
+                onchain_provider: onchain_provider ? true : false,
+                onchain_subscriber: false, // if we call it from js then it not onchain subscriber
                 timestamp: timestamp
             })
             .execute(this._node.api);

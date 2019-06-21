@@ -5,8 +5,8 @@ const expect = require('chai')
 import { Subscriber } from "@zapjs/eos-subscriber";
 import { Provider } from "../../src";
 import { TestNode as Node } from './environment';
-var BigNumber = require('big-number');
-
+import {Minting} from "@zapjs/eos-minting";
+import {Bondage} from "@zapjs/eos-bondage";
 
 async function configureEnvironment(func: Function) {
     await func();
@@ -17,15 +17,17 @@ describe('Test', () => {
     let node: any;
     let subscriber: Subscriber;
     let provider: Provider;
+    let main: Bondage;
+    let minting: Minting;
 
     before(function (done) {
         this.timeout(30000);
         configureEnvironment(async () => {
             try {
-                node = new Node(false, false, 'http://127.0.0.1:8888');
+                node = new Node(false, false, 'http://127.0.0.1:8888', '');
                 await node.restart();
-                await node.init();
                 await node.connect();
+                await node.init();
                 provider = new Provider({
                     account: node.getProviderAccount(),
                     node
@@ -34,6 +36,12 @@ describe('Test', () => {
                     account: node.getUserAccount(),
                     node
                 });
+                main = new Bondage({
+                    account: node.zap,
+                    node
+                });
+                minting = await new Minting(node.token, node);
+
             } catch (e) {
                 console.log(e);
             }
@@ -42,6 +50,8 @@ describe('Test', () => {
     });
 
     it('#registry()', async () => {
+        await subscriber.handlePermission(node.zap.name, 'add');
+        await minting.issueTokens([{id: node.getUserAccount().name, quantity: '300000 TST'}], 'hi');
         await provider.initiateProvider('tests', 10);
         await provider.addEndpoint('endp', [3, 0, 0, 2, 10000], '');
         await provider.addEndpoint('endp2', [3, 0, 0, 2, 10000], '');
@@ -102,6 +112,7 @@ describe('Test', () => {
     });
 
     it('#unbond()', async () => {
+        await main.handlePermission(node.zap.name, 'add');
         await subscriber.unbond(node.getProviderAccount().name, 'endp', 3);
         const issued = await provider.queryIssued(0, 1, 1);
         const holders = await subscriber.queryHolders(0, -1, 10);

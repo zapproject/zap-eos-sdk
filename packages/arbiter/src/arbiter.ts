@@ -40,7 +40,7 @@ export class Arbiter {
                 subscriber: this._account.name,
                 provider: provider,
                 endpoint: endpoint,
-                from_sub: 1
+                from_sub: true
             })
             .execute(this._node.api);
     }
@@ -54,7 +54,7 @@ export class Arbiter {
                 subscriber: subscriber,
                 provider: this._account.name,
                 endpoint: endpoint,
-                from_sub: 0
+                from_sub: false
             })
             .execute(this._node.api);
     }
@@ -64,7 +64,7 @@ export class Arbiter {
         return await this._node.rpc.get_table_rows({
             json: true,
             code: this._zap_account.name,
-            provider,
+            scope: provider,
             table: 'subscription',
             lower_bound,
             upper_bound,

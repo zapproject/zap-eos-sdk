@@ -37,19 +37,16 @@ describe('Test', () => {
     });
 
     it('#issueTokens()', async () => {
-        console.log(await minting.issueTokens([{id: 'zaptest12345', quantity: '10000 ZAP'}], 'hi'));
-        let tokensAmount = await node.rpc.get_currency_balance('zap.token', 'zaptest12345', 'ZAP');
-        console.log(tokensAmount)
-        //await expect(tokensAmount[0].toString()).to.be.equal('10000 TST');
+        await minting.issueTokens([{id: node.provider.name, quantity: '1000 TST'}], 'hi');
+        let tokensAmount = await node.rpc.get_currency_balance(node.token.name, 'zaptest12345', 'TST');
+        await expect(tokensAmount[0].toString()).to.be.equal('1000 TST');
     });
 
     it('#transferTokens()', async () => {
-        await minting.transferTokens(node.provider, [node.zap.name], '7 TST', 'hi');
-        let tokensAmountA = await node.rpc.get_currency_balance(node.zap.name, 'receiver', 'TST');
+        await minting.transferTokens(node.provider, [node.zap.name], '7 TST', 'hi', 'ZAP');
+        let tokensAmountA = await node.rpc.get_currency_balance(node.token.name, node.zap.name, 'TST');
         await expect(tokensAmountA[0].toString()).to.be.equal('7 TST');
-        let tokensAmountB = await node.rpc.get_currency_balance(node.zap.name, 'main', 'TST');
-        await expect(tokensAmountB[0].toString()).to.be.equal('7 TST');
-        let restTokensAmount = await node.rpc.get_currency_balance(node.zap.name, 'user', 'TST');
-        await expect(restTokensAmount[0].toString()).to.be.equal('9986 TST');
+        let restTokensAmount = await node.rpc.get_currency_balance(node.token.name, node.provider.name, 'TST');
+        await expect(restTokensAmount[0].toString()).to.be.equal('993 TST');
     });
 });

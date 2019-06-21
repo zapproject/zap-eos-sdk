@@ -1,6 +1,6 @@
 0 silly argv { _: [ 'bootstrap' ],
 0 silly argv   lernaVersion: '3.3.2',
-0 silly argv   '$0': '/home/user/.npm/_npx/5479/bin/lerna' }
+0 silly argv   '$0': 'node_modules/.bin/lerna' }
 1 notice cli v3.3.2
 2 verbose rootPath /home/user/eos-web/zap-eos-sdk
 3 warn ECYCLE Dependency cycles detected, you should fix these!
@@ -11,13 +11,13 @@
 3 warn ECYCLE @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-arbiter -> @zapjs/eos-bondage -> @zapjs/eos-registry ->
 3 warn ECYCLE @zapjs/eos-registry -> @zapjs/eos-bondage -> @zapjs/eos-arbiter -> @zapjs/eos-provider -> @zapjs/eos-caching -> @zapjs/eos-node-utils -> @zapjs/eos-registry
 3 warn ECYCLE eos-api -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-arbiter -> @zapjs/eos-bondage -> @zapjs/eos-registry ->
-3 warn ECYCLE @zapjs/eos-dispatch -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-arbiter -> @zapjs/eos-bondage -> @zapjs/eos-registry -> @zapjs/eos-bondage -> @zapjs/eos-bondage@^1.0.0
 3 warn ECYCLE @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-arbiter -> @zapjs/eos-bondage ->
 3 warn ECYCLE @zapjs/eos-bondage -> @zapjs/eos-arbiter -> @zapjs/eos-provider -> @zapjs/eos-caching -> @zapjs/eos-node-utils -> @zapjs/eos-minting -> @zapjs/eos-bondage
+3 warn ECYCLE @zapjs/eos-dispatch -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-arbiter -> @zapjs/eos-bondage ->
 3 warn ECYCLE @zapjs/eos-registry -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-arbiter -> @zapjs/eos-bondage ->
-3 warn ECYCLE @zapjs/eos-dispatch -> @zapjs/eos-registry -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-arbiter -> @zapjs/eos-bondage ->
 3 warn ECYCLE eos-api -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-arbiter -> @zapjs/eos-bondage ->
 3 warn ECYCLE @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-arbiter ->
+3 warn ECYCLE @zapjs/eos-bondage -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-arbiter ->
 3 warn ECYCLE @zapjs/eos-arbiter -> @zapjs/eos-provider -> @zapjs/eos-caching -> @zapjs/eos-node-utils -> @zapjs/eos-minting -> @zapjs/eos-bondage -> @zapjs/eos-arbiter
 3 warn ECYCLE @zapjs/eos-dispatch -> @zapjs/eos-bondage -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-arbiter ->
 3 warn ECYCLE @zapjs/eos-registry -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-arbiter ->
@@ -25,23 +25,28 @@
 3 warn ECYCLE @zapjs/eos-caching -> @zapjs/eos-node-utils -> @zapjs/eos-minting -> @zapjs/eos-bondage -> @zapjs/eos-arbiter -> @zapjs/eos-provider -> @zapjs/eos-caching
 3 warn ECYCLE @zapjs/eos-subscriber -> @zapjs/eos-provider -> @zapjs/eos-arbiter -> @zapjs/eos-bondage -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-node-utils -> @zapjs/eos-node-utils@^1.0.0
 3 warn ECYCLE @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-dispatch ->
+3 warn ECYCLE @zapjs/eos-bondage -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-dispatch ->
 3 warn ECYCLE @zapjs/eos-arbiter -> @zapjs/eos-bondage -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-dispatch ->
 3 warn ECYCLE @zapjs/eos-dispatch -> @zapjs/eos-provider -> @zapjs/eos-caching -> @zapjs/eos-node-utils -> @zapjs/eos-minting -> @zapjs/eos-bondage -> @zapjs/eos-dispatch
 3 warn ECYCLE @zapjs/eos-registry -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-dispatch ->
 3 warn ECYCLE eos-api -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-dispatch ->
 3 warn ECYCLE @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider ->
+3 warn ECYCLE @zapjs/eos-bondage -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider ->
 3 warn ECYCLE @zapjs/eos-arbiter -> @zapjs/eos-bondage -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider ->
 3 warn ECYCLE @zapjs/eos-provider -> @zapjs/eos-caching -> @zapjs/eos-node-utils -> @zapjs/eos-minting -> @zapjs/eos-bondage -> @zapjs/eos-arbiter -> @zapjs/eos-provider
 3 warn ECYCLE @zapjs/eos-subscriber -> @zapjs/eos-arbiter -> @zapjs/eos-bondage -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider ->
 3 warn ECYCLE @zapjs/eos-term -> @zapjs/eos-subscriber -> @zapjs/eos-arbiter -> @zapjs/eos-bondage -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-subscriber -> @zapjs/eos-subscriber@^1.0.0
+3 warn ECYCLE zap-web-term -> @zapjs/eos-subscriber -> @zapjs/eos-arbiter -> @zapjs/eos-bondage -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-subscriber -> @zapjs/eos-subscriber@1.0.0
 3 warn ECYCLE @zapjs/eos-dispatch -> @zapjs/eos-bondage -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider ->
 3 warn ECYCLE @zapjs/eos-registry -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider ->
 3 warn ECYCLE eos-api -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider ->
 3 warn ECYCLE @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-subscriber -> @zapjs/eos-provider -> @zapjs/eos-provider@^1.0.0
 3 warn ECYCLE @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-subscriber ->
+3 warn ECYCLE @zapjs/eos-bondage -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-subscriber ->
 3 warn ECYCLE @zapjs/eos-arbiter -> @zapjs/eos-bondage -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-subscriber ->
 3 warn ECYCLE @zapjs/eos-subscriber -> @zapjs/eos-provider -> @zapjs/eos-caching -> @zapjs/eos-node-utils -> @zapjs/eos-minting -> @zapjs/eos-bondage -> @zapjs/eos-arbiter -> @zapjs/eos-subscriber
 3 warn ECYCLE @zapjs/eos-dispatch -> @zapjs/eos-bondage -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-subscriber ->
+3 warn ECYCLE zap-web-term -> @zapjs/eos-minting -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-subscriber -> @zapjs/eos-provider -> @zapjs/eos-provider@1.0.0
 3 warn ECYCLE @zapjs/eos-registry -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-subscriber ->
 3 warn ECYCLE eos-api -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-subscriber ->
 3 warn ECYCLE @zapjs/eos-term -> @zapjs/eos-node-utils -> @zapjs/eos-caching -> @zapjs/eos-provider -> @zapjs/eos-subscriber -> @zapjs/eos-provider -> @zapjs/eos-provider@^1.0.0
@@ -70,7 +75,7 @@
 5 silly npmConfig   npmClient: 'npm',
 5 silly npmConfig   npmClientArgs: undefined,
 5 silly npmConfig   mutex: undefined }
-6 info Bootstrapping 13 packages
+6 info Bootstrapping 14 packages
 7 verbose lifecycle preinstall
 8 silly hasDependencyInstalled @zapjs/eos-term big-number
 9 silly hasDependencyInstalled @zapjs/eos-utils eosjs
@@ -86,145 +91,242 @@
 19 silly hasDependencyInstalled @zapjs/eos-term eosjs
 20 silly hasDependencyInstalled @zapjs/eos-node-utils sleep
 21 silly hasDependencyInstalled @zapjs/eos-term hdkey
-22 silly hasDependencyInstalled @zapjs/eos-term wif
-23 silly hasDependencyInstalled @zapjs/eos-term bip39
-24 silly hasDependencyInstalled @zapjs/eos-term @zapjs/curve
-25 silly hasDependencyInstalled @zapjs/eos-utils @types/node
-26 silly hasDependencyInstalled @zapjs/eos-node-utils @types/node
-27 silly hasDependencyInstalled @zapjs/eos-bondage @types/node
-28 silly hasDependencyInstalled eos-api @types/node
-29 silly hasDependencyInstalled @zapjs/eos-arbiter @types/node
-30 silly hasDependencyInstalled @zapjs/eos-binaries @types/node
-31 silly hasDependencyInstalled @zapjs/eos-dispatch @types/node
-32 silly hasDependencyInstalled @zapjs/eos-provider @types/node
-33 silly hasDependencyInstalled @zapjs/eos-subscriber @types/node
-34 silly hasDependencyInstalled @zapjs/eos-minting @types/node
-35 silly hasDependencyInstalled @zapjs/eos-registry @types/node
-36 silly hasDependencyInstalled @zapjs/eos-caching @types/node
-37 silly hasDependencyInstalled @zapjs/eos-term @types/node
-38 silly hasDependencyInstalled @zapjs/eos-utils ts-node
-39 silly hasDependencyInstalled @zapjs/eos-node-utils ts-node
-40 silly hasDependencyInstalled @zapjs/eos-minting ts-node
-41 silly hasDependencyInstalled @zapjs/eos-registry ts-node
-42 silly hasDependencyInstalled @zapjs/eos-bondage ts-node
-43 silly hasDependencyInstalled eos-api ts-node
-44 silly hasDependencyInstalled @zapjs/eos-arbiter ts-node
-45 silly hasDependencyInstalled @zapjs/eos-caching ts-node
-46 silly hasDependencyInstalled @zapjs/eos-binaries ts-node
-47 silly hasDependencyInstalled @zapjs/eos-dispatch ts-node
-48 silly hasDependencyInstalled @zapjs/eos-provider ts-node
-49 silly hasDependencyInstalled @zapjs/eos-subscriber ts-node
-50 silly hasDependencyInstalled @zapjs/eos-term ts-node
-51 silly hasDependencyInstalled @zapjs/eos-utils tslint
-52 silly hasDependencyInstalled @zapjs/eos-node-utils tslint
-53 silly hasDependencyInstalled @zapjs/eos-minting tslint
-54 silly hasDependencyInstalled @zapjs/eos-registry tslint
-55 silly hasDependencyInstalled @zapjs/eos-bondage tslint
-56 silly hasDependencyInstalled eos-api tslint
-57 silly hasDependencyInstalled @zapjs/eos-arbiter tslint
-58 silly hasDependencyInstalled @zapjs/eos-caching tslint
-59 silly hasDependencyInstalled @zapjs/eos-binaries tslint
-60 silly hasDependencyInstalled @zapjs/eos-dispatch tslint
-61 silly hasDependencyInstalled @zapjs/eos-provider tslint
-62 silly hasDependencyInstalled @zapjs/eos-subscriber tslint
-63 silly hasDependencyInstalled @zapjs/eos-term tslint
-64 silly hasDependencyInstalled @zapjs/eos-utils typescript
-65 silly hasDependencyInstalled @zapjs/eos-node-utils typescript
-66 silly hasDependencyInstalled @zapjs/eos-minting typescript
-67 silly hasDependencyInstalled @zapjs/eos-registry typescript
-68 silly hasDependencyInstalled @zapjs/eos-bondage typescript
-69 silly hasDependencyInstalled eos-api typescript
-70 silly hasDependencyInstalled @zapjs/eos-arbiter typescript
-71 silly hasDependencyInstalled @zapjs/eos-caching typescript
-72 silly hasDependencyInstalled @zapjs/eos-binaries typescript
-73 silly hasDependencyInstalled @zapjs/eos-dispatch typescript
-74 silly hasDependencyInstalled @zapjs/eos-provider typescript
-75 silly hasDependencyInstalled @zapjs/eos-subscriber typescript
-76 silly hasDependencyInstalled @zapjs/eos-term typescript
-77 silly hasDependencyInstalled @zapjs/eos-node-utils demux
-78 silly hasDependencyInstalled @zapjs/eos-caching demux
-79 silly hasDependencyInstalled @zapjs/eos-node-utils demux-eos
-80 silly hasDependencyInstalled @zapjs/eos-caching demux-eos
-81 silly hasDependencyInstalled @zapjs/eos-minting mocha
-82 silly hasDependencyInstalled @zapjs/eos-registry mocha
-83 silly hasDependencyInstalled @zapjs/eos-bondage mocha
-84 silly hasDependencyInstalled @zapjs/eos-arbiter mocha
-85 silly hasDependencyInstalled @zapjs/eos-caching mocha
-86 silly hasDependencyInstalled @zapjs/eos-dispatch mocha
-87 silly hasDependencyInstalled @zapjs/eos-provider mocha
-88 silly hasDependencyInstalled @zapjs/eos-subscriber mocha
-89 silly hasDependencyInstalled @zapjs/eos-minting chai
-90 silly hasDependencyInstalled @zapjs/eos-registry chai
-91 silly hasDependencyInstalled @zapjs/eos-bondage chai
-92 silly hasDependencyInstalled @zapjs/eos-arbiter chai
-93 silly hasDependencyInstalled @zapjs/eos-caching chai
-94 silly hasDependencyInstalled @zapjs/eos-dispatch chai
-95 silly hasDependencyInstalled @zapjs/eos-provider chai
-96 silly hasDependencyInstalled @zapjs/eos-subscriber chai
-97 silly hasDependencyInstalled @zapjs/eos-minting @types/chai
-98 silly hasDependencyInstalled @zapjs/eos-registry @types/chai
-99 silly hasDependencyInstalled @zapjs/eos-bondage @types/chai
-100 silly hasDependencyInstalled @zapjs/eos-arbiter @types/chai
-101 silly hasDependencyInstalled @zapjs/eos-caching @types/chai
-102 silly hasDependencyInstalled @zapjs/eos-dispatch @types/chai
-103 silly hasDependencyInstalled @zapjs/eos-provider @types/chai
-104 silly hasDependencyInstalled @zapjs/eos-subscriber @types/chai
-105 silly hasDependencyInstalled @zapjs/eos-minting @types/mocha
-106 silly hasDependencyInstalled @zapjs/eos-registry @types/mocha
-107 silly hasDependencyInstalled @zapjs/eos-bondage @types/mocha
-108 silly hasDependencyInstalled @zapjs/eos-arbiter @types/mocha
-109 silly hasDependencyInstalled @zapjs/eos-caching @types/mocha
-110 silly hasDependencyInstalled @zapjs/eos-dispatch @types/mocha
-111 silly hasDependencyInstalled @zapjs/eos-provider @types/mocha
-112 silly hasDependencyInstalled @zapjs/eos-subscriber @types/mocha
-113 silly hasDependencyInstalled @zapjs/eos-minting chai-as-promised
-114 silly hasDependencyInstalled @zapjs/eos-registry chai-as-promised
-115 silly hasDependencyInstalled @zapjs/eos-bondage chai-as-promised
-116 silly hasDependencyInstalled @zapjs/eos-arbiter chai-as-promised
-117 silly hasDependencyInstalled @zapjs/eos-caching chai-as-promised
-118 silly hasDependencyInstalled @zapjs/eos-dispatch chai-as-promised
-119 silly hasDependencyInstalled @zapjs/eos-provider chai-as-promised
-120 silly hasDependencyInstalled @zapjs/eos-subscriber chai-as-promised
-121 silly hasDependencyInstalled @zapjs/eos-minting chai-bignumber
-122 silly hasDependencyInstalled @zapjs/eos-registry chai-bignumber
-123 silly hasDependencyInstalled @zapjs/eos-bondage chai-bignumber
-124 silly hasDependencyInstalled @zapjs/eos-arbiter chai-bignumber
-125 silly hasDependencyInstalled @zapjs/eos-caching chai-bignumber
-126 silly hasDependencyInstalled @zapjs/eos-dispatch chai-bignumber
-127 silly hasDependencyInstalled @zapjs/eos-provider chai-bignumber
-128 silly hasDependencyInstalled @zapjs/eos-subscriber chai-bignumber
-129 silly hasDependencyInstalled eos-api @types/express
-130 silly hasDependencyInstalled eos-api npm-run-all
-131 silly hasDependencyInstalled eos-api nodemon
-132 silly hasDependencyInstalled eos-api cookie-parser
-133 silly hasDependencyInstalled eos-api debug
-134 silly hasDependencyInstalled eos-api express
-135 silly hasDependencyInstalled eos-api http-errors
-136 silly hasDependencyInstalled eos-api morgan
-137 silly hasDependencyInstalled eos-api mongodb
-138 silly hasDependencyInstalled @zapjs/eos-caching mongodb
-139 silly hasDependencyInstalled eos-api socket.io
-140 silly hasDependencyInstalled @zapjs/eos-term shebang-loader
-141 silly root dependencies {}
-142 silly leaf dependencies {}
-143 info Symlinking packages and binaries
-144 silly actions finished @zapjs/eos-utils
-145 silly resolveSymlink /home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-utils
-146 verbose resolveSymlink [ '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-utils',
-146 verbose resolveSymlink   '/home/user/eos-web/zap-eos-sdk/packages/1common-utils' ]
-147 silly createSymlink [ '/home/user/eos-web/zap-eos-sdk/packages/1common-utils',
-147 silly createSymlink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-utils',
-147 silly createSymlink   'junction' ]
-148 silly createSymbolicLink [ '../../../1common-utils',
-148 silly createSymbolicLink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-utils',
-148 silly createSymbolicLink   'junction' ]
-149 silly resolveSymlink /home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-caching
-150 verbose resolveSymlink [ '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-caching',
-150 verbose resolveSymlink   '/home/user/eos-web/zap-eos-sdk/packages/cacher' ]
-151 silly createSymlink [ '/home/user/eos-web/zap-eos-sdk/packages/cacher',
-151 silly createSymlink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-caching',
-151 silly createSymlink   'junction' ]
-152 silly createSymbolicLink [ '../../../cacher',
-152 silly createSymbolicLink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-caching',
-152 silly createSymbolicLink   'junction' ]
-153 error
+22 silly hasDependencyInstalled zap-web-term hdkey
+23 silly hasDependencyInstalled @zapjs/eos-term wif
+24 silly hasDependencyInstalled zap-web-term wif
+25 silly hasDependencyInstalled @zapjs/eos-term bip39
+26 silly hasDependencyInstalled zap-web-term bip39
+27 silly hasDependencyInstalled @zapjs/eos-term @zapjs/curve
+28 silly hasDependencyInstalled zap-web-term zap-curve-chart
+29 silly hasDependencyInstalled @zapjs/eos-utils @types/node
+30 silly hasDependencyInstalled @zapjs/eos-node-utils @types/node
+31 silly hasDependencyInstalled @zapjs/eos-bondage @types/node
+32 silly hasDependencyInstalled eos-api @types/node
+33 silly hasDependencyInstalled @zapjs/eos-arbiter @types/node
+34 silly hasDependencyInstalled @zapjs/eos-binaries @types/node
+35 silly hasDependencyInstalled @zapjs/eos-dispatch @types/node
+36 silly hasDependencyInstalled @zapjs/eos-provider @types/node
+37 silly hasDependencyInstalled @zapjs/eos-subscriber @types/node
+38 silly hasDependencyInstalled @zapjs/eos-minting @types/node
+39 silly hasDependencyInstalled @zapjs/eos-registry @types/node
+40 silly hasDependencyInstalled @zapjs/eos-caching @types/node
+41 silly hasDependencyInstalled @zapjs/eos-term @types/node
+42 silly hasDependencyInstalled @zapjs/eos-utils ts-node
+43 silly hasDependencyInstalled @zapjs/eos-node-utils ts-node
+44 silly hasDependencyInstalled @zapjs/eos-minting ts-node
+45 silly hasDependencyInstalled @zapjs/eos-registry ts-node
+46 silly hasDependencyInstalled @zapjs/eos-bondage ts-node
+47 silly hasDependencyInstalled eos-api ts-node
+48 silly hasDependencyInstalled @zapjs/eos-arbiter ts-node
+49 silly hasDependencyInstalled @zapjs/eos-caching ts-node
+50 silly hasDependencyInstalled @zapjs/eos-binaries ts-node
+51 silly hasDependencyInstalled @zapjs/eos-dispatch ts-node
+52 silly hasDependencyInstalled @zapjs/eos-provider ts-node
+53 silly hasDependencyInstalled @zapjs/eos-subscriber ts-node
+54 silly hasDependencyInstalled @zapjs/eos-term ts-node
+55 silly hasDependencyInstalled @zapjs/eos-utils tslint
+56 silly hasDependencyInstalled @zapjs/eos-node-utils tslint
+57 silly hasDependencyInstalled @zapjs/eos-minting tslint
+58 silly hasDependencyInstalled @zapjs/eos-registry tslint
+59 silly hasDependencyInstalled @zapjs/eos-bondage tslint
+60 silly hasDependencyInstalled eos-api tslint
+61 silly hasDependencyInstalled @zapjs/eos-arbiter tslint
+62 silly hasDependencyInstalled @zapjs/eos-caching tslint
+63 silly hasDependencyInstalled @zapjs/eos-binaries tslint
+64 silly hasDependencyInstalled @zapjs/eos-dispatch tslint
+65 silly hasDependencyInstalled @zapjs/eos-provider tslint
+66 silly hasDependencyInstalled @zapjs/eos-subscriber tslint
+67 silly hasDependencyInstalled @zapjs/eos-term tslint
+68 silly hasDependencyInstalled @zapjs/eos-utils typescript
+69 silly hasDependencyInstalled @zapjs/eos-node-utils typescript
+70 silly hasDependencyInstalled @zapjs/eos-minting typescript
+71 silly hasDependencyInstalled @zapjs/eos-registry typescript
+72 silly hasDependencyInstalled @zapjs/eos-bondage typescript
+73 silly hasDependencyInstalled eos-api typescript
+74 silly hasDependencyInstalled @zapjs/eos-arbiter typescript
+75 silly hasDependencyInstalled @zapjs/eos-caching typescript
+76 silly hasDependencyInstalled @zapjs/eos-binaries typescript
+77 silly hasDependencyInstalled @zapjs/eos-dispatch typescript
+78 silly hasDependencyInstalled @zapjs/eos-provider typescript
+79 silly hasDependencyInstalled @zapjs/eos-subscriber typescript
+80 silly hasDependencyInstalled @zapjs/eos-term typescript
+81 silly hasDependencyInstalled zap-web-term typescript
+82 silly hasDependencyInstalled @zapjs/eos-node-utils demux
+83 silly hasDependencyInstalled @zapjs/eos-caching demux
+84 silly hasDependencyInstalled @zapjs/eos-node-utils demux-eos
+85 silly hasDependencyInstalled @zapjs/eos-caching demux-eos
+86 silly hasDependencyInstalled @zapjs/eos-minting mocha
+87 silly hasDependencyInstalled @zapjs/eos-registry mocha
+88 silly hasDependencyInstalled @zapjs/eos-bondage mocha
+89 silly hasDependencyInstalled @zapjs/eos-arbiter mocha
+90 silly hasDependencyInstalled @zapjs/eos-caching mocha
+91 silly hasDependencyInstalled @zapjs/eos-dispatch mocha
+92 silly hasDependencyInstalled @zapjs/eos-provider mocha
+93 silly hasDependencyInstalled @zapjs/eos-subscriber mocha
+94 silly hasDependencyInstalled @zapjs/eos-minting chai
+95 silly hasDependencyInstalled @zapjs/eos-registry chai
+96 silly hasDependencyInstalled @zapjs/eos-bondage chai
+97 silly hasDependencyInstalled @zapjs/eos-arbiter chai
+98 silly hasDependencyInstalled @zapjs/eos-caching chai
+99 silly hasDependencyInstalled @zapjs/eos-dispatch chai
+100 silly hasDependencyInstalled @zapjs/eos-provider chai
+101 silly hasDependencyInstalled @zapjs/eos-subscriber chai
+102 silly hasDependencyInstalled @zapjs/eos-minting @types/chai
+103 silly hasDependencyInstalled @zapjs/eos-registry @types/chai
+104 silly hasDependencyInstalled @zapjs/eos-bondage @types/chai
+105 silly hasDependencyInstalled @zapjs/eos-arbiter @types/chai
+106 silly hasDependencyInstalled @zapjs/eos-caching @types/chai
+107 silly hasDependencyInstalled @zapjs/eos-dispatch @types/chai
+108 silly hasDependencyInstalled @zapjs/eos-provider @types/chai
+109 silly hasDependencyInstalled @zapjs/eos-subscriber @types/chai
+110 silly hasDependencyInstalled @zapjs/eos-minting @types/mocha
+111 silly hasDependencyInstalled @zapjs/eos-registry @types/mocha
+112 silly hasDependencyInstalled @zapjs/eos-bondage @types/mocha
+113 silly hasDependencyInstalled @zapjs/eos-arbiter @types/mocha
+114 silly hasDependencyInstalled @zapjs/eos-caching @types/mocha
+115 silly hasDependencyInstalled @zapjs/eos-dispatch @types/mocha
+116 silly hasDependencyInstalled @zapjs/eos-provider @types/mocha
+117 silly hasDependencyInstalled @zapjs/eos-subscriber @types/mocha
+118 silly hasDependencyInstalled @zapjs/eos-minting chai-as-promised
+119 silly hasDependencyInstalled @zapjs/eos-registry chai-as-promised
+120 silly hasDependencyInstalled @zapjs/eos-bondage chai-as-promised
+121 silly hasDependencyInstalled @zapjs/eos-arbiter chai-as-promised
+122 silly hasDependencyInstalled @zapjs/eos-caching chai-as-promised
+123 silly hasDependencyInstalled @zapjs/eos-dispatch chai-as-promised
+124 silly hasDependencyInstalled @zapjs/eos-provider chai-as-promised
+125 silly hasDependencyInstalled @zapjs/eos-subscriber chai-as-promised
+126 silly hasDependencyInstalled @zapjs/eos-minting chai-bignumber
+127 silly hasDependencyInstalled @zapjs/eos-registry chai-bignumber
+128 silly hasDependencyInstalled @zapjs/eos-bondage chai-bignumber
+129 silly hasDependencyInstalled @zapjs/eos-arbiter chai-bignumber
+130 silly hasDependencyInstalled @zapjs/eos-caching chai-bignumber
+131 silly hasDependencyInstalled @zapjs/eos-dispatch chai-bignumber
+132 silly hasDependencyInstalled @zapjs/eos-provider chai-bignumber
+133 silly hasDependencyInstalled @zapjs/eos-subscriber chai-bignumber
+134 silly hasDependencyInstalled eos-api @types/express
+135 silly hasDependencyInstalled eos-api npm-run-all
+136 silly hasDependencyInstalled eos-api nodemon
+137 silly hasDependencyInstalled eos-api cookie-parser
+138 silly hasDependencyInstalled eos-api debug
+139 silly hasDependencyInstalled eos-api express
+140 silly hasDependencyInstalled eos-api http-errors
+141 silly hasDependencyInstalled eos-api morgan
+142 silly hasDependencyInstalled eos-api mongodb
+143 silly hasDependencyInstalled @zapjs/eos-caching mongodb
+144 silly hasDependencyInstalled eos-api socket.io
+145 silly hasDependencyInstalled @zapjs/eos-term shebang-loader
+146 silly hasDependencyInstalled zap-web-term @types/react
+147 silly hasDependencyInstalled zap-web-term @types/react-dom
+148 silly hasDependencyInstalled zap-web-term clean-webpack-plugin
+149 silly hasDependencyInstalled zap-web-term copy-webpack-plugin
+150 silly hasDependencyInstalled zap-web-term css-loader
+151 silly hasDependencyInstalled zap-web-term file-loader
+152 silly hasDependencyInstalled zap-web-term raw-loader
+153 silly hasDependencyInstalled zap-web-term html-webpack-plugin
+154 silly hasDependencyInstalled zap-web-term style-loader
+155 silly hasDependencyInstalled zap-web-term ts-loader
+156 silly hasDependencyInstalled zap-web-term webpack
+157 silly hasDependencyInstalled zap-web-term webpack-cli
+158 silly hasDependencyInstalled zap-web-term webpack-dev-server
+159 silly hasDependencyInstalled zap-web-term webpack-merge
+160 silly hasDependencyInstalled zap-web-term bignumber.js
+161 silly hasDependencyInstalled zap-web-term chart.js
+162 silly hasDependencyInstalled zap-web-term ethereum-types
+163 silly hasDependencyInstalled zap-web-term github-markdown-css
+164 silly hasDependencyInstalled zap-web-term marked
+165 silly hasDependencyInstalled zap-web-term react
+166 silly hasDependencyInstalled zap-web-term react-dom
+167 silly hasDependencyInstalled zap-web-term eosjs-ecc
+168 silly hasDependencyInstalled zap-web-term qrcode
+169 silly hasDependencyInstalled zap-web-term socket.io-client
+170 silly root dependencies {}
+171 silly leaf dependencies {}
+172 info Installing external dependencies
+173 verbose actions 1 actions, concurrency 4
+174 silly npmInstallDependencies zap-web-term [ 'hdkey@1.1.0',
+174 silly npmInstallDependencies   'wif@2.0.6',
+174 silly npmInstallDependencies   'bip39@2.5.0',
+174 silly npmInstallDependencies   'zap-curve-chart@git+ssh://git@git.smartum.pro:Zap/zap-oracle-curve-chart.git',
+174 silly npmInstallDependencies   'typescript@^3.2.2',
+174 silly npmInstallDependencies   '@types/react@^16.7.13',
+174 silly npmInstallDependencies   '@types/react-dom@^16.0.11',
+174 silly npmInstallDependencies   'clean-webpack-plugin@^1.0.0',
+174 silly npmInstallDependencies   'copy-webpack-plugin@^4.6.0',
+174 silly npmInstallDependencies   'css-loader@^1.0.1',
+174 silly npmInstallDependencies   'file-loader@^2.0.0',
+174 silly npmInstallDependencies   'raw-loader@1.0.0',
+174 silly npmInstallDependencies   'html-webpack-plugin@^3.2.0',
+174 silly npmInstallDependencies   'style-loader@^0.23.1',
+174 silly npmInstallDependencies   'ts-loader@^5.3.1',
+174 silly npmInstallDependencies   'webpack@^4.27.1',
+174 silly npmInstallDependencies   'webpack-cli@^3.1.0',
+174 silly npmInstallDependencies   'webpack-dev-server@^3.1.10',
+174 silly npmInstallDependencies   'webpack-merge@^4.1.4',
+174 silly npmInstallDependencies   'bignumber.js@^7.2.1',
+174 silly npmInstallDependencies   'chart.js@^2.7.3',
+174 silly npmInstallDependencies   'ethereum-types@^1.1.4',
+174 silly npmInstallDependencies   'github-markdown-css@^2.10.0',
+174 silly npmInstallDependencies   'marked@^0.5.2',
+174 silly npmInstallDependencies   'react@^16.6.3',
+174 silly npmInstallDependencies   'react-dom@^16.6.3',
+174 silly npmInstallDependencies   'eosjs-ecc@^4.0.4',
+174 silly npmInstallDependencies   'qrcode@^1.3.3',
+174 silly npmInstallDependencies   'socket.io-client@2.2.0' ]
+175 silly npmInstallDependencies backup /home/user/eos-web/zap-eos-sdk/packages/zap-term-web/package.json
+176 silly npmInstallDependencies writing tempJson { name: 'zap-web-term',
+176 silly npmInstallDependencies   version: '1.0.0',
+176 silly npmInstallDependencies   description: '',
+176 silly npmInstallDependencies   main: 'index.ts',
+176 silly npmInstallDependencies   keywords: [],
+176 silly npmInstallDependencies   author: '',
+176 silly npmInstallDependencies   license: 'ISC',
+176 silly npmInstallDependencies   dependencies:
+176 silly npmInstallDependencies    { 'bignumber.js': '^7.2.1',
+176 silly npmInstallDependencies      'chart.js': '^2.7.3',
+176 silly npmInstallDependencies      'ethereum-types': '^1.1.4',
+176 silly npmInstallDependencies      'github-markdown-css': '^2.10.0',
+176 silly npmInstallDependencies      marked: '^0.5.2',
+176 silly npmInstallDependencies      react: '^16.6.3',
+176 silly npmInstallDependencies      'react-dom': '^16.6.3',
+176 silly npmInstallDependencies      'eosjs-ecc': '^4.0.4',
+176 silly npmInstallDependencies      'zap-curve-chart': 'git+ssh://git@git.smartum.pro:Zap/zap-oracle-curve-chart.git',
+176 silly npmInstallDependencies      hdkey: '1.1.0',
+176 silly npmInstallDependencies      wif: '2.0.6',
+176 silly npmInstallDependencies      bip39: '2.5.0',
+176 silly npmInstallDependencies      qrcode: '^1.3.3',
+176 silly npmInstallDependencies      'socket.io-client': '2.2.0' },
+176 silly npmInstallDependencies   devDependencies:
+176 silly npmInstallDependencies    { '@types/react': '^16.7.13',
+176 silly npmInstallDependencies      '@types/react-dom': '^16.0.11',
+176 silly npmInstallDependencies      'clean-webpack-plugin': '^1.0.0',
+176 silly npmInstallDependencies      'copy-webpack-plugin': '^4.6.0',
+176 silly npmInstallDependencies      'css-loader': '^1.0.1',
+176 silly npmInstallDependencies      'file-loader': '^2.0.0',
+176 silly npmInstallDependencies      'raw-loader': '1.0.0',
+176 silly npmInstallDependencies      'html-webpack-plugin': '^3.2.0',
+176 silly npmInstallDependencies      'style-loader': '^0.23.1',
+176 silly npmInstallDependencies      'ts-loader': '^5.3.1',
+176 silly npmInstallDependencies      typescript: '^3.2.2',
+176 silly npmInstallDependencies      webpack: '^4.27.1',
+176 silly npmInstallDependencies      'webpack-cli': '^3.1.0',
+176 silly npmInstallDependencies      'webpack-dev-server': '^3.1.10',
+176 silly npmInstallDependencies      'webpack-merge': '^4.1.4' } }
+177 silly getExecOpts /home/user/eos-web/zap-eos-sdk/packages/zap-term-web undefined
+178 silly npmInstall [ 'npm', [ 'install' ] ]
+179 silly npmInstallDependencies cleanup /home/user/eos-web/zap-eos-sdk/packages/zap-term-web/package.json
+180 verbose installed leaf zap-web-term
+181 info Symlinking packages and binaries
+182 silly actions finished @zapjs/eos-utils
+183 silly createSymlink [ '/home/user/eos-web/zap-eos-sdk/packages/cacher',
+183 silly createSymlink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-caching',
+183 silly createSymlink   'junction' ]
+184 silly createSymbolicLink [ '../../../cacher',
+184 silly createSymbolicLink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-caching',
+184 silly createSymbolicLink   'junction' ]
+185 silly createSymlink [ '/home/user/eos-web/zap-eos-sdk/packages/1common-utils',
+185 silly createSymlink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-utils',
+185 silly createSymlink   'junction' ]
+186 silly createSymbolicLink [ '../../../1common-utils',
+186 silly createSymbolicLink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-utils',
+186 silly createSymbolicLink   'junction' ]
+187 error

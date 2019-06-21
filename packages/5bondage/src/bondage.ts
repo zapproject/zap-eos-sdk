@@ -49,6 +49,7 @@ export class Bondage {
     async buyRamBytes(amount: number) {
         return new Utils.Transaction()
         .sender(this._account)
+        //@ts-ignore
         .receiver(new Account('eosio'))
         .action('buyrambytes')
         .data({

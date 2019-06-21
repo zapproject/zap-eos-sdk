@@ -6,6 +6,7 @@ import { spawn, execSync } from 'child_process';
 const PROJECT_PATH = path.join(__dirname + '/..');
 import * as stream from "stream";
 import { Binaries } from "@zapjs/eos-binaries";
+import { runInThisContext } from 'vm';
 
 
 //TODO: receive dynamically
@@ -44,7 +45,7 @@ export class TestNode extends Node {
         this.running = false;
         this.instance = null;
         this.nodeos_path = NODEOS_PATH;
-        this.provider = new Account('zaptest12345');
+        this.provider = new Account('provider');
         this.provider.usePrivateKey(ACC_OWNER_PRIV_KEY);
         this.user = new Account('user');
         this.user.usePrivateKey(ACC_OWNER_PRIV_KEY);
@@ -98,7 +99,7 @@ export class TestNode extends Node {
         results.push(await this.provider.register(api));
         results.push(await this.zap.register(api));
         results.push(await this.token.register(api));
-        results.push(await this.user.register(api));
+        results.push(await this.user.register(api))
         return results;
     }
 
@@ -113,14 +114,14 @@ export class TestNode extends Node {
             .sender(this.token)
             .receiver(this.token)
             .action('create')
-            .data({issuer: this.token.name, maximum_supply: '1000000000 TST'});
+            .data({issuer: this.token.name, maximum_supply: "100000000 TST"});
 
         results.push(
-            await new Deployer({api, contract_name: 'token'})
+            await new Deployer({api, contract_name: 'zap.token'})
                 .from(this.token)
                 .abi(Binaries.tokenAbi)
                 .wasm(Binaries.tokenWasm)
-                //.afterDeploy(createTokenTransaction)
+                .afterDeploy(createTokenTransaction)
                 .deploy()
         );
         return results;
