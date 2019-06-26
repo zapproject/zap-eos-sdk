@@ -23,6 +23,7 @@ export class EventObserver {
     this.lastTakenId = null;
     this.process = false;
     this.incoming = null;
+    this.newIncoming = this.newIncoming.bind(this);
   }
 
   newIncoming(message: any) {
@@ -78,7 +79,7 @@ export class EventObserver {
     if (child) child.kill();
   }
 
-  static async start(params: [string, string, number]) {
+  static async start(params: [string, string, number, string]) {
     child = fork(program, params, options);
     child.on('message', (message: any) => eosActionsEventEmitter.emit("message", message));
     console.log("api server started")

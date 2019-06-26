@@ -6,14 +6,15 @@
     "lerna": "^3.3.2"
   },
   "dependencies": {
+    "@types/bunyan": "^1.8.6",
+    "@zapjs/curve": "2.0.14",
     "big-number": "^1.0.0",
+    "bip39": "2.5.0",
     "eosjs": "20.0.0",
+    "hdkey": "1.1.0",
     "node-fetch": "2.6.0",
     "sleep": "5.2.3",
-    "hdkey": "1.1.0",
     "wif": "2.0.6",
-    "bip39": "2.5.0",
-    "@zapjs/curve": "2.0.14",
     "zap-curve-chart": "git+https://github.com/zapproject/zap-curve-chart.git"
   },
   "workspaces": [

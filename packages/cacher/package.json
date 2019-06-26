@@ -24,8 +24,8 @@
     "eosjs": "^16.0.8",
     "chai-as-promised": "7.1.1",
     "chai-bignumber": "2.0.2",
-    "demux": "^1.0.3",
-    "demux-eos": "2.0.0",
+    "demux": "4.0.0",
+    "demux-eos": "4.0.1",
     "mongodb": "3.1.8",
     "@zapjs/eos-provider": "^1.0.0"
   },
