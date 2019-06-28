@@ -46,63 +46,6 @@ export class Bondage {
             .execute(this._node.api);
     }
 
-    async buyRamBytes(amount: number) {
-        return new Utils.Transaction()
-        .sender(this._account)
-        //@ts-ignore
-        .receiver(new Account('eosio'))
-        .action('buyrambytes')
-        .data({
-            payer: this._account.name,
-            receiver: this._account.name,
-            bytes: amount
-        })
-        .execute(this._node.api);
-    }
-
-    async handlePermission(contract: string, type: string) {
-        const account = await this._node.rpc.get_account(this._account.name);
-        const { accounts, keys, waits }  = JSON.parse(JSON.stringify(account.permissions)).filter((x: any) => x.perm_name === 'active')[0].required_auth;
-        if(type !=='add' && type !== 'remove') return;
-        if (type === 'add' && accounts.filter((x: any) => x.permission.actor == contract).length) return;            
-        
-        const newPermission = [{
-            "permission": {
-                "actor": contract,
-                "permission": "eosio.code"
-            },
-            "weight": 1
-        }];
-
-        const newKeys = keys.length ? keys : [
-            {
-                "key": (await this._node.api.signatureProvider.getAvailableKeys())[0],
-				"weight": 1
-            }
-        ];
-
-
-        const data = {
-			'account': this._account.name,
-			'permission': 'active',
-			'parent': 'owner',
-			"auth": {
-				"threshold": 1,
-				"keys": newKeys,
-				"accounts": type === 'add' ? accounts.concat(newPermission) : accounts.filter((x: any) => x.permission.actor !== contract),
-                "waits": waits
-            }
-        }
-        
-        return await new Utils.Transaction()
-            .sender(this._account, 'owner')
-            .receiver(new Utils.Account('eosio'))
-            .action('updateauth')
-            .data(data)
-            .execute(this._node.api);
-    }
-   
-
     async queryHolders(lower_bound: number, upper_bound: number, limit: number) {
         return await this._node.rpc.get_table_rows({
             json: true,

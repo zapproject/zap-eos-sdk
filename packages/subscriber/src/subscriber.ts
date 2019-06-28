@@ -52,13 +52,94 @@ export class Subscriber {
         return await this.bondage.queryHolders(from, to, limit);
     }
 
-    async handlePermission(contract: string, type: string) {
-        return await this.bondage.handlePermission(contract, type);
+    async buyRamBytes(amount: number) {
+        return new Utils.Transaction()
+        .sender(this._account)
+        //@ts-ignore
+        .receiver(new Account('eosio'))
+        .action('buyrambytes')
+        .data({
+            payer: this._account.name,
+            receiver: this._account.name,
+            bytes: amount
+        })
+        .execute(this._node.api);
     }
 
-    async buyRamBytes(amount: number) {
-        return await this.bondage.buyRamBytes(amount);
+    async delegateBw(net: string, cpu: string, receiver: string = this._account.name) {
+        return new Utils.Transaction()
+        .sender(this._account)
+        //@ts-ignore
+        .receiver(new Utils.Account('eosio'))
+        .action('delegatebw')
+        .data({
+            from: this._account.name,
+            receiver: receiver,
+            stake_net_quantity: net,
+            stake_cpu_quantity: cpu,
+            transfer: false,
+        })
+        .execute(this._node.api);
     }
+
+    async unDelegateBw(net: string, cpu: string, receiver: string = this._account.name) {
+        return new Utils.Transaction()
+        .sender(this._account)
+        //@ts-ignore
+        .receiver(new Utils.Account('eosio'))
+        .action('undelegatebw')
+        .data({
+            from: this._account.name,
+            receiver: receiver,
+            unstake_net_quantity: net,
+            unstake_cpu_quantity: cpu,
+            transfer: false,
+        })
+        .execute(this._node.api);
+    }
+
+    async handlePermission(contract: string, type: string) {
+        const account = await this._node.rpc.get_account(this._account.name);
+        const { accounts, keys, waits }  = JSON.parse(JSON.stringify(account.permissions)).filter((x: any) => x.perm_name === 'active')[0].required_auth;
+        if(type !=='add' && type !== 'remove') return;
+        if (type === 'add' && accounts.filter((x: any) => x.permission.actor == contract).length) return;            
+        
+        const newPermission = [{
+            "permission": {
+                "actor": contract,
+                "permission": "eosio.code"
+            },
+            "weight": 1
+        }];
+
+        const newKeys = keys.length ? keys : [
+            {
+                "key": (await this._node.api.signatureProvider.getAvailableKeys())[0],
+				"weight": 1
+            }
+        ];
+
+
+        const data = {
+			'account': this._account.name,
+			'permission': 'active',
+			'parent': 'owner',
+			"auth": {
+				"threshold": 1,
+				"keys": newKeys,
+				"accounts": type === 'add' ? accounts.concat(newPermission) : accounts.filter((x: any) => x.permission.actor !== contract),
+                "waits": waits
+            }
+        }
+        
+        return await new Utils.Transaction()
+            .sender(this._account, 'owner')
+            .receiver(new Utils.Account('eosio'))
+            .action('updateauth')
+            .data(data)
+            .execute(this._node.api);
+    }
+   
 
     async subscribe(provider: string, endpoint: string, dots: number, params: string) {
         return await this.arbiter.subscribe(provider, endpoint, dots, params);
