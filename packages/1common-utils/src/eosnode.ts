@@ -34,12 +34,16 @@ export class Node {
     public testnet: string;
 
 
-    constructor({verbose, key_provider, http_endpoint, chain_id, contract}: nodeOptions) {
+    constructor({verbose, key_provider, http_endpoint, chain_id, contract, scatter}: nodeOptions) {
         this.testnet = http_endpoint; 
-        const signatureProvider = new JsSignatureProvider(key_provider);
+        this._zap_account = new Account(contract);
+        this.verbose = verbose;
         //@ts-ignore
-        this.rpc = new JsonRpc(http_endpoint, { fetch });
-        this.api = new Api(
+        this.rpc = new JsonRpc(http_endpoint.fullhost ? http_endpoint.fullhost() : http_endpoint, { fetch });
+
+        if (!scatter && key_provider) {
+            const signatureProvider = new JsSignatureProvider(key_provider);
+            this.api = new Api(
             {
                 rpc: this.rpc,
                 chainId: chain_id,
@@ -51,8 +55,12 @@ export class Node {
                 navigator.product == 'ReactNative' || /rv:11.0/i.test(navigator.userAgent) || /Edge\/\d./i.test(navigator.userAgent) ?
                 new edgeTextEncoder()  : new TextEncoder()
             });
-        this._zap_account = new Account(contract);
-        this.verbose = verbose;
+        
+            return;
+        }
+        
+        this.api = scatter.eos(http_endpoint, Api, {rpc: this.rpc, beta3: true});
+        
     }
     public sleep(miliseconds: number) {
         var currentTime = new Date().getTime();

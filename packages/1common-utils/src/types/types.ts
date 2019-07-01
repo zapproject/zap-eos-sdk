@@ -1,14 +1,16 @@
 export type nodeOptions = {
     verbose: boolean,
-    key_provider: Array<string>,
-    http_endpoint: string,
+    key_provider?: Array<string>,
+    http_endpoint: any,
     chain_id: string,
-    contract: string
+    contract: string,
+    scatter?: any
 }
 
 export type nodeConfig = {
     chainId: any, // 32 byte (64 char) hex string
-    keyProvider: Array<string>, // WIF string or array of keys..
+    keyProvider?: Array<string>, // WIF string or array of keys..
+    scatterProvider?: any;
     httpEndpoint: string,
     expireInSeconds: number,
     broadcast: boolean,

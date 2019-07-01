@@ -56,7 +56,7 @@ export class Subscriber {
         return new Utils.Transaction()
         .sender(this._account)
         //@ts-ignore
-        .receiver(new Account('eosio'))
+        .receiver(new Utils.Account('eosio'))
         .action('buyrambytes')
         .data({
             payer: this._account.name,
