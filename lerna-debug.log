@@ -77,26 +77,26 @@
 5 silly npmConfig   mutex: undefined }
 6 info Bootstrapping 14 packages
 7 verbose lifecycle preinstall
-8 silly hasDependencyInstalled @zapjs/eos-term big-number
-9 silly hasDependencyInstalled @zapjs/eos-utils eosjs
-10 silly hasDependencyInstalled @zapjs/eos-node-utils eosjs
-11 silly hasDependencyInstalled @zapjs/eos-minting eosjs
-12 silly hasDependencyInstalled @zapjs/eos-registry eosjs
-13 silly hasDependencyInstalled @zapjs/eos-bondage eosjs
-14 silly hasDependencyInstalled @zapjs/eos-arbiter eosjs
-15 silly hasDependencyInstalled @zapjs/eos-caching eosjs
-16 silly hasDependencyInstalled @zapjs/eos-dispatch eosjs
-17 silly hasDependencyInstalled @zapjs/eos-provider eosjs
-18 silly hasDependencyInstalled @zapjs/eos-subscriber eosjs
-19 silly hasDependencyInstalled @zapjs/eos-term eosjs
-20 silly hasDependencyInstalled @zapjs/eos-node-utils sleep
-21 silly hasDependencyInstalled @zapjs/eos-term hdkey
-22 silly hasDependencyInstalled zap-web-term hdkey
-23 silly hasDependencyInstalled @zapjs/eos-term wif
-24 silly hasDependencyInstalled zap-web-term wif
-25 silly hasDependencyInstalled @zapjs/eos-term bip39
-26 silly hasDependencyInstalled zap-web-term bip39
-27 silly hasDependencyInstalled @zapjs/eos-term @zapjs/curve
+8 silly hasDependencyInstalled @zapjs/eos-term @zapjs/curve
+9 silly hasDependencyInstalled @zapjs/eos-term big-number
+10 silly hasDependencyInstalled @zapjs/eos-term bip39
+11 silly hasDependencyInstalled zap-web-term bip39
+12 silly hasDependencyInstalled @zapjs/eos-utils eosjs
+13 silly hasDependencyInstalled @zapjs/eos-node-utils eosjs
+14 silly hasDependencyInstalled @zapjs/eos-minting eosjs
+15 silly hasDependencyInstalled @zapjs/eos-registry eosjs
+16 silly hasDependencyInstalled @zapjs/eos-bondage eosjs
+17 silly hasDependencyInstalled @zapjs/eos-arbiter eosjs
+18 silly hasDependencyInstalled @zapjs/eos-caching eosjs
+19 silly hasDependencyInstalled @zapjs/eos-dispatch eosjs
+20 silly hasDependencyInstalled @zapjs/eos-provider eosjs
+21 silly hasDependencyInstalled @zapjs/eos-subscriber eosjs
+22 silly hasDependencyInstalled @zapjs/eos-term eosjs
+23 silly hasDependencyInstalled @zapjs/eos-term hdkey
+24 silly hasDependencyInstalled zap-web-term hdkey
+25 silly hasDependencyInstalled @zapjs/eos-node-utils sleep
+26 silly hasDependencyInstalled @zapjs/eos-term wif
+27 silly hasDependencyInstalled zap-web-term wif
 28 silly hasDependencyInstalled zap-web-term zap-curve-chart
 29 silly hasDependencyInstalled @zapjs/eos-utils @types/node
 30 silly hasDependencyInstalled @zapjs/eos-node-utils @types/node
@@ -243,9 +243,9 @@
 171 silly leaf dependencies {}
 172 info Installing external dependencies
 173 verbose actions 1 actions, concurrency 4
-174 silly npmInstallDependencies zap-web-term [ 'hdkey@1.1.0',
+174 silly npmInstallDependencies zap-web-term [ 'bip39@2.5.0',
+174 silly npmInstallDependencies   'hdkey@1.1.0',
 174 silly npmInstallDependencies   'wif@2.0.6',
-174 silly npmInstallDependencies   'bip39@2.5.0',
 174 silly npmInstallDependencies   'zap-curve-chart@git+ssh://git@git.smartum.pro:Zap/zap-oracle-curve-chart.git',
 174 silly npmInstallDependencies   'typescript@^3.2.2',
 174 silly npmInstallDependencies   '@types/react@^16.7.13',
@@ -317,16 +317,16 @@
 180 verbose installed leaf zap-web-term
 181 info Symlinking packages and binaries
 182 silly actions finished @zapjs/eos-utils
-183 silly createSymlink [ '/home/user/eos-web/zap-eos-sdk/packages/cacher',
-183 silly createSymlink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-caching',
+183 silly createSymlink [ '/home/user/eos-web/zap-eos-sdk/packages/1common-utils',
+183 silly createSymlink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-utils',
 183 silly createSymlink   'junction' ]
-184 silly createSymbolicLink [ '../../../cacher',
-184 silly createSymbolicLink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-caching',
+184 silly createSymbolicLink [ '../../../1common-utils',
+184 silly createSymbolicLink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-utils',
 184 silly createSymbolicLink   'junction' ]
-185 silly createSymlink [ '/home/user/eos-web/zap-eos-sdk/packages/1common-utils',
-185 silly createSymlink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-utils',
+185 silly createSymlink [ '/home/user/eos-web/zap-eos-sdk/packages/cacher',
+185 silly createSymlink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-caching',
 185 silly createSymlink   'junction' ]
-186 silly createSymbolicLink [ '../../../1common-utils',
-186 silly createSymbolicLink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-utils',
+186 silly createSymbolicLink [ '../../../cacher',
+186 silly createSymbolicLink   '/home/user/eos-web/zap-eos-sdk/packages/2node-utils/node_modules/@zapjs/eos-caching',
 186 silly createSymbolicLink   'junction' ]
 187 error
