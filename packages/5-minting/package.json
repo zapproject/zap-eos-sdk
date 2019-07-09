@@ -19,11 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "eosjs": "^16.0.8",
-    "chai-as-promised": "7.1.1",
-    "chai-bignumber": "2.0.2",
-    "@zapjs/eos-node-utils": "^1.0.0",
-    "@zapjs/eos-binaries": "^1.0.0",
+    "eosjs": "20.0.0",
     "@zapjs/eos-utils": "^1.0.0"
   },
   "devDependencies": {
@@ -34,6 +30,10 @@
     "@types/node": "^10.10.3",
     "ts-node": "^7.0.1",
     "tslint": "^5.10.0",
-    "typescript": "^2.9.2"
+    "typescript": "^2.9.2",
+    "chai-as-promised": "7.1.1",
+    "chai-bignumber": "2.0.2",
+    "@zapjs/eos-node-utils": "^1.0.0",
+    "@zapjs/eos-binaries": "^1.0.0"
   }
 }
