@@ -26,7 +26,8 @@
     "chai-bignumber": "2.0.2",
     "demux": "4.0.0",
     "demux-eos": "4.0.1",
-    "mongodb": "3.1.8"
+    "mongodb": "3.1.8",
+    "@zapjs/eos-utils": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "5.2.0",
@@ -34,7 +35,6 @@
     "@types/chai": "^4.1.5",
     "@types/mocha": "^5.2.4",
     "@types/node": "^10.10.3",
-    "@zapjs/eos-utils": "^1.0.0",
     "ts-node": "^7.0.1",
     "tslint": "^5.10.0",
     "typescript": "^2.9.2"
