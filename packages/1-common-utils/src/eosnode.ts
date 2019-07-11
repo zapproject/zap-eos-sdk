@@ -6,7 +6,7 @@ const nodeTextDecoder = require('util').TextDecoder;
 const nodeTextEncoder = require('util').TextEncoder;
 const edgeTextEncoder = require('text-encoding').TextEncoder;
 const edgeTextDecoder = require('text-encoding').TextDecoder; 
-const fetch = require('node-fetch');
+const _fetch = require('node-fetch');
 
 //const Sleep = require('sleep');
 const Eos = require('eosjs');
@@ -39,7 +39,7 @@ export class Node {
         this._zap_account = new Account(contract);
         this.verbose = verbose;
         //@ts-ignore
-        this.rpc = new JsonRpc(http_endpoint.fullhost ? http_endpoint.fullhost() : http_endpoint, { fetch });
+        this.rpc = new JsonRpc(http_endpoint.fullhost ? http_endpoint.fullhost() : http_endpoint, { fetch: typeof navigator === 'undefined' ? _fetch : fetch  });
 
         if (!scatter && key_provider) {
             const signatureProvider = new JsSignatureProvider(key_provider);
