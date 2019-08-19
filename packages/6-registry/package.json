@@ -20,7 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "eosjs": "20.0.0",
-    "@zapjs/eos-utils": "^1.0.0"
+    "@zapjs/eos-utils": "^1.0.4"
   },
   "devDependencies": {
     "mocha": "5.2.0",
@@ -31,9 +31,9 @@
     "ts-node": "^7.0.1",
     "tslint": "^5.10.0",
     "typescript": "^2.9.2",
-    "@zapjs/eos-minting": "^1.0.0",
-    "@zapjs/eos-node-utils": "^1.0.0",
-    "@zapjs/eos-binaries": "^1.0.0",
+    "@zapjs/eos-minting": "^1.0.4",
+    "@zapjs/eos-node-utils": "^1.0.4",
+    "@zapjs/eos-binaries": "^1.0.4",
     "chai-as-promised": "7.1.1",
     "chai-bignumber": "2.0.2"
   }

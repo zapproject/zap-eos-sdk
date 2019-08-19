@@ -20,11 +20,11 @@
   "license": "ISC",
   "dependencies": {
     "eosjs": "20.0.0",
-    "@zapjs/eos-utils": "^1.0.0",
-    "@zapjs/eos-registry": "^1.0.0",
-    "@zapjs/eos-bondage": "^1.0.0",
-    "@zapjs/eos-arbiter": "^1.0.0",
-    "@zapjs/eos-dispatch": "^1.0.0"
+    "@zapjs/eos-utils": "^1.0.4",
+    "@zapjs/eos-registry": "^1.0.4",
+    "@zapjs/eos-bondage": "^1.0.4",
+    "@zapjs/eos-arbiter": "^1.0.4",
+    "@zapjs/eos-dispatch": "^1.0.4"
   },
   "devDependencies": {
     "mocha": "5.2.0",
@@ -37,9 +37,9 @@
     "typescript": "^2.9.2",
     "chai-as-promised": "7.1.1",
     "chai-bignumber": "2.0.2",
-    "@zapjs/eos-node-utils": "^1.0.0",
-    "@zapjs/eos-binaries": "^1.0.0",
-    "@zapjs/eos-minting": "^1.0.0",
-    "@zapjs/eos-provider": "^1.0.0"
+    "@zapjs/eos-node-utils": "^1.0.4",
+    "@zapjs/eos-binaries": "^1.0.4",
+    "@zapjs/eos-minting": "^1.0.4",
+    "@zapjs/eos-provider": "^1.0.4"
   }
 }

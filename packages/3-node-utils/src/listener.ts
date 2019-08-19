@@ -3,7 +3,7 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID;
 const url = 'mongodb://172.17.0.2:27017';
 const fork = require('child_process').fork;
-const program = path.resolve(__dirname,'../node_modules/.bin/listen-eos');
+const program = path.resolve(__dirname,'../../../.bin/listen-eos');
 const options = {stdio:  ['pipe', 1, 2, 'ipc']};
 let child: any;
 const events = require('events');

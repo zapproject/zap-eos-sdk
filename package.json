@@ -9,7 +9,7 @@
   "dependencies": {
     "@types/bunyan": "^1.8.6",
     "@zapjs/curve": "2.0.14",
-    "big-number": "^1.0.0",
+    "big-number": "^1.0.4",
     "bip39": "2.5.0",
     "eosjs": "20.0.0",
     "hdkey": "1.1.0",
