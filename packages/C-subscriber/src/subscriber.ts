@@ -3,6 +3,7 @@ import { Bondage } from "@zapjs/eos-bondage";
 import { Arbiter } from "@zapjs/eos-arbiter";
 import { Dispatch } from "@zapjs/eos-dispatch";
 import { SubscriberOptions } from "./types/types";
+import { TokenDotFactory } from "@zapjs/eos-tokendotfactory";
 
 export class Subscriber {
     private _account: Utils.Account;
@@ -10,6 +11,7 @@ export class Subscriber {
     private bondage: Bondage;
     private arbiter: Arbiter;
     private dispatch: Dispatch;
+    private tokenDotFactory: TokenDotFactory;
     public _node: Utils.Node;
 
     constructor({account, node}: SubscriberOptions) {
@@ -25,6 +27,10 @@ export class Subscriber {
             node
         });
         this.dispatch = new Dispatch({
+            account: this._account,
+            node
+        });
+        this.tokenDotFactory = new TokenDotFactory({
             account: this._account,
             node
         });
@@ -155,5 +161,15 @@ export class Subscriber {
 
     async cancelQuery(id: number)  {
         return await this.dispatch.cancelQuery(id);
+    }
+    async tokenBond(provider: string, specifier: string, dots: number) {
+        return await this.tokenDotFactory.tokenBond(provider, specifier, dots);
+    }
+
+    async tokenUnBond(provider: string, specifier: string, dots: number) {
+        return await this.tokenDotFactory.tokenUnBond(provider, specifier, dots) 
+    }
+    async getSubscriberTokens(lower_bound: number, upper_bound: number, limit: number) {
+        return await this.tokenDotFactory.getSubscriberTokens(lower_bound, upper_bound, limit);
     }
 }

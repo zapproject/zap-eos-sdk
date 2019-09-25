@@ -3,6 +3,7 @@ import { Regsitry } from "@zapjs/eos-registry";
 import { Bondage } from "@zapjs/eos-bondage";
 import { Arbiter } from "@zapjs/eos-arbiter";
 import { Dispatch } from "@zapjs/eos-dispatch";
+import { TokenDotFactory } from "@zapjs/eos-tokendotfactory";
 import { ProviderOptions } from "./types/types";
 
 export class Provider {
@@ -13,6 +14,7 @@ export class Provider {
     private arbiter: Arbiter;
     private dispatch: Dispatch;
     private registry: Regsitry;
+    private tokenDotFactory: TokenDotFactory;
     public _node: Utils.Node;
 
     constructor({account, node}: ProviderOptions) {
@@ -32,6 +34,10 @@ export class Provider {
             node
         });
         this.dispatch = new Dispatch({
+            account: this._account,
+            node
+        });
+        this.tokenDotFactory = new TokenDotFactory({
             account: this._account,
             node
         });
@@ -94,8 +100,21 @@ export class Provider {
     async queryQueriesInfo(from: number, to: number, limit: number, indexType: number) {
       return await this.dispatch.queryQueriesInfo(from, to, limit, indexType);
     }
+
     async queryParams(from: number, to: number, limit: number = -1, index: number) {
       return await this.registry.queryParams(from, to, limit, index)
+    }
+
+    async tokenCurveInit(name: string, endpoint: string, functions: any, maximum_supply: string) {
+        return await this.tokenDotFactory.tokenCurveInit(name, endpoint, functions, maximum_supply);
+    }
+
+    async getTokenProviders(lower_bound: number, upper_bound: number, limit: number) {
+        return await this.tokenDotFactory.getTokenProviders(lower_bound, upper_bound, limit);
+    }
+
+    async getProviderTokens(lower_bound: number, upper_bound: number, limit: number) {
+        return await this.tokenDotFactory.getProviderTokens(lower_bound, upper_bound, limit);
     }
 
 }
