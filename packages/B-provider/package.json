@@ -24,7 +24,8 @@
     "@zapjs/eos-registry": "^1.0.4",
     "@zapjs/eos-bondage": "^1.0.4",
     "@zapjs/eos-arbiter": "^1.0.4",
-    "@zapjs/eos-dispatch": "^1.0.4"
+    "@zapjs/eos-dispatch": "^1.0.4",
+    "@zapjs/eos-tokendotfactory": "1.0.0"
   },
   "devDependencies": {
     "mocha": "5.2.0",

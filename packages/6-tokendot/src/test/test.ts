@@ -1,4 +1,4 @@
-const expect = require('chai')
+/*const expect = require('chai')
     .use(require('chai-as-promised'))
     .use(require('chai-bignumber'))
     .expect;
@@ -122,3 +122,4 @@ describe('Test', () => {
         node.kill();
     })
 });
+*/

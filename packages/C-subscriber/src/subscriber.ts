@@ -31,7 +31,9 @@ export class Subscriber {
             node
         });
         this.tokenDotFactory = new TokenDotFactory({
+            //@ts-ignore
             account: this._account,
+            //@ts-ignore
             node
         });
     }

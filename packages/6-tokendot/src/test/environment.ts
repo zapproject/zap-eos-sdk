@@ -1,4 +1,4 @@
-const path = require('path');
+/*const path = require('path');
 const fs = require('fs');
 import { Account, Node, Transaction} from '@zapjs/eos-utils';
 import {Deployer} from '@zapjs/eos-node-utils';
@@ -130,4 +130,4 @@ export class TestNode extends Node {
     getProvider() {
         return this.provider;
     }
-}
+}*/
