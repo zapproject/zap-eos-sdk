@@ -12,7 +12,7 @@ const eos_registry_1 = require("@zapjs/eos-registry");
 const eos_bondage_1 = require("@zapjs/eos-bondage");
 const eos_arbiter_1 = require("@zapjs/eos-arbiter");
 const eos_dispatch_1 = require("@zapjs/eos-dispatch");
-const eos_tokendotfactory_1 = require("@zapjs/eos-tokendotfactory");
+const eos_tokendotfactory_1 = require("../../6-tokendot");
 class Provider {
     constructor({ account, node }) {
         this._account = account;
