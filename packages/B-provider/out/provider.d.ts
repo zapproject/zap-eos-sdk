@@ -1,0 +1,33 @@
+import * as Utils from "@zapjs/eos-utils";
+import { ProviderOptions } from "./types/types";
+export declare class Provider {
+    private _account;
+    private _zap_account;
+    private title;
+    private bondage;
+    private arbiter;
+    private dispatch;
+    private registry;
+    private tokenDotFactory;
+    _node: Utils.Node;
+    constructor({ account, node }: ProviderOptions);
+    connect(): Promise<void>;
+    setTitle(title: string): void;
+    getTitle(): string;
+    getAccount(): import("@zapjs/eos-utils/out/account").Account;
+    getNode(): import("@zapjs/eos-utils/out/eosnode").Node;
+    initiateProvider(title: string, public_key: number): Promise<any>;
+    addEndpoint(endpoint_specifier: string, functions: Array<number>, broker: string): Promise<any>;
+    setParams(endpoint: string, params: Array<string>): Promise<any>;
+    queryProviderList(from: number, to: number, limit?: number): Promise<any>;
+    queryProviderEndpoints(from: number, to: number, limit?: number): Promise<any>;
+    queryIssued(from: number, to: number, limit: number): Promise<any>;
+    unsubscribeProvider(subscriber: string, endpoint: string): Promise<any>;
+    querySubscriptions(from: number, to: number, limit: number): Promise<any>;
+    respond(id: number, params: string, subscriber: string): Promise<any>;
+    queryQueriesInfo(from: number, to: number, limit: number, indexType: number): Promise<any>;
+    queryParams(from: number, to: number, limit: number | undefined, index: number): Promise<any>;
+    tokenCurveInit(name: string, endpoint: string, functions: any, maximum_supply: string): Promise<any>;
+    getTokenProviders(lower_bound: number, upper_bound: number, limit: number): Promise<any>;
+    getProviderTokens(lower_bound: number, upper_bound: number, limit: number): Promise<any>;
+}
