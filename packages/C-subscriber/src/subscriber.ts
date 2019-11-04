@@ -56,7 +56,8 @@ export class Subscriber {
         return await this.bondage.unbond(provider, endpoint, amount);
     }
 
-    async queryHolders(from: number, to: number, limit: number) {
+    async queryHolders(from: number | string, to: number | string, limit: number) {
+        //@ts-ignore
         return await this.bondage.queryHolders(from, to, limit);
     }
 

@@ -53,7 +53,7 @@ export class Registry {
         });
     }
     
-    async queryParams(lower_bound: number, upper_bound: number, limit: number = -1, index_position: number) {
+    async queryParams(lower_bound: number | string, upper_bound: number | string, limit: number = -1, index_position: number) {
         return await this._node.rpc.get_table_rows({
            json:  true,
             code: this._zap_account_name.name,

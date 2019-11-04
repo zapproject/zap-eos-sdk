@@ -67,6 +67,7 @@ class Subscriber {
     }
     queryHolders(from, to, limit) {
         return __awaiter(this, void 0, void 0, function* () {
+            //@ts-ignore
             return yield this.bondage.queryHolders(from, to, limit);
         });
     }

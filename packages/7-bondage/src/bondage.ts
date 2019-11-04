@@ -46,7 +46,7 @@ export class Bondage {
             .execute(this._node.api);
     }
 
-    async queryHolders(lower_bound: number, upper_bound: number, limit: number) {
+    async queryHolders(lower_bound: number | string, upper_bound: number | string, limit: number) {
         return await this._node.rpc.get_table_rows({
             json: true,
             code: this._zap_account.name,

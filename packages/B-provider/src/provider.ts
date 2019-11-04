@@ -103,7 +103,8 @@ export class Provider {
       return await this.dispatch.queryQueriesInfo(from, to, limit, indexType);
     }
 
-    async queryParams(from: number, to: number, limit: number = -1, index: number) {
+    async queryParams(from: number | string, to: number | string, limit: number = -1, index: number) {
+        //@ts-ignore
       return await this.registry.queryParams(from, to, limit, index)
     }
 

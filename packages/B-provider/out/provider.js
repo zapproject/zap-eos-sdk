@@ -111,6 +111,7 @@ class Provider {
     }
     queryParams(from, to, limit = -1, index) {
         return __awaiter(this, void 0, void 0, function* () {
+            //@ts-ignore
             return yield this.registry.queryParams(from, to, limit, index);
         });
     }

@@ -26,7 +26,7 @@ export declare class Provider {
     querySubscriptions(from: number, to: number, limit: number): Promise<any>;
     respond(id: number, params: string, subscriber: string): Promise<any>;
     queryQueriesInfo(from: number, to: number, limit: number, indexType: number): Promise<any>;
-    queryParams(from: number, to: number, limit: number | undefined, index: number): Promise<any>;
+    queryParams(from: number | string, to: number | string, limit: number | undefined, index: number): Promise<any>;
     tokenCurveInit(name: string, endpoint: string, functions: any, maximum_supply: string): Promise<any>;
     getTokenProviders(lower_bound: number, upper_bound: number, limit: number): Promise<any>;
     getProviderTokens(lower_bound: number, upper_bound: number, limit: number): Promise<any>;

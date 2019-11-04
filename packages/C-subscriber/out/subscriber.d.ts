@@ -14,7 +14,7 @@ export declare class Subscriber {
     getNode(): import("@zapjs/eos-utils/out/eosnode").Node;
     bond(provider: string, endpoint: string, amount: number): Promise<any>;
     unbond(provider: string, endpoint: string, amount: number): Promise<any>;
-    queryHolders(from: number, to: number, limit: number): Promise<any>;
+    queryHolders(from: number | string, to: number | string, limit: number): Promise<any>;
     buyRamBytes(amount: number): Promise<any>;
     delegateBw(net: string, cpu: string, receiver?: string): Promise<any>;
     unDelegateBw(net: string, cpu: string, receiver?: string): Promise<any>;
