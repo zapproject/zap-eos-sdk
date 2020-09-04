@@ -26,7 +26,7 @@
     "chai-bignumber": "2.0.2",
     "demux": "^1.0.3",
     "demux-eos": "2.0.0",
-    "mongodb": "3.1.8",
+    "mongodb": "3.1.13",
     "@zapjs/eos-provider": "^1.0.0"
   },
   "devDependencies": {
